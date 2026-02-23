@@ -1,0 +1,101 @@
+\documentclass[12pt,letterpaper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{listings, float, enumitem}
+\usepackage{graphicx, geometry, xcolor}
+\usepackage[normalem]{ulem}
+\usepackage[colorlinks=true, linkcolor=linkblue, urlcolor=linkblue, citecolor=linkblue]{hyperref}
+
+\geometry{margin=3cm, top=3cm, bottom=3cm}
+
+\begin{document}
+
+\input{portada}
+
+\newpage
+
+\begin{enumerate}[label=\arabic*.]
+\item Considérese el siguiente mapa, donde el agente es el cuadrado azul (estado inicial) y la meta el verde (estado final):
+  \begin{center}
+    \includegraphics[width=0.4\textwidth]{f1.jpg}
+  \end{center}
+  Expresar de manera formal el problema como $SP = (A,S,s_0,F,T,c)$, considerar sólo los espacios blancos como estados de movimiento posibles y sólo considerar las acciones legales. Expresa las transiciones como una función con las acciones como parámetros.
+  
+\item Del ejercicio 1, ejecuta el algoritmo de primero en profundidad aplicando las acciones en el siguiente orden: Arriba, Abajo, Izquierda, Derecha. Usa Early Goal Test. Dibuja el árbol y la pila.
+  
+\item Del ejercicio 1, aplicar el algoritmo de primero en amplitud para obtener una solución utilizando Early Goal Test. Dibujar el árbol de búsqueda y la pila.
+  
+\item A partir del problema 1, calcular la heurística de distancia Manhattan para todos los estados y usar el algoritmo de primero mejor ambicioso con esta heurística para encontrar la solución.
+  
+\item Utilizar el algoritmo de Dijkstra para encontrar una solución al ejercicio 1. Dibujar el árbol de búsqueda y la pila. ¿Cuál es el costo del camino que resulta?
+  
+\item Utilizar la siguiente heurística para aplicar al ejercicio anterior el algoritmo de A$^*$ (dibujar árbol y pila):
+  \begin{center}
+    \begin{tabular}{c|ccccccccc}
+      & $s_0$ & $s_1$ & $s_2$ & $s_3$ & $s_4$ & $s_5$ & $s_6$ & $s_7$ & $s_8$ \\
+      \hline
+      $h$ & $4$ & $15$ & $1$ & $0$ & $1$ & $0$ & $20$ & $35$ & $\infty$
+    \end{tabular}
+  \end{center}
+  ¿Cuál es el costo del camino y cuál es la heurística final de éste?
+  
+\item Considerar la siguiente gráfica de un problema de búsqueda ($s_0$ es inicial y $s_7$ final):
+  \begin{center}
+    \includegraphics[width=0.7\textwidth]{f2.jpg}
+  \end{center}
+  \begin{enumerate}
+  \item[a)] Expresar formalmente, la forma del problema de búsqueda $SP = (A,S,s_0,F,T,c)$.
+  \item[b)] Utilizar el algoritmo de primero en amplitud para encontrar una solución. No expandir los nodos alcanzados ya. Usar Early Goal Test. Dibujar el árbol y la frontera.
+  \end{enumerate}
+  \begin{center}
+    \begin{tabular}{c|cccccccc}
+      & $s_0$ & $s_1$ & $s_2$ & $s_3$ & $s_4$ & $s_5$ & $s_6$ & $s_7$ \\
+      \hline
+      $h$ & $3$ & $2$ & $3$ & $2$ & $1$ & $2$ & $0$ & $0$
+    \end{tabular}
+  \end{center}
+  \begin{enumerate}
+  \item[c)] Utilizar el algoritmo de Greedy Best First Search para calcular una solución al problema. Dibujar el árbol y la pila.
+  \item[d)] Utilizar la heurística anterior para encontrar una solución al problema utilizando el algoritmo A$^*$. No considerar los nodos ya alcanzados (una vez expandidos no se vuelven a expandir). Dibujar el árbol y la pila.
+  \end{enumerate}
+  
+\item Utilizar el algoritmo de Beam Search con $k=2$ para encontrar una solución al problema del ejercicio 7. ¿Cuáles son los caminos generados?
+
+\item Demostrar que si $h(s_1),\, s \in S$, es una heurística admisible para el algoritmo de A$^*$, entonces el algoritmo de A$^*$ encontrará una solución óptima.
+  
+\item Demostrar que el algoritmo de $A^*$ es completo siempre que exista una solución en el problema.
+
+\item Dado el siguiente estado de un juego de gato:
+  \begin{center}
+\begin{verbatim}
+x | x |  
+o | o | x
+  |   | o
+\end{verbatim}
+  \end{center}
+
+Con ‘o’ siendo jugador MAX($1$) y ‘x’ siendo MIN($-1$) y el siguiente jugador en tirar es MAX. Determinar cuál es la siguiente mejor jugada para cada jugador y dibujar el árbol de juego.
+
+\item Utiliza el método de $\alpha - \beta$ en el problema anterior.
+
+\item Dada las siguientes cadenas de población inicial:
+  \begin{itemize}
+  \item $000000$
+  \item $111010$
+  \item $010100$
+  \item $000001$
+  \end{itemize}
+  
+  Usar el algoritmo genético para obtener un candidato final con mayor valor de fitness. Considerar los siguientes puntos:
+  
+  \begin{enumerate}
+  \item[a)] Tomar en cada iteración los $3$ candidatos más altos.
+  \item[b)] Combinar los dos primeros candidatos con más fitness (1 y 2), y los dos úlitmos (2 y 3). Si tienen el mismo fitness se combinarán entre ellos.
+  \item[c)] Tomar recombinación ordenada por mitades de candidatos (mitad del primero más mitad del segundo).
+  \item[d)] Repetir por 3 iteraciones.
+  \end{enumerate}
+  
+\end{enumerate}
+\end{document}
