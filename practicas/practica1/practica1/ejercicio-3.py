@@ -1,0 +1,146 @@
+### 3. Usar el algoritmo de primero en amplitud para obtener la solucion dado el estado inicial anterior.
+
+# Estado final:
+estado_final = (1, 2 ,3,
+                4, 5, 6,
+                7, 8, 0)
+
+#Simulacion 8-Puzzle con BFS:
+
+"""
+Implementación del problema del 8-puzzle modelado como: (S, A, T, s0, F, C).
+Usando el algoritmo BFS iterativo.
+"""
+class EightPuzzle:
+
+    def __init__(self,
+                 estado_inicial,
+                 estado_final):
+        """
+        s0 -> estado_inicial
+        F  -> estado_final
+        """
+        self.estado_inicial = estado_inicial
+        self.estado_final = estado_final
+
+
+    # Devuelve el índice donde se encuentra el 0.
+    def encontrar_vacio(self,
+                        estado):
+        return estado.index(0)
+
+
+    # Devuelve una lista de acciones válidas desde el estado dado.
+    def acciones(self,
+                 estado):
+        acciones_posibles = []
+        indice = self.encontrar_vacio(estado)
+        fila = indice // 3
+        columna = indice % 3
+
+        # Verificar movimiento arriba
+        if fila > 0:
+            acciones_posibles.append("arriba")
+        # Verificar movimiento abajo
+        if fila < 2:
+            acciones_posibles.append("abajo")
+        # Verificar movimiento izquierda
+        if columna > 0:
+            acciones_posibles.append("izquierda")
+        # Verificar movimiento derecha
+        if columna < 2:
+            acciones_posibles.append("derecha")
+
+        return acciones_posibles
+
+    
+    # Devuelve el nuevo estado después de aplicar la acción.
+    def resultado(self,
+                  estado,
+                  accion):
+        """
+        Función de transición: Lógica del movimiento, si el vacío está en el índice i:
+          "arriba" -> intercambia con i-3
+          "abajo" -> intercambia con i+3
+          "izquierda" -> intercambia con i-1
+          "derecha" -> intercambia con i + 1
+        """
+        indice = self.encontrar_vacio(estado)
+        # Convertimos a lista para poder modificar
+        nuevo_estado = list(estado)
+
+        if accion == "arriba":
+            intercambio = indice - 3
+        elif accion == "abajo":
+            intercambio = indice + 3
+        elif accion == "izquierda":
+            intercambio = indice - 1
+        elif accion == "derecha":
+            intercambio = indice + 1
+        else:
+            raise ValueError("Acción inválida")
+
+        # Intercambio
+        nuevo_estado[indice], nuevo_estado[intercambio] = (
+            nuevo_estado[intercambio],
+            nuevo_estado[indice]
+        )
+
+        return tuple(nuevo_estado)
+
+
+    # Reconstruye la secuencia de acciones desde el nodo meta hasta el nodo inicial usando los padres.
+    def reconstruir_camino(self,
+                           nodo):
+        acciones = []
+
+        while nodo["padre"] is not None:
+            acciones.append(nodo["accion"])
+            nodo = nodo["padre"]
+
+        acciones.reverse()
+        return acciones
+
+
+    # Búsqueda en amplitud iterativa. Devuelve la lista de acciones si encuentra solución.
+    def bfs(self):
+        nodo_inicial = {
+            "estado": self.estado_inicial,
+            "padre": None,
+            "accion": None
+        }
+
+        cola = [nodo_inicial]
+        visitados = set()
+
+        while cola:
+            nodo = cola.pop(0)
+            estado = nodo["estado"]
+
+            if estado == self.estado_final:
+                return self.reconstruir_camino(nodo)
+
+            if estado not in visitados:
+                visitados.add(estado)
+                for accion in self.acciones(estado):
+                    sucesor = self.resultado(estado, accion)
+                    nuevo_nodo = {
+                        "estado": sucesor,
+                        "padre": nodo,
+                        "accion": accion
+                    }
+                    cola.append(nuevo_nodo)
+
+        return None
+
+
+
+estado_inicial = (1, 0, 2,
+                  6, 3, 4,
+                  7, 5, 8)
+
+problema = EightPuzzle(estado_inicial, estado_final)
+
+solucion = problema.bfs()
+
+print("Solution:", solucion)
