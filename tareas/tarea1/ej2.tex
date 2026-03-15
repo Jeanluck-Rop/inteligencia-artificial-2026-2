@@ -1,0 +1,195 @@
+Consideraremos que el tope de la pila está a la derecha, por lo que sacamos y evaluamos este último elemento.
+
+\begin{enumerate}[label=\arabic*:]
+\item Metemos el estado inicial \texttt{(1,2)} a la pila, además de marcarlo como visitado:
+  \begin{align*}
+    \text{Pila:} &\quad \texttt{[(1,2)]} \\
+    \text{Visitados:} &\quad \{(1,2)\}
+  \end{align*}
+
+  Se genera la raíz del árbol:
+  \begin{figure}[h]
+    \centering
+    \begin{forest}
+      for tree={ math content, edge={-}, s sep=25pt, l sep=20pt, align=center }
+      [{(1,2)}]
+    \end{forest}
+  \end{figure}
+  
+\item Sacamos \texttt{(1,2)} y evaluamos sus vecinos:
+  
+  \textit{Izquierda} \texttt{(1,1)}, \textit{Derecha} \texttt{(1,3)} (\textit{Arriba} y \textit{Abajo} no son válidos). Metemos estas acciones en orden inverso para así aplicarlas en el orden que se pide, de modo que la \textit{Izquierda} se mete al final, lo que la hace estar en el tope de la pila y sea la primer acción ejecutada:
+  \begin{align*}
+    \text{Pila:} &\quad \texttt{[(1,3), (1,1)]} \\
+    \text{Visitados:} &\quad \{(1,2), (1,1), (1,3)\}
+  \end{align*}
+
+  El árbol se expande:
+  \begin{figure}[h]
+    \centering
+    \begin{forest}
+      for tree={ math content, edge={-}, s sep=25pt, l sep=20pt, align=center }
+      [{(1,2)}
+        [{(1,1)}, edge label={node[midway,left]{$\leftarrow$}}]
+        [{(1,3)}, edge label={node[midway,right]{$\rightarrow$}}]
+      ]
+    \end{forest}
+  \end{figure}
+  
+\item Sacamos \texttt{(1,1)}. Metemos \textit{Abajo} \texttt{(2,1)}:
+  \begin{align*}
+    \text{Pila:} &\quad \texttt{[(1,3), (2,1)]} \\
+    \text{Visitados:} &\quad \{(1,2), (1,1), (1,3), (2,1)\}
+  \end{align*}
+
+  De este modo nos vamos extendiendo en el árbol:
+  \begin{figure}[h]
+    \centering
+    \begin{forest}
+      for tree={ math content, edge={-}, s sep=25pt, l sep=20pt, align=center }
+      [{(1,2)}
+        [{(1,1)}, edge label={node[midway,left]{$\leftarrow$}}]
+        [{(1,3)}, edge label={node[midway,right]{$\rightarrow$}}]
+      ]
+    \end{forest}
+  \end{figure}
+
+  \newpage
+  
+\item Sacamos \texttt{(2,1)}. Metemos \textit{Abajo} \texttt{(3,1)}:
+  \begin{align*}
+    \text{Pila:} &\quad \texttt{[(1,3), (3,1)]} \\
+    \text{Visitados:} &\quad \{(1,2), (1,1), (1,3), (2,1), (3,1)\}
+  \end{align*}
+
+  Nos seguimos extendiendo por el nodo:
+  \begin{figure}[h]
+    \centering
+    \begin{forest}
+      for tree={ math content, edge={-}, s sep=25pt, l sep=20pt, align=center }
+      [{(1,2)}
+        [{(1,1)}, edge label={node[midway,left]{$\leftarrow$}}
+          [{(2,1)}, edge label={node[midway,left]{$\downarrow$}}]
+        ]
+        [{(1,3)}, edge label={node[midway,right]{$\rightarrow$}}]
+      ]
+    \end{forest}
+  \end{figure}
+  
+\item Sacamos \texttt{(3,1)}. No hay acciones válidas, por lo que solo queda la pila:
+  \begin{align*}
+    \text{Pila:} &\quad \texttt{[(1,3)]}
+  \end{align*}
+
+  Y se termina la extensión del árbol por esta rama:
+
+  \begin{figure}[h]
+    \centering
+    \begin{forest}
+      for tree={ math content, edge={-}, s sep=25pt, l sep=20pt, align=center }
+      [{(1,2)}
+        [{(1,1)}, edge label={node[midway,left]{$\leftarrow$}}
+          [{(2,1)}, edge label={node[midway,left]{$\downarrow$}}
+            [{(3,1)}, edge label={node[midway,left]{$\downarrow$}}, label={[yshift=-2pt]below:{\Large \color{red}$\times$}}]
+          ]
+        ]
+        [{(1,3)}, edge label={node[midway,right]{$\rightarrow$}}]
+      ]
+    \end{forest}
+  \end{figure}
+  
+  Continuamos extendiéndonos por el otro nodo \texttt{(1,3)}.
+  
+\item Sacamos \texttt{(1,3)}. Metemos a sus vecinos \textit{Derecha} \texttt{(1,4)}, \textit{Abajo} \texttt{(2,3)}; en ese orden (para evaluar \textit{Abajo} primero):
+  \begin{align*}
+    \text{Pila:} &\quad \texttt{[(1,4), (2,3)]} \\
+    \text{Visitados:} &\quad \{(1,2), (1,1), (1,3), (2,1), (3,1), (2,3), (1,4)\}
+  \end{align*}
+  
+  Y se forma el árbol:
+
+  \begin{figure}[h]
+    \centering
+    \begin{forest}
+      for tree={ math content, edge={-}, s sep=25pt, l sep=20pt, align=center }
+      [{(1,2)}
+        [{(1,1)}, edge label={node[midway,left]{$\leftarrow$}}
+          [{(2,1)}, edge label={node[midway,left]{$\downarrow$}}
+            [{(3,1)}, edge label={node[midway,left]{$\downarrow$}}, label={[yshift=-2pt]below:{\Large \color{red}$\times$}}]
+          ]
+        ]
+        [{(1,3)}, edge label={node[midway,right]{$\rightarrow$}}
+          [{(2,3)}, edge label={node[midway,left]{$\downarrow$}}]
+          [{(1,4)}, edge label={node[midway,right]{$\rightarrow$}}]
+        ]
+      ]
+    \end{forest}
+  \end{figure}
+  
+  Nos extenderemos en el nodo \texttt{(2,3)}.
+  
+\item Sacamos \texttt{(2,3)}. Metemos \textit{Abajo} \texttt{(3,3)}:
+  \begin{align*}
+    \text{Pila:} &\quad \texttt{[(1,4), (3,3)]} \\
+    \text{Visitados:} &\quad \{(1,2), (1,1), (1,3), (2,1), (3,1), (2,3), (1,4), (3,3)\}
+  \end{align*}
+  
+\item Sacamos \texttt{(3,3)}. Metemos \textit{Derecha} \texttt{(3,4)}:
+  \begin{align*}
+    \text{Pila:} &\quad \texttt{[(1,4), (3,4)]} \\
+    \text{Visitados:} &\quad \{(1,2), (1,1), (1,3), (2,1), (3,1),(2,3), (1,4), (3,3), (3,4)\}
+  \end{align*}
+  
+\item Sacamos \texttt{(3,4)}. Metemos \textit{Abajo} \texttt{(4,4)} que es la meta, y por usar \textbf{Early Goal Test} terminamos el algoritmo inmediatamente, pues ya encontramos la solución.
+\end{enumerate}
+
+\newpage
+
+\textbf{Árbol de búsqueda completo:}
+\begin{figure}[h]
+  \centering
+  \begin{forest}
+    for tree={ math content, edge={-}, s sep=25pt, l sep=20pt, align=center }
+    [{(1,2)}
+      [{(1,1)}, edge label={node[midway,left]{$\leftarrow$}}
+        [{(2,1)}, edge label={node[midway,left]{$\downarrow$}}
+          [{(3,1)}, edge label={node[midway,left]{$\downarrow$}}, label={[yshift=-2pt]below:{\Large \color{red}$\times$}}]
+        ]
+      ]
+      [{(1,3)}, edge label={node[midway,right]{$\rightarrow$}}
+        [{(2,3)}, edge label={node[midway,left]{$\downarrow$}}
+          [{(3,3)}, edge label={node[midway,left]{$\downarrow$}}
+            [{(3,4)}, edge label={node[midway,left]{$\rightarrow$}}
+              [{(4,4)}, edge label={node[midway,left]{$\downarrow$}}, label={[yshift=-2pt]below:{\Large \color{green}$\checkmark$}}]
+            ]
+          ]
+        ]
+        [{(1,4)}, edge label={node[midway,right]{$\rightarrow$}}]
+      ]
+    ]
+  \end{forest}
+\end{figure}
+
+Cabe aclarar que al usar DFS, nunca exploramos el nodo \texttt{(1,4)}. Si no invertimos la forma de agregar las acciones a la pila el árbol en cambio sería:
+
+\newpage
+
+\begin{figure}[h]
+  \centering
+  \begin{forest}
+    for tree={ math content, edge={-}, s sep=25pt, l sep=20pt, align=center }
+    [{(1,2)}
+      [{(1,1)}, edge label={node[midway,left]{$\leftarrow$}}]
+      [{(1,3)}, edge label={node[midway,right]{$\rightarrow$}}
+        [{(2,3)}, edge label={node[midway,left]{$\downarrow$}}
+          [{(3,3)}, edge label={node[midway,left]{$\downarrow$}}
+            [{(3,4)}, edge label={node[midway,left]{$\rightarrow$}}
+              [{(4,4)}, edge label={node[midway,left]{$\downarrow$}}, label={[yshift=-2pt]below:{\Large \color{green}$\checkmark$}}]
+            ]
+          ]
+        ]
+        [{(1,4)}, edge label={node[midway,right]{$\rightarrow$}}]
+      ]
+    ]
+  \end{forest}
+\end{figure}

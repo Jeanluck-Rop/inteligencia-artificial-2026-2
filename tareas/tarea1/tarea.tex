@@ -1,0 +1,273 @@
+\documentclass[12pt,letterpaper]{article}
+
+\setlength{\parindent}{0pt}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{listings, float, enumitem}
+\usepackage{graphicx, geometry, tikz, xcolor}
+\usepackage{amssymb, amsmath, tocloft}
+\usepackage{forest}
+\usepackage[normalem]{ulem}
+
+%\usepackage[colorlinks=true, linkcolor=linkblue, urlcolor=linkblue, citecolor=linkblue]{hyperref}
+
+\geometry{margin=2.5cm, top=2.5cm, bottom=2.5cm}
+\newcommand{\asig}{\leftarrow}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+
+\begin{document}
+
+\input{portada}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\tableofcontents
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Ejercicio 1.}
+Considérese el siguiente mapa, donde el agente es el cuadrado azul (estado inicial) y la meta el verde (estado final):
+
+\begin{center}
+  \includegraphics[width=0.4\textwidth]{f1.jpg}
+\end{center}
+
+Expresar de manera formal el problema como $SP = (A,S,s_0,F,T,c)$, considerar sólo los espacios blancos como estados de movimiento posibles y sólo considerar las acciones legales. Expresa las transiciones como una función con las acciones como parámetros.
+
+\bigskip
+
+\boxed{\textbf{Def.}} \textit{Problema de Búsqueda (SP)}
+
+Definimos el Problema de Búsqueda \textit{SP = (A, S, $s_0$, F, T, c)} donde:
+
+\begin{itemize}
+\item \textbf{A} = \{ $\rightarrow$, $\leftarrow$, $\uparrow$, $\downarrow$ \}, el conjunto las acciones posibles del agente.
+  
+\item \textbf{S} = \{ (1,1), (1,2), (1,3), (1,4), (2,1), (2,3), (3,1), (3,3), (3,4), (4,4) \}, el conjunto de todos los estados del problema.
+  
+\item \textbf{$s_0 \in S$}, $s_0$ = (1,2), el estado inicial, donde comienza el agente.
+  
+\item \textbf{F $\subseteq S$}, \textbf{F} = \{ (4,4) \} el conjunto de estados finales, la meta.
+  
+\item \textbf{T: S $\times$ A $\rightarrow$ S}, \textbf{T} la función de transición:
+  
+  \begin{align}
+    T((i,j),\rightarrow) &= (i,j+1) && \text{si } (i,j+1)\in S \\
+    T((i,j),\leftarrow)  &= (i,j-1) && \text{si } (i,j-1)\in S \\
+    T((i,j),\uparrow)    &= (i-1,j) && \text{si } (i-1,j)\in S \\
+    T((i,j),\downarrow)  &= (i+1,j) && \text{si } (i+1,j)\in S
+  \end{align}
+  
+\item \textbf{c: S $\times$ A $\times$ S $\rightarrow$ $\mathbb{R}$}, \textbf{c} la función de costo:
+  \begin{quote}
+    $c(s, a, s')$ = 1 \; para toda transición válida $T(s, a) = s'$
+  \end{quote}
+\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Ejercicio 2.}
+Del ejercicio 1, ejecuta el algoritmo de primero en profundidad aplicando las acciones en el siguiente orden: Arriba, Abajo, Izquierda, Derecha. Usa Early Goal Test. Dibuja el árbol y la pila.
+
+\bigskip
+
+\input{ej2}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Ejercicio 3.}
+Del ejercicio 1, aplicar el algoritmo de primero en amplitud para obtener una solución utilizando Early Goal Test. Dibujar el árbol de búsqueda y la pila.
+
+\bigskip
+
+\input{ej3}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Ejercicio 4.}
+A partir del problema 1, calcular la heurística de distancia Manhattan para todos los estados y usar el algoritmo de primero mejor ambicioso con esta heurística para encontrar la solución.
+
+\bigskip
+
+\input{ej4}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Ejercicio 5.}
+Utilizar el algoritmo de Dijkstra para encontrar una solución al ejercicio 1. Dibujar el árbol de búsqueda y la pila. ¿Cuál es el costo del camino que resulta?
+
+\bigskip
+
+\input{ej5}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Ejercicio 6.}
+Utilizar la siguiente heurística para aplicar al ejercicio anterior el algoritmo de A$^*$ (dibujar árbol y pila):
+
+\begin{center}
+  \begin{tabular}{c|ccccccccc}
+    & $s_0$ & $s_1$ & $s_2$ & $s_3$ & $s_4$ & $s_5$ & $s_6$ & $s_7$ & $s_8$ \\
+    \hline
+    $h$ & $4$ & $15$ & $1$ & $0$ & $1$ & $0$ & $20$ & $35$ & $\infty$
+  \end{tabular}
+\end{center}
+
+¿Cuál es el costo del camino y cuál es la heurística final de éste? \\
+\textbf{R: } \input{respuestas/ejercicio6.tex}
+
+\bigskip
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Ejercicio 7.}
+Considerar la siguiente gráfica de un problema de búsqueda ($s_0$ es inicial y $s_7$ final):
+
+\begin{center}
+  \includegraphics[width=0.7\textwidth]{f2.jpg}
+\end{center}
+
+\begin{enumerate}
+\item[a)] Expresar formalmente, la forma del problema de búsqueda $SP = (A,S,s_0,F,T,c)$.
+\item[b)] Utilizar el algoritmo de primero en amplitud para encontrar una solución. No expandir los nodos alcanzados ya. Usar Early Goal Test. Dibujar el árbol y la frontera.
+\end{enumerate}
+
+\begin{center}
+  \begin{tabular}{c|cccccccc}
+    & $s_0$ & $s_1$ & $s_2$ & $s_3$ & $s_4$ & $s_5$ & $s_6$ & $s_7$ \\
+    \hline
+    $h$ & $3$ & $2$ & $3$ & $2$ & $1$ & $2$ & $0$ & $0$
+  \end{tabular}
+\end{center}
+
+\begin{enumerate}
+\item[c)] Utilizar el algoritmo de Greedy Best First Search para calcular una solución al problema. Dibujar el árbol y la pila.
+\item[d)] Utilizar la heurística anterior para encontrar una solución al problema utilizando el algoritmo A$^*$. No considerar los nodos ya alcanzados (una vez expandidos no se vuelven a expandir). Dibujar el árbol y la pila.
+\end{enumerate}
+
+\bigskip
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Ejercicio 8.}
+Utilizar el algoritmo de Beam Search con $k=2$ para encontrar una solución al problema del ejercicio 7. ¿Cuáles son los caminos generados?
+
+\bigskip
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Ejercicio 9.}
+Demostrar que si $h(s_1),\, s \in S$, es una heurística admisible para el algoritmo de A$^*$, entonces el algoritmo de A$^*$ encontrará una solución óptima.
+
+\bigskip
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Ejercicio 10.}
+Demostrar que el algoritmo de $A^*$ es completo siempre que exista una solución en el problema.
+
+\bigskip
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Ejercicio 11.}
+Dado el siguiente estado de un juego de gato:
+\begin{center}
+\begin{verbatim}
+  x | x |  
+  o | o | x
+  |   | o
+\end{verbatim}
+\end{center}
+
+Con ‘o’ siendo jugador MAX($1$) y ‘x’ siendo MIN($-1$) y el siguiente jugador en tirar es MAX. Determinar cuál es la siguiente mejor jugada para cada jugador y dibujar el árbol de juego.
+
+\bigskip
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Ejercicio 12.}
+Utiliza el método de $\alpha - \beta$ en el problema anterior.
+
+
+\bigskip
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Ejercicio 13.}
+Dada las siguientes cadenas de población inicial:
+
+\begin{itemize}
+\item $000000$
+\item $111010$
+\item $010100$
+\item $000001$
+\end{itemize}
+
+Usar el algoritmo genético para obtener un candidato final con mayor valor de fitness. Considerar los siguientes puntos:
+
+\begin{enumerate}
+\item[a)] Tomar en cada iteración los $3$ candidatos más altos.
+\item[b)] Combinar los dos primeros candidatos con más fitness (1 y 2), y los dos úlitmos (2 y 3). Si tienen el mismo fitness se combinarán entre ellos.
+\item[c)] Tomar recombinación ordenada por mitades de candidatos (mitad del primero más mitad del segundo).
+\item[d)] Repetir por 3 iteraciones.
+\end{enumerate}
+
+\bigskip
+
+
+\end{document}

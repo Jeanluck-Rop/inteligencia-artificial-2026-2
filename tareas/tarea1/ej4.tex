@@ -1,0 +1,107 @@
+Utilizmos la \textbf{Heurística Manhattan}:
+\[
+h(x,y) = |x - x_M| + |y - y_m|
+\]
+con $(x,y)$ un estado en $S$ y $(x_m,y_m)$ la meta.\\
+
+Calculamos la heurística para todos los estados:
+
+\begin{itemize}
+\item $h(1,2) = |1 - 4| + |2 - 4| = |-3| + |-2| = 3 + 2 = 5$ \; (\textit{Estado Inicial})
+\item $h(1,1) = |1 - 4| + |1 - 4| = |-3| + |-3| = 3 + 3 = 6$
+\item $h(1,3) = |1 - 4| + |3 - 4| = |-3| + |-1| = 3 + 1 = 4$
+\item $h(1,4) = |1 - 4| + |4 - 4| = |-3| + |0| = 3 + 0 = 3$
+\item $h(2,1) = |2 - 4| + |1 - 4| = |-2| + |-3| = 2 + 3 = 5$
+\item $h(2,3) = |2 - 4| + |3 - 4| = |-2| + |-1| = 2 + 1 = 3$
+\item $h(3,1) = |3 - 4| + |1 - 4| = |-1| + |-3| = 1 + 3 = 4$
+\item $h(3,3) = |3 - 4| + |3 - 4| = |-1| + |-1| = 1 + 1 = 2$
+\item $h(3,4) = |3 - 4| + |4 - 4| = |-1| + |0| = 1 + 0 = 1$
+\item $h(4,4) = |4 - 4| + |4 - 4| = 0 + 0 = 0$ \qquad \qquad \qquad \; (\textit{Meta})
+\end{itemize}
+
+\bigskip
+
+Continuamos utilizando el \textbf{Algoritmo de Primero Mejor Ambicioso (\textit{Greedy Best-First Search}):}
+\begin{enumerate}
+\item Definimos la cola de prioridad como la frontera e insertamos el estado inicial. Inicializamos un conjunto vacío para los estados \textit{explorados}.
+\item Mientras la frontera no esté vacía:
+  \begin{itemize}
+  \item Extraemos el estado $n$ de la frontera con el menor valor de $h_M(n)$.
+  \item Si $n \in F$ (es la meta), el algoritmo termina con éxito y retorna la ruta.
+  \item Si no es la meta, agregamos $n$ al conjunto de estados \textit{explorados}.
+  \item Expandimos $n$ obteniendo sus sucesores válidos utilizando la función de transición $T$.
+  \item Para cada sucesor: si no está en la frontera y no está en el conjunto de \textit{explorados}, lo insertamos en la cola de prioridad.
+  \end{itemize}
+\end{enumerate}
+
+\begin{enumerate}[label=Paso \arabic*:]
+\item
+
+  \begin{itemize}
+  \item Frontera: $[(1,2)_{h=5}]$.
+  \item Explorados: $\varnothing$
+  \end{itemize}
+  
+\item
+
+  \begin{itemize}
+  \item Extraemos $(1,2)$.
+  \item Sucesores válidos: $(1,1), (1,3)$.
+  \item Frontera: $[(1,3)_{h=4}, (1,1)_{h=6}]$.
+  \item Explorados: $\{(1,2)\}$.
+  \end{itemize}
+  
+\item
+
+  \begin{itemize}
+  \item Extraemos $(1,3)$.
+  \item Sucesores válidos: $(1,4), (2,3)$ (El estado $(1,2)$ se ignora por estar explorado).
+  \item Frontera: $[(1,4)_{h=3}, (2,3)_{h=3}, (1,1)_{h=6}]$.
+  \item Explorados = $\{(1,2), (1,3)\}$.
+  \end{itemize}
+  
+\item
+
+  \begin{itemize}
+  \item Extraemos $(1,4)$.
+  \item No hay sucesores nuevos válidos (solo regresaríamos a $(1,3)$).
+  \item Frontera: $[(2,3)_{h=3}, (1,1)_{h=6}]$.
+  \item Explorados: $\{(1,2), (1,3), (1,4)\}$.
+  \end{itemize}
+  
+\item
+
+  \begin{itemize}
+  \item Extraemos $(2,3)$.
+  \item Sucesor válido: $(3,3)$.
+  \item Frontera: $[(3,3)_{h=2}, (1,1)_{h=6}]$.
+  \item Explorados: $\{(1,2), (1,3), (1,4), (2,3)\}$.
+  \end{itemize}
+  
+\item
+
+  \begin{itemize}
+  \item Extraemos $(3,3)$.
+  \item Sucesor válido: $(3,4)$.
+  \item Frontera: $[(3,4)_{h=1}, (1,1)_{h=6}]$.
+  \item   Explorados: $\{(1,2), (1,3), (1,4), (2,3), (3,3)\}$.
+  \end{itemize}
+    
+\item
+
+  \begin{itemize}
+  \item Extraemos $(3,4)$.
+  \item Sucesor válido: $(4,4)$.
+  \item Frontera: $[(4,4)_{h=0}, (1,1)_{h=6}]$.
+  \item Explorados: $\{(1,2), (1,3), (1,4), (2,3), (3,3), (3,4)\}$.
+  \end{itemize}
+  
+\item Extraemos $(4,4)$, como esta es la meta, el algoritmo se detiene de manera exitosa.
+\end{enumerate}
+
+\bigskip
+
+Por lo tanto, la solución encontrada por el algoritmo \textbf{textit{Primero Mejor Ambicioso}} es:
+\[
+(1,2) \rightarrow (1,3) \rightarrow (2,3) \rightarrow (3,3) \rightarrow (3,4) \rightarrow (4,4)
+\]
