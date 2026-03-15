@@ -1,0 +1,38 @@
+El problema se define como:
+\begin{itemize}
+    \item $A=\{a, b\}$, el conjunto de acciones.
+    \item $S=\{s_0, s_1, s_2, s_3, s_4, s_5, s_6, s_7\}$, el conjunto de estados.
+    \item $s_0 \in S$, el estado inicial.
+    \item $F = \{s_7\}$, el conjunto de estados finales.
+    \item $T: S \times A \to S$, la función de transición tal que
+        \begin{itemize}
+            \item $T(s_0, a) = s_2$
+            \item $T(s_1, a) = s_0$
+            \item $T(s_2, a) = s_1$
+            \item $T(s_2, b) = s_4$
+            \item $T(s_3, a) = s_2$
+            \item $T(s_3, b) = s_1$
+            \item $T(s_4, a) = s_3$
+            \item $T(s_4, b) = s_5$
+            \item $T(s_5, a) = s_6$
+            \item $T(s_5, b) = s_7$
+            \item $T(s_6, a) = s_7$
+            \item $T(s_7, a) = s_5$
+        \end{itemize}
+
+    \item $c: S \times A \times S \to \mathbb{R}$, la función de costo tal que
+        \begin{itemize}
+            \item $c(s_0, a, s_2) = 2$
+            \item $c(s_1, a, s_0) = 6$
+            \item $c(s_2, a, s_1) = 4$
+            \item $c(s_2, b, s_4) = 2$
+            \item $c(s_3, a, s_2) = 1$
+            \item $c(s_3, b, s_1) = 6$
+            \item $c(s_4, a, s_3) = 3$
+            \item $c(s_4, b, s_5) = 7$
+            \item $c(s_5, a, s_6) = 1$
+            \item $c(s_5, b, s_7) = 9$
+            \item $c(s_6, a, s_7) = 5$
+            \item $c(s_7, a, s_5) = 8$
+        \end{itemize} 
+\end{itemize}
