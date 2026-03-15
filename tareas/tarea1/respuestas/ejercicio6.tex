@@ -1,0 +1,45 @@
+Considerando la observación mencionada en la asignación de classroom, tomaremos la gráfica del ejercicio $7$ y usaremos la siguiente heurística
+\begin{center}
+    \begin{tabular}{c|cccccccc}
+      & $s_0$ & $s_1$ & $s_2$ & $s_3$ & $s_4$ & $s_5$ & $s_6$ & $s_7$ \\
+      \hline
+      $h$ & $4$ & $15$ & $1$ & $0$ & $1$ & $0$ & $20$ & $0$ 
+    \end{tabular}
+  \end{center}
+
+Donde el estado final será $s_7$ con $h(s_7)=0$, entonces tenemos el siguiente árbol:
+\begin{center}
+    \includegraphics[height = 10cm]{respuestas/img/treeE6.png}
+\end{center}
+
+Se tiene la siguiente pila (cola de prioridad):
+\begin{center}
+    \begin{tabular}{|c||c|c|}
+        \hline
+        Agregado por & Estado & $f=g+h$\\
+        \hline
+        Inicial & $s_0$ & $4$\\
+        \hline
+        $s_0$ & $s_2$ & $3$\\
+        \hline
+        $s_2$ & $s_4$ & $6$\\
+        \hline
+        $s_4$ & $s_3$ & $10$\\
+        \hline
+        $s_4$ & $s_5$ & $11$\\
+        \hline
+        $s_5$ & $s_7$ & $20$\\
+        \hline
+        \hline
+        $s_2$ & $s_1$ & $21$\\
+        \hline        
+        $s_5$ & $s_6$ & $32$\\
+        \hline
+    \end{tabular}
+\end{center}
+
+Cabe mencionar que se ignoraron los últimos dos ya que se llegó al estado final antes de expandirlos, similarmente con $s_3$ donde sus nodos a expandir ya fueron agregados (ya estan cerrados).\\
+
+Por lo que el camino solución es $a,b,b,b$, donde se tiene los estados $s_0,s_2,s_4,s_5,s_7$.
+
+Como observación, la heurística no es admisible ya que existe un camino de menor costo si de $s_5$ pasamos a $s_6$ y finalmente a $s_7$, sin embargo la  heurística de $s_6$ es muy alta.

@@ -3,6 +3,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[english]{babel}
+\usepackage{amsmath, amssymb}
 \usepackage{listings, float, enumitem}
 \usepackage{graphicx, geometry, xcolor}
 \usepackage[normalem]{ulem}
@@ -31,7 +32,7 @@
   
 \item Utilizar el algoritmo de Dijkstra para encontrar una solución al ejercicio 1. Dibujar el árbol de búsqueda y la pila. ¿Cuál es el costo del camino que resulta?
   
-\item Utilizar la siguiente heurística para aplicar al ejercicio anterior el algoritmo de A$^*$ (dibujar árbol y pila):
+\item Utilizar la siguiente heurística para aplicar al ejercicio anterior el algoritmo de A$^*$ (dibujar árbol y pila): % Ejercicio 6
   \begin{center}
     \begin{tabular}{c|ccccccccc}
       & $s_0$ & $s_1$ & $s_2$ & $s_3$ & $s_4$ & $s_5$ & $s_6$ & $s_7$ & $s_8$ \\
@@ -39,7 +40,8 @@
       $h$ & $4$ & $15$ & $1$ & $0$ & $1$ & $0$ & $20$ & $35$ & $\infty$
     \end{tabular}
   \end{center}
-  ¿Cuál es el costo del camino y cuál es la heurística final de éste?
+  ¿Cuál es el costo del camino y cuál es la heurística final de éste?\\
+  \textbf{R: } \input{respuestas/ejercicio6.tex}
   
 \item Considerar la siguiente gráfica de un problema de búsqueda ($s_0$ es inicial y $s_7$ final):
   \begin{center}
@@ -63,7 +65,7 @@
   
 \item Utilizar el algoritmo de Beam Search con $k=2$ para encontrar una solución al problema del ejercicio 7. ¿Cuáles son los caminos generados?
 
-\item Demostrar que si $h(s_1),\, s \in S$, es una heurística admisible para el algoritmo de A$^*$, entonces el algoritmo de A$^*$ encontrará una solución óptima.
+\item Demostrar que si $h(s_t),\, s_t \in S$, es una heurística admisible para el algoritmo de A$^*$, entonces el algoritmo de A$^*$ encontrará una solución óptima.
   
 \item Demostrar que el algoritmo de $A^*$ es completo siempre que exista una solución en el problema.
 
