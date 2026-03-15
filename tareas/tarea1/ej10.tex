@@ -1,0 +1,72 @@
+Recordemos que $A^*$ es un algoritmo de búsqueda informada definido por
+\[
+f(n)=g(n)+h(n),
+\]
+donde $g(n)$ es el costo acumulado hasta $n$ y $h(n)$ es la heurística asociada.
+
+Por otro lado, un algoritmo de búsqueda es completo si encuentra una solución siempre que esta exista.\\
+
+\boxed{\textbf{Dem.}}
+
+Supongamos que existe al menos un nodo meta alcanzable desde el estado inicial, que el índice de ramificación del árbol de búsqueda es finito ($b<\infty$) y que todos los costos de acción son positivos.
+
+Sea $C^*$ el costo de una solución óptima.
+
+Sabemos que $A^*$ siempre elige para expandir el nodo $n$ de la frontera con menor valor de
+\[
+f(n)=g(n)+h(n).
+\]
+
+Entonces, cualquier nodo que cumpla
+\[
+f(n)<C^*
+\]
+va a ser expandido antes que cualquier nodo con valor
+\[
+f(n)\geq C^*,
+\]
+simplemente porque $A^*$ siempre prioriza el menor $f$ disponible en la frontera.\\
+
+Ahora bien, como el índice de ramificación es finito y los costos son positivos, al bajar en el árbol el costo acumulado $g(n)$ va creciendo. Eso implica que no puede haber infinitos nodos con costo estimado estrictamente menor que $C^*$; en otras palabras, no pueden existir infinitos nodos tales que
+\[
+f(n)<C^*.
+\]
+
+Por lo tanto, el conjunto de nodos que satisfacen
+\[
+f(n)<C^*
+\]
+es finito.\\
+
+Como $A^*$ expande nodos de menor a mayor $f(n)$, primero va a sacar de la frontera todos los nodos que cumplan
+\[
+f(n)<C^*.
+\]
+
+Y como ya vimos que esos nodos son finitos, ese proceso termina.
+
+Entonces, después de expandirlos a todos, solo pueden quedar en la frontera nodos con
+\[
+f(n)\geq C^*.
+\]
+
+Como existe una solución óptima de costo $C^*$, en algún momento el nodo meta óptimo será generado y quedará en la frontera.
+
+Además, como $A^*$ siempre expande el nodo con menor valor de $f(n)$, ese nodo meta solo puede ser pospuesto por nodos con
+\[
+f(n)<C^*.
+\]
+
+Pero ya vimos que la cantidad de nodos con
+\[
+f(n)<C^*
+\]
+es finita.
+
+Por lo tanto, después de expandir todos esos nodos, $A^*$ terminará seleccionando el nodo meta.
+
+Así, si existe una solución, $A^*$ eventualmente encuentra una meta.
+
+\[
+\therefore\ A^* \text{ es completo.}
+\]
