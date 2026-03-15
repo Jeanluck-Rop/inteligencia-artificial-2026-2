@@ -1,0 +1,336 @@
+Utilizamos la función de costo acumulado $g(n)$ y la \textbf{cola de prioridad}, la frontera, ordenada de menor a mayor.
+\begin{enumerate}[label=Paso \arabic*:]
+\item
+
+  \begin{itemize}
+  \item Inicialización, no extraemos nada.
+  \item Cola de prioridad:
+    \[
+    \texttt{[ ((1,2), g = 0)]}
+    \]
+  \end{itemize}
+
+  \begin{figure}[h]
+    \centering
+    \begin{forest}
+      for tree={ math content, edge={-}, s sep=25pt, l sep=20pt, align=center }
+      [${(1,2)}_{g=0}$]
+    \end{forest}
+  \end{figure}
+  
+\item
+
+  \begin{itemize}
+  \item Extraemos:
+    \[
+    \texttt{(1,2)} \text{ con } g = 0
+    \]
+  \item Sucesores válidos: \texttt{(1,1)}, \texttt{(1,3)}, ambos con costo $g = 0 + 1 = 1$.
+  \item Cola de prioridad:
+    \[
+    \texttt{[((1,1), g = 1), ((1,3), g = 1)]}
+    \]
+  \end{itemize}
+
+  \begin{figure}[h]
+    \centering
+    \begin{forest}
+      for tree={ math content, edge={-}, s sep=25pt, l sep=20pt, align=center }
+      [${(1,2)}_{g=0}$
+        [${(1,1)}_{g=1}$, edge label={node[midway,left]{$\leftarrow$}}]
+        [${(1,3)}_{g=1}$, edge label={node[midway,right]{$\rightarrow$}}]
+      ]
+    \end{forest}
+  \end{figure}
+\item
+
+  \begin{itemize}
+  \item Extraemos:
+    \[
+    \texttt{(1,1)} \text{ con } g = 1
+    \]
+  \item Sucesores válidos de \texttt{(1,1)}: \texttt{(2,1)} con costo $g = 1 + 1 = 2$.
+  \item Cola de prioridad:
+    \[
+    \texttt{[((1,3), g = 1), ((2,1), g = 2)]}
+    \]
+  \end{itemize}
+
+  \begin{figure}[h]
+    \centering
+    \begin{forest}
+      for tree={ math content, edge={-}, s sep=25pt, l sep=20pt, align=center }
+      [${(1,2)}_{g=0}$
+        [${(1,1)}_{g=1}$, edge label={node[midway,left]{$\leftarrow$}}
+          [${(2,1)}_{g=2}$, edge label={node[midway,left]{$\downarrow$}}]
+        ]
+        [${(1,3)}_{g=1}$, edge label={node[midway,right]{$\rightarrow$}}]
+      ]
+    \end{forest}
+  \end{figure}
+  
+\item
+  
+  \begin{itemize}
+  \item Extraemos:
+    \[
+    \texttt{(1,3)} \text{ con } g = 1
+    \]
+  \item Sucesores válidos de \texttt{(1,3)}: \texttt{(1,4)} y \texttt{(2,3)}, ambos con costo $g = 1 + 1 = 2$.
+  \item Cola de prioridad:
+    \[
+    \texttt{[((2,1), g = 2), ((1,4), g = 2), ((2,1), g = 2), ((2,3), g = 2)]}
+    \]
+  \end{itemize}
+
+  \begin{figure}[h]
+    \centering
+    \begin{forest}
+      for tree={ math content, edge={-}, s sep=25pt, l sep=20pt, align=center }
+      [${(1,2)}_{g=0}$
+        [${(1,1)}_{g=1}$, edge label={node[midway,left]{$\leftarrow$}}
+          [${(2,1)}_{g=2}$, edge label={node[midway,left]{$\downarrow$}}]
+        ]
+        [${(1,3)}_{g=1}$, edge label={node[midway,right]{$\rightarrow$}}
+          [${(2,3)}_{g=2}$, edge label={node[midway,left]{$\downarrow$}}]
+          [${(1,4)}_{g=2}$, edge label={node[midway,right]{$\rightarrow$}}]
+        ]
+      ]
+    \end{forest}
+  \end{figure}
+  
+\item
+
+  \begin{itemize}
+  \item Extraemos:
+    \[
+    \texttt{(2,1)} \text{ con } g = 2
+    \]
+  \item Sucesores válidos de \texttt{(2,1)}: \texttt{(3,1)} con costo $g = 2 + 1 = 3$.
+  \item Cola de prioridad:
+    \[
+    \texttt{[((1,4), g = 2), ((2,3), g = 2), ((3,1), g = 3)]}
+    \]
+  \end{itemize}
+
+  \begin{figure}[h]
+    \centering
+    \begin{forest}
+      for tree={ math content, edge={-}, s sep=25pt, l sep=20pt, align=center }
+      [${(1,2)}_{g=0}$
+        [${(1,1)}_{g=1}$, edge label={node[midway,left]{$\leftarrow$}}
+          [${(2,1)}_{g=2}$, edge label={node[midway,left]{$\downarrow$}}
+            [${(3,1)}_{g=3}$, edge label={node[midway,left]{$\downarrow$}}]
+          ]
+        ]
+        [${(1,3)}_{g=1}$, edge label={node[midway,right]{$\rightarrow$}}
+          [${(2,3)}_{g=2}$, edge label={node[midway,left]{$\downarrow$}}]
+          [${(1,4)}_{g=2}$, edge label={node[midway,right]{$\rightarrow$}}]
+        ]
+      ]
+    \end{forest}
+  \end{figure}
+  
+\item
+
+  \begin{itemize}
+  \item Extraemos:
+    \[
+    \texttt{(1,4)} \text{ con } g = 2
+    \]
+  \item Ningún sucesor válido de \texttt{(1,4)} (\texttt{(1,3)} ya esá explorado), no hay salida.
+  \item Cola de prioridad:
+    \[
+    \texttt{[((2,3), g = 2), ((3,1), g = 3)]}
+    \]
+  \end{itemize}
+
+  \begin{figure}[h]
+    \centering
+    \begin{forest}
+      for tree={ math content, edge={-}, s sep=25pt, l sep=20pt, align=center }
+      [${(1,2)}_{g=0}$
+        [${(1,1)}_{g=1}$, edge label={node[midway,left]{$\leftarrow$}}
+          [${(2,1)}_{g=2}$, edge label={node[midway,left]{$\downarrow$}}
+            [${(3,1)}_{g=3}$, edge label={node[midway,left]{$\downarrow$}}]
+          ]
+        ]
+        [${(1,3)}_{g=1}$, edge label={node[midway,right]{$\rightarrow$}}
+          [${(2,3)}_{g=2}$, edge label={node[midway,left]{$\downarrow$}}]
+          [${(1,4)}_{g=2}$, edge label={node[midway,right]{$\rightarrow$}}, label={[yshift=-2pt]below:{\Large \color{red}$\times$}}]
+        ]
+      ]
+    \end{forest}
+  \end{figure}
+  
+\item
+  
+  \begin{itemize}
+  \item Extraemos:
+    \[
+    \texttt{(2,3)} \text{ con } g = 2
+    \]
+  \item Sucesores válidos de \texttt{(2,3)}: \texttt{(3,3)} con costo $g = 2 + 1 = 3$.
+  \item Cola de prioridad:
+    \[
+    \texttt{[((3,1), g = 3), ((3,3), g = 3)]}
+    \]
+  \end{itemize}
+
+  \begin{figure}[h]
+    \centering
+    \begin{forest}
+      for tree={ math content, edge={-}, s sep=25pt, l sep=20pt, align=center }
+      [${(1,2)}_{g=0}$
+        [${(1,1)}_{g=1}$, edge label={node[midway,left]{$\leftarrow$}}
+          [${(2,1)}_{g=2}$, edge label={node[midway,left]{$\downarrow$}}
+            [${(3,1)}_{g=3}$, edge label={node[midway,left]{$\downarrow$}}]
+          ]
+        ]
+        [${(1,3)}_{g=1}$, edge label={node[midway,right]{$\rightarrow$}}
+          [${(2,3)}_{g=2}$, edge label={node[midway,left]{$\downarrow$}}
+            [${(3,3)}_{g=3}$, edge label={node[midway,left]{$\downarrow$}}]
+          ]
+          [${(1,4)}_{g=2}$, edge label={node[midway,right]{$\rightarrow$}}, label={[yshift=-2pt]below:{\Large \color{red}$\times$}}]
+        ]
+      ]
+    \end{forest}
+  \end{figure}
+  
+\item
+  
+  \begin{itemize}
+  \item Extraemos:
+    \[
+    \texttt{(3,1)} \text{ con } g = 3
+    \]
+  \item Ningún sucesor válido de \texttt{(3,1)} (\texttt{(2,1)} ya esá explorado), no hay salida.
+  \item Cola de prioridad:
+    \[
+    \texttt{[((3,3), g = 3)]}
+    \]
+  \end{itemize}
+
+  \begin{figure}[h]
+    \centering
+    \begin{forest}
+      for tree={ math content, edge={-}, s sep=25pt, l sep=20pt, align=center }
+      [${(1,2)}_{g=0}$
+        [${(1,1)}_{g=1}$, edge label={node[midway,left]{$\leftarrow$}}
+          [${(2,1)}_{g=2}$, edge label={node[midway,left]{$\downarrow$}}
+            [${(3,1)}_{g=3}$, edge label={node[midway,left]{$\downarrow$}}, label={[yshift=-2pt]below:{\Large \color{red}$\times$}}]
+          ]
+        ]
+        [${(1,3)}_{g=1}$, edge label={node[midway,right]{$\rightarrow$}}
+          [${(2,3)}_{g=2}$, edge label={node[midway,left]{$\downarrow$}}
+            [${(3,3)}_{g=3}$, edge label={node[midway,left]{$\downarrow$}}]
+          ]
+          [${(1,4)}_{g=2}$, edge label={node[midway,right]{$\rightarrow$}}, label={[yshift=-2pt]below:{\Large \color{red}$\times$}}]
+        ]
+      ]
+    \end{forest}
+  \end{figure}
+
+  \newpage
+\item
+  
+  \begin{itemize}
+  \item Extraemos:
+    \[
+    \texttt{(3,3)} \text{ con } g = 3
+    \]
+  \item Sucesores válidos de \texttt{(3,3)}: \texttt{(3,4)} con costo $g = 3 + 1 = 4$.
+  \item Cola de prioridad:
+    \[
+    \texttt{[((3,4), g = 4)]}
+    \]
+  \end{itemize}
+
+  \begin{figure}[h]
+    \centering
+    \begin{forest}
+      for tree={ math content, edge={-}, s sep=25pt, l sep=20pt, align=center }
+      [${(1,2)}_{g=0}$
+        [${(1,1)}_{g=1}$, edge label={node[midway,left]{$\leftarrow$}}
+          [${(2,1)}_{g=2}$, edge label={node[midway,left]{$\downarrow$}}
+            [${(3,1)}_{g=3}$, edge label={node[midway,left]{$\downarrow$}}, label={[yshift=-2pt]below:{\Large \color{red}$\times$}}]
+          ]
+        ]
+        [${(1,3)}_{g=1}$, edge label={node[midway,right]{$\rightarrow$}}
+          [${(2,3)}_{g=2}$, edge label={node[midway,left]{$\downarrow$}}
+            [${(3,3)}_{g=3}$, edge label={node[midway,left]{$\downarrow$}}
+              [${(3,4)}_{g=4}$, edge label={node[midway,left]{$\rightarrow$}}]
+            ]
+          ]
+          [${(1,4)}_{g=2}$, edge label={node[midway,right]{$\rightarrow$}}, label={[yshift=-2pt]below:{\Large \color{red}$\times$}}]
+        ]
+      ]
+    \end{forest}
+  \end{figure}
+  
+\item
+  
+  \begin{itemize}
+  \item Extraemos:
+    \[
+    \texttt{(3,4)} \text{ con } g = 3
+    \]
+  \item Sucesores válidos de \texttt{(3,4)}: \texttt{(4,4)} con costo $g = 4 + 1 = 5$.
+  \item Cola de prioridad:
+    \[
+    \texttt{[((4,4), g = 5)]}
+    \]
+  \end{itemize}
+
+  \newpage
+  
+  \begin{figure}[h]
+    \centering
+    \begin{forest}
+      for tree={ math content, edge={-}, s sep=25pt, l sep=20pt, align=center }
+      [${(1,2)}_{g=0}$
+        [${(1,1)}_{g=1}$, edge label={node[midway,left]{$\leftarrow$}}
+          [${(2,1)}_{g=2}$, edge label={node[midway,left]{$\downarrow$}}
+            [${(3,1)}_{g=3}$, edge label={node[midway,left]{$\downarrow$}}, label={[yshift=-2pt]below:{\Large \color{red}$\times$}}]
+          ]
+        ]
+        [${(1,3)}_{g=1}$, edge label={node[midway,right]{$\rightarrow$}}
+          [${(2,3)}_{g=2}$, edge label={node[midway,left]{$\downarrow$}}
+            [${(3,3)}_{g=3}$, edge label={node[midway,left]{$\downarrow$}}
+              [${(3,4)}_{g=4}$, edge label={node[midway,left]{$\rightarrow$}}
+                [${(4,4)}_{g=5}$, edge label={node[midway,left]{$\downarrow$}}]
+              ]
+            ]
+          ]
+          [${(1,4)}_{g=2}$, edge label={node[midway,right]{$\rightarrow$}}, label={[yshift=-2pt]below:{\Large \color{red}$\times$}}]
+        ]
+      ]
+    \end{forest}
+  \end{figure}
+
+\item Extraemos: \texttt{(4,4)} con $g = 5$, que es la meta, por lo que terminamos exitosamente.
+  
+  \begin{figure}[h]
+    \centering
+    \begin{forest}
+      for tree={ math content, edge={-}, s sep=25pt, l sep=15pt, align=center }
+      [${(1,2)}_{g=0}$
+        [${(1,1)}_{g=1}$, edge label={node[midway,left]{$\leftarrow$}}
+          [${(2,1)}_{g=2}$, edge label={node[midway,left]{$\downarrow$}}
+            [${(3,1)}_{g=3}$, edge label={node[midway,left]{$\downarrow$}}, label={[yshift=-2pt]below:{\Large \color{red}$\times$}}]
+          ]
+        ]
+        [${(1,3)}_{g=1}$, edge label={node[midway,right]{$\rightarrow$}}
+          [${(2,3)}_{g=2}$, edge label={node[midway,left]{$\downarrow$}}
+            [${(3,3)}_{g=3}$, edge label={node[midway,left]{$\downarrow$}}
+              [${(3,4)}_{g=4}$, edge label={node[midway,left]{$\rightarrow$}}
+                [${(4,4)}_{g=5}$, edge label={node[midway,left]{$\downarrow$}}, label={[yshift=-2pt]below:{\Large \color{green}$\checkmark$}}]
+              ]
+            ]
+          ]
+          [${(1,4)}_{g=2}$, edge label={node[midway,right]{$\rightarrow$}}, label={[yshift=-2pt]below:{\Large \color{red}$\times$}}]
+        ]
+      ]
+    \end{forest}
+  \end{figure}
+\end{enumerate}
