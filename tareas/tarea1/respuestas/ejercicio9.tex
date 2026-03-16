@@ -1,0 +1,34 @@
+Recordemos que $A^*$ esta dado por
+\[f(n)=g(n)+h(n)\]
+Y además una heurística admisible es aquella la cual se cumple que:
+\[h(n) \leq h^*(n)\]
+Es decir, si el costo estimado es menor o igual al costo real mínimo.\\
+\textbf{Demostración}\\
+Sea $h$ una heurística admisible.  Probaremos por contradicción, suponiendo que $A^*$ no encontrará una solución óptima, entonces tenemos un camino subóptimo $C'$ que llega a la meta $s_f$ (por lo que $h(s_f)=0$) donde $g(s_f) > g(C^*)$ siendo $C^*$ un camino óptimo, entonces tenemos que
+
+\[ f(s_f)= g(s_f) + h(s_f) = g(s_f) \]
+
+Por lo que tenemos $f(s_f) > g (C^*)$, veamos que $A^*$ no completó a $C^*$ por lo que existe un estado $s$ que pertenece a dicho camino el cual fue abierto pero no expandido, con lo que se tiene que al ser parte del camino óptimo sabemos que
+
+\[ g(s)+h^*(s) = g(C^*) \]
+Donde $h^*(s)$ es el costo real mínimo desde $s$ hasta $s_f$.
+
+Veamos entonces que al sumar $g(s)$ a la desigualdad dada por la admisibilidad tenemos que
+\begin{align*}
+    h(s) & \leq h^*(s)\\
+    g(s) + h(s) & \leq g(s) + h^*(s)\\
+    f(s) & \leq g(C^*)
+\end{align*}
+
+Entonces notemos que 
+\begin{align*}
+    g(C^*) & < f(s_f)\\
+    f(s) & \leq g(C^*) 
+\end{align*}
+
+Y por tanto
+\[f(s) \leq g(C^*) < f(s_f)\]
+\[f(s) < f(s_f) \]
+Esto implica que $A^*$ debió expandir a $s$ por lo que ocurre una contradicción.\\
+$\therefore$ Si $h(s_t),\, s_t \in S$, es una heurística admisible para el algoritmo de $A^*$, entonces el algoritmo de $A^*$ encontrará una solución óptima. \textbf{QED}. 
+ 
