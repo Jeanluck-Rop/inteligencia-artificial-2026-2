@@ -1,0 +1,160 @@
+\textit{Función de fitness (OneMax):} $f(x)=\sum_{i=1}^{6} x_i$
+
+\textit{Población inicial}
+
+\begin{center}
+\begin{tabular}{c|c}
+Individuo & Fitness \\
+\hline
+000000 & 0 \\
+111010 & 4 \\
+010100 & 2 \\
+000001 & 1 \\
+\end{tabular}
+\end{center}
+
+Se toman los 3 mejores:
+
+\[
+\{111010(4),\;010100(2),\;000001(1)\}
+\]
+
+
+\bigskip
+\textbf{Iteración 1}
+
+- La recombinación usa mitad del primero + mitad del segundo (3 bits y 3 bits).
+
+\[
+(1,2):\;111010 + 010100
+\]
+
+\[
+111|100 = 111100
+\]
+
+\[
+(2,3):\;010100 + 000001
+\]
+
+\[
+010|001 = 010001
+\]
+
+Nueva población:
+
+\begin{center}
+\begin{tabular}{c|c}
+Individuo & Fitness \\
+\hline
+111100 & 4 \\
+010001 & 2 \\
+111010 & 4 \\
+010100 & 2 \\
+000001 & 1 \\
+000000 & 0 \\
+\end{tabular}
+\end{center}
+
+Mejores 3:
+
+\[
+\{111100(4),\;111010(4),\;010100(2)\}
+\]
+
+\bigskip
+\textbf{Iteración 2}
+
+\[
+(1,2):\;111100 + 111010
+\]
+
+\[
+111|010 = 111010
+\]
+
+\[
+(2,3):\;111010 + 010100
+\]
+
+\[
+111|100 = 111100
+\]
+
+Nueva población:
+
+\begin{center}
+\begin{tabular}{c|c}
+Individuo & Fitness \\
+\hline
+111010 & 4 \\
+111100 & 4 \\
+111100 & 4 \\
+111010 & 4 \\
+010100 & 2 \\
+010001 & 2 \\
+000001 & 1 \\
+000000 & 0 \\
+\end{tabular}
+\end{center}
+
+Mejores 3:
+
+\[
+\{111100(4),\;111010(4),\;111100(4)\}
+\]
+
+\bigskip
+\textbf{Iteración 3}
+
+\[
+(1,2):\;111100 + 111010
+\]
+
+\[
+111|010 = 111010
+\]
+
+\[
+(2,3):\;111010 + 111100
+\]
+
+\[
+111|100 = 111100
+\]
+
+Nueva población:
+
+\begin{center}
+\begin{tabular}{c|c}
+Individuo & Fitness \\
+\hline
+111010 & 4 \\
+111100 & 4 \\
+111100 & 4 \\
+111010 & 4 \\
+111100 & 4 \\
+111010 & 4 \\
+010100 & 2 \\
+010001 & 2 \\
+000001 & 1 \\
+000000 & 0 \\
+\end{tabular}
+\end{center}
+
+\bigskip
+En la población final existen varios individuos que alcanzan el valor máximo de fitness observado. 
+Por lo tanto, cualquier elemento de $\arg\max f(x)$ dentro de la población constituye una solución válida. 
+En este caso, el mayor valor alcanzado es $f(x)=4$.
+
+Sin pérdida de generalidad, podemos seleccionar uno de estos individuos como candidato final.
+
+\textbf{Candidato final}
+
+\[
+\boxed{111100}
+\]
+
+\[
+f(111100)=4
+\]
