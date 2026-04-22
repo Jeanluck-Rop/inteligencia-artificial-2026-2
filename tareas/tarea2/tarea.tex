@@ -1,0 +1,397 @@
+\documentclass[12pt,letterpaper]{article}
+
+\setlength{\parindent}{0pt}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{array, xcolor}
+\usepackage{graphicx, geometry, tikz}
+\usepackage{forest, tocloft}
+\usepackage{booktabs, listings, float, enumitem}
+\usetikzlibrary{arrows.meta, positioning, automata}
+\usepackage[normalem]{ulem}
+
+\geometry{margin=2cm, top=2cm, bottom=2cm}
+
+\begin{document}
+
+\input{portada}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\tableofcontents
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Ejercicio 1.}
+Demostrar el Teorema de Bayes, es decir, mostrar que para cualquiera dos variables $X, Y$
+con eventos $X = x$, $Y = y$, entonces:
+ 
+\[
+p(Y = y \mid X = x) = \frac{p(X = x \mid Y = y)\,p(Y = y)}{\displaystyle\sum_{y_i \in Y} p(X = x \mid Y = y_i)\,p(Y = y_i)}
+\]     
+     
+\bigskip
+
+\input{ejercicios/ej1.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Ejercicio 2.}
+ partir de la siguiente red bayesiana:
+ 
+\bigskip
+% ── Tablas de probabilidades condicionales ──
+\begin{center}
+ 
+% P(X1)
+\begin{minipage}{3cm}
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+$X_1$ & T & F \\
+\hline
+T & 0.4 & 0.6 \\
+F & 0.2 & 0.8 \\
+\hline
+\end{tabular}
+\end{minipage}
+\hspace{2cm}
+% P(X4)
+\begin{minipage}{3cm}
+\centering
+\begin{tabular}{|c|c|}
+\hline
+T & F \\
+\hline
+0.5 & 0.5 \\
+\hline
+\end{tabular}
+\end{minipage}
+ 
+\bigskip
+ 
+% P(X3 | X1, X2)  — nodo central izquierda
+\begin{minipage}{4.5cm}
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+$X_2$ & $X_4$ & T & F \\
+\hline
+T & T & 0   & 1   \\
+T & F & 1   & 0   \\
+F & T & 0.5 & 0.5 \\
+F & F & 0   & 1   \\
+\hline
+\end{tabular}
+\end{minipage}
+\hspace{1.5cm}
+% P(X4 | X1, X2)  — nodo derecho
+\begin{minipage}{5cm}
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+$X_1$ & $X_2$ & T & F \\
+\hline
+T & T & 0.5 & 0.5 \\
+T & F & 0.2 & 0.8 \\
+F & T & 1   & 0   \\
+F & F & 0.4 & 0.6 \\
+\hline
+\end{tabular}
+\end{minipage}
+ 
+\end{center}
+ 
+\bigskip
+% ── Diagrama de la red ──
+\begin{center}
+\begin{tikzpicture}[
+    node distance = 2.2cm,
+    every node/.style = {circle, draw, minimum size=1cm, font=\small},
+    ->, >=Stealth, thick
+  ]
+  \node (X1) {$X_1$};
+  \node (X2) [right=3cm of X1]        {$X_2$};
+  \node (X4) [right=3cm of X2]        {$X_4$};
+  \node (X3) [below=2.2cm of X2]      {$X_3$};
+ 
+  \draw (X1) -- (X2);
+  \draw (X2) -- (X4);
+  \draw (X2) -- (X3);
+  \draw (X4) -- (X3);
+  \draw (X1) -- (X3);
+\end{tikzpicture}
+\end{center}
+ 
+\bigskip
+Calcular la probabilidad de las siguientes consultas:
+\begin{itemize}
+  \item $X_1 = T,\; X_2 = T,\; X_3 = F,\; X_4 = T$
+  \item $X_1 = F,\; X_2 = T,\; X_3 = F,\; X_4 = T$
+  \item $X_2 = F,\; X_3 = T,\; X_4 = T$
+  \item $X_1 = T,\; X_2 = T,\; X_4 = F$
+\end{itemize}
+
+\bigskip
+
+\input{ejercicios/ej2.tex}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Ejercicio 3.}
+A partir de la red Bayesiana anterior, utilizar el algoritmo de \textbf{Muestreo por rechazo}
+para obtener la inferencia sobre $X_2$ dada la evidencia:
+\[
+  X_1 = T,\quad X_3 = F,\quad X_4 = T
+\]
+Utilizando $N = 5$ (iteraciones) y en cada iteración tomando los siguientes casos en el muestreo
+aleatorio para el prior:
+ 
+\begin{enumerate}
+  \item[\textit{a)}] $X_1 = T,\; X_2 = F,\; X_3 = F,\; X_4 = T$
+  \item[\textit{b)}] $X_1 = T,\; X_2 = T,\; X_3 = F,\; X_4 = T$
+  \item[\textit{c)}] $X_1 = T,\; X_2 = F,\; X_3 = F,\; X_4 = T$
+  \item[\textit{d)}] $X_1 = T,\; X_2 = F,\; X_3 = F,\; X_4 = T$
+  \item[\textit{e)}] $X_1 = F,\; X_2 = F,\; X_3 = F,\; X_4 = T$
+\end{enumerate}
+
+\bigskip
+
+\input{ejercicios/ej3.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Ejercicio 4.}
+Utilizar el algoritmo de \textbf{Bayes Naïve} (frecuentista) a partir de los siguientes datos:
+ 
+\begin{itemize}
+  \item \textbf{Llueve:} \{nublado, temperatura baja\}
+  \item \textbf{Llueve:} \{nublado, temperatura alta, humedad\}
+  \item \textbf{Soleado:} \{despejado, temperatura alta\}
+\end{itemize}
+ 
+Determinar la clase (soleado o llueve) a partir de las observaciones \{despejado, temperatura alta\},
+y con cuánta probabilidad pertenece a esta clase.
+
+\bigskip
+
+\input{ejercicios/ej4.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Ejercicio 5.}
+Obtener el modelo de Bayes Naïve bayesiano a partir de los siguientes datos ($y$ es la clase
+de cada ejemplo):
+ 
+\bigskip
+\begin{center}
+\begin{tabular}{ccccc}
+\toprule
+Ejemplo & $x_1$ & $x_2$ & $x_3$ & $y$ \\
+\midrule
+0 & 0.5  & 0.6  & 0     & 0 \\
+1 & 0.3  & 0.6  & 0.01  & 0 \\
+2 & 0.2  & 0.5  & 0     & 0 \\
+3 & 0.4  & 0.6  & 0.1   & 0 \\
+4 & 0.6  & 0.8  & 0.7   & 1 \\
+5 & 0.9  & 0.7  & 1     & 1 \\
+6 & 0.8  & 0.65 & 0.9   & 1 \\
+7 & 0.95 & 0.9  & 1     & 1 \\
+8 & 0.5  & 0.6  & 0.5   & 1 \\
+\bottomrule
+\end{tabular}
+\end{center}
+ 
+\bigskip
+Obtener el modelo y calcular los valores para los siguientes ejemplos de evaluación:
+ 
+\bigskip
+\begin{center}
+\begin{tabular}{ccccc}
+\toprule
+Ejemplo evaluación & $x_1$ & $x_2$ & $x_3$ & $y$ \\
+\midrule
+0 & 0.3  & 0.7 & 0.02 & 0 \\
+1 & 0.8  & 0.5 & 0    & 0 \\
+2 & 0.8  & 0.5 & 1    & 1 \\
+3 & 1    & 0.9 & 0.1  & 1 \\
+4 & 0.35 & 0.7 & 0    & 0 \\
+\bottomrule
+\end{tabular}
+\end{center}
+ 
+\bigskip
+Estimar las probabilidades de clase de cada uno de los ejemplos de evaluación y, con base en esto,
+asignarle una clase a cada uno. Calcular precisión, exhaustividad, $F_1$, accuracy, macro average
+y weighted average.
+
+\bigskip
+
+\input{ejercicios/ej5.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Ejercicio 6.}
+Considerar la siguiente gráfica de un modelo oculto de Markov:
+ 
+\bigskip
+\begin{center}
+\begin{tikzpicture}[
+    node distance = 3cm,
+    every state/.style = {circle, draw, minimum size=1.2cm, font=\small},
+    initial text = {},
+    ->, >=Stealth, thick
+  ]
+ 
+  \node[state]           (Start)  {Start};
+  \node[state, below left=2cm and 1.5cm of Start]  (Healthy) {Healthy};
+  \node[state, below right=2cm and 1.5cm of Start] (Fever)   {Fever};
+  \node[state, below left=2.5cm and 0cm of Healthy]  (Dizzy)  {Dizzy};
+  \node[state, below=2.5cm of Fever]                 (Normal) {Normal};
+  \node[state, below right=2.5cm and 0cm of Healthy] (Cold)   {Cold};
+ 
+  % From Start
+  \draw (Start) -- node[left]  {0.6} (Healthy);
+  \draw (Start) -- node[right] {0.4} (Fever);
+ 
+  % Healthy self-loop and to Fever
+  \draw (Healthy) edge[loop left] node {0.7} (Healthy);
+  \draw (Healthy) -- node[above] {0.3} (Fever);
+ 
+  % Fever to Healthy and self-loop
+  \draw (Fever) edge[loop right] node {0.6} (Fever);
+  \draw (Fever) -- node[above] {0.4} (Healthy);
+ 
+  % Emissions from Healthy
+  \draw (Healthy) -- node[left]  {0.1} (Dizzy);
+  \draw (Healthy) -- node[right] {0.4} (Cold);
+  \draw (Healthy) -- node[below left] {0.6} (Normal);  % placeholder
+ 
+  % Emissions from Fever
+  \draw (Fever) -- node[right] {0.5} (Dizzy);
+  \draw (Fever) -- node[left]  {0.3} (Cold);
+  \draw (Fever) -- node[below right] {0.1} (Normal);
+\end{tikzpicture}
+\end{center}
+ 
+\bigskip
+Sean las \textbf{observaciones}: Dizzy, Cold y Normal, y las \textbf{emisiones}: Healthy y Fever.
+Construir el Modelo Oculto de Markov de esta gráfica.
+ 
+
+\bigskip
+
+\input{ejercicios/ej6.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Ejercicio 7.}
+A partir del \textbf{algoritmo de Viterbi}, obtener la cadena de emisiones más probable para
+la cadena de observaciones:
+\[
+  \text{Normal} \quad \text{Dizzy} \quad \text{Cold}
+\]
+
+\bigskip
+
+\input{ejercicios/ej7.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Ejercicio 8.}
+A partir de los siguientes datos:
+ 
+\bigskip
+\begin{center}
+\begin{tabular}{cc}
+\toprule
+$\mathbf{x}$ & $\mathbf{y}$ \\
+\midrule
+0101 & aabb \\
+1010 & bbaa \\
+0011 & aabb \\
+1100 & bbaa \\
+\bottomrule
+\end{tabular}
+\end{center}
+ 
+\begin{enumerate}
+  \item Construir el modelo oculto de Markov correspondiente $(\Sigma, S, A, B, \Pi)$.
+  \item Utilizar el algoritmo de Viterbi para obtener los valores más probables para las
+        siguientes cadenas:
+        \begin{enumerate}
+          \item[1)] \texttt{00}
+          \item[2)] \texttt{01}
+          \item[3)] \texttt{010}
+        \end{enumerate}
+\end{enumerate}
+ 
+\bigskip
+
+\input{ejercicios/ej8.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Ejercicio 9.}
+Dado un modelo oculto de Markov $\mathrm{HMM} = \{\Sigma, S, A, B, \Pi\}$, sea
+$w^{(1)}, \ldots, w^{(n)}$ una cadena de observaciones. Demostrar que:
+ 
+\[
+  p\!\left(w^{(1)} \cdots w^{(n)}\right)
+  = \sum_{s^{(1)}} \cdots \sum_{s^{(T)}}
+    \prod_{i=1}^{T}
+    p\!\left(w^{(i)} \mid s^{(i)}\right)
+    p\!\left(s^{(i)} \mid s^{(i-1)}\right)
+\]
+ 
+donde $s_1, \ldots, s_T \in S^{*}$ son cadenas de emisiones.
+
+\bigskip
+
+\input{ejercicios/ej9.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Ejercicio 10.}
+Demostrar que en el algoritmo de Viterbi las variables $\delta_i(t)$ cumplen la igualdad:
+ 
+\[
+  \delta_i(t)
+  = \max_{y^{(1)} \cdots y^{(t-1)}}
+    p\!\left(x^{(1)} \cdots x^{(t)},\; y^{(1)} \cdots y^{(t-1)},\; y^{(t)}\right)
+\]
+ 
+Y, por tanto, que para cualquier $n$ se tiene que el algoritmo regresa una cadena con probabilidad
+máxima.
+
+\bigskip
+
+\input{ejercicios/ej10.tex}
+
+\end{document}
