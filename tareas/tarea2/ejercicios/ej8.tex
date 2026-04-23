@@ -1,0 +1,712 @@
+\subsection*{a) Modelo Oculto de Márkov}
+A partir de los datos de entrenamiento:\\
+
+Sea $\Sigma$, el conjunto de \textbf{observaciones}:
+\[
+\Sigma = \{0,\ 1\}
+\]
+
+Sea $S$, el conjunto de \textbf{estados ocultos} o \textbf{emisiones:}
+\[
+S = \{a,\ b\}
+\]
+
+Sea $\Pi$, la \textbf{matriz de probabilidades inciales}, la obtenemos al observar el \textbf{primer estado} de cada secuencia $y$ y contando cuántas veces inicia en cada estado:
+\begin{center}
+  \begin{tabular}{|c|c|}
+    \hline
+    Secuencia & Primer estado \\
+    \hline
+    aabb & $a$ \\
+    bbaa & $b$ \\
+    aabb & $a$ \\
+    bbaa & $b$ \\
+    \hline
+  \end{tabular}
+\end{center}
+
+\[
+\Pi_a = \frac{2}{4} = 0.5, \qquad \Pi_b = \frac{2}{4} = 0.5
+\]
+\[
+\Pi = \begin{pmatrix} 0.5 \\ 0.5 \end{pmatrix}
+\]
+
+\bigskip
+
+Sea $A$, la \textbf{matriz de probabilidades de transición}, la obtenemos al recorrer cada secuencia $y$ \textbf{par a par} (posición $t$ con posición $t+1$) y contando cuántas veces aparece cada transición consecutiva $s_i \to s_j$:
+
+\begin{center}
+  \begin{tabular}{|c|l|}
+    \hline
+    Secuencia $y$ & Pares consecutivos \\
+    \hline
+    \textbf{a\,a\,b\,b} & $(a{\to}a),\ (a{\to}b),\ (b{\to}b)$ \\
+    \textbf{b\,b\,a\,a} & $(b{\to}b),\ (b{\to}a),\ (a{\to}a)$ \\
+    \textbf{a\,a\,b\,b} & $(a{\to}a),\ (a{\to}b),\ (b{\to}b)$ \\
+    \textbf{b\,b\,a\,a} & $(b{\to}b),\ (b{\to}a),\ (a{\to}a)$ \\
+    \hline
+  \end{tabular}
+\end{center}
+
+\noindent
+Sumando los conteos de cada par sobre las cuatro secuencias:
+
+\begin{center}
+  \begin{tabular}{|c|c|c|c|c|c|}
+    \hline
+    Par & Seq.\,1 & Seq.\,2 & Seq.\,3 & Seq.\,4 & \textbf{Total} \\
+    \hline
+    $a \to a$ & 1 & 1 & 1 & 1 & \textbf{4} \\
+    $a \to b$ & 1 & 0 & 1 & 0 & \textbf{2} \\
+    $b \to a$ & 0 & 1 & 0 & 1 & \textbf{2} \\
+    $b \to b$ & 1 & 1 & 1 & 1 & \textbf{4} \\
+    \hline
+  \end{tabular}
+\end{center}
+
+\noindent
+Cada fila se normaliza diviendo entre el total de transiciones que parten
+de ese estado ($4+2=6$ para $a$; $2+4=6$ para $b$):
+
+\begin{center}
+  \begin{tabular}{|c|c|c|}
+    \hline
+    & $a$ & $b$ \\
+    \hline
+    $a$ & 4 & 2\\
+    $b$ & 2 & 4 \\
+    \hline
+  \end{tabular}
+\end{center}
+
+\[
+A_{aa} = \frac{4}{6} = \frac{2}{3}, \quad
+A_{ab} = \frac{2}{6} = \frac{1}{3}, \quad
+A_{ba} = \frac{2}{6} = \frac{1}{3}, \quad
+A_{bb} = \frac{4}{6} = \frac{2}{3}
+\]
+\[
+A = \begin{pmatrix} 2/3 & 1/3 \\ 1/3 & 2/3 \end{pmatrix}
+\approx
+\begin{pmatrix} 0.667 & 0.333 \\ 0.333 & 0.667 \end{pmatrix}
+\]
+
+\bigskip
+
+Sea $B$, la \textbf{matriz de probabilidades de emisión}, la obtenemos alineando \textbf{posición a posición} cada símbolo de $x_t$ con su estado oculto $y_t$ y contando cuántas veces cada estado emitió cada símbolo:
+\begin{center}
+  \begin{tabular}{|l|c|c|c|}
+    \hline
+    Secuencia & posición & $x_t$ & $y_t$ \\
+    \hline
+    $x{=}0101,\ y{=}aabb$ & 1 & 0 & $a$ \\
+    & 2 & 1 & $a$ \\
+    & 3 & 0 & $b$ \\
+    & 4 & 1 & $b$ \\
+    \hline
+    $x{=}1010,\ y{=}bbaa$ & 1 & 1 & $b$ \\
+    & 2 & 0 & $b$ \\
+    & 3 & 1 & $a$ \\
+    & 4 & 0 & $a$ \\
+    \hline
+    $x{=}0011,\ y{=}aabb$ & 1 & 0 & $a$ \\
+    & 2 & 0 & $a$ \\
+    & 3 & 1 & $b$ \\
+    & 4 & 1 & $b$ \\
+    \hline
+    $x{=}1100,\ y{=}bbaa$ & 1 & 1 & $b$ \\
+    & 2 & 1 & $b$ \\
+    & 3 & 0 & $a$ \\
+    & 4 & 0 & $a$ \\
+    \hline
+  \end{tabular}
+\end{center}
+
+Sumando:
+\begin{center}
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+    Estado & emite $0$ & emite $1$ & Total \\
+    \hline
+    $a$ & 6 & 2 & 8 \\
+    $b$ & 2 & 6 & 8 \\
+    \hline
+  \end{tabular}
+\end{center}
+
+Normalizando por fila (cada estado tiene 8 emisiones en total):
+\begin{center}
+  \begin{tabular}{|c|c|c|}
+    \hline
+    & $0$ & $1$ \\
+    \hline
+    $a$ & $6/8 = 0.75$ & $2/8 = 0.25$ \\
+    $b$ & $2/8 = 0.25$ & $6/8 = 0.75$ \\
+    \hline
+  \end{tabular}
+  \qquad
+  $B = \begin{pmatrix} 0.75 & 0.25 \\ 0.25 & 0.75 \end{pmatrix}$
+\end{center}
+
+\bigskip
+
+Por lo tanto el Modelo Oculto de Márkov es:
+\[
+HMM = (\Sigma,\ S,\ A,\ \Pi,\ B)
+\]
+
+\[
+\Sigma = \{0, 1\}, \quad S = \{a, b\}
+\]
+
+\[
+A = \begin{pmatrix} 2/3 & 1/3 \\ 1/3 & 2/3 \end{pmatrix},
+\quad
+\Pi = \begin{pmatrix} 0.5 \\ 0.5 \end{pmatrix},
+\quad
+B = \begin{pmatrix} 0.75 & 0.25 \\ 0.25 & 0.75 \end{pmatrix}
+\]
+
+
+\subsection*{b) Algoritmo de Viterbi}
+
+La fórmula de \textbf{inicialización} usada será:
+\[
+\delta_i(1) = \pi_i \cdot B_{i,o_1}, \quad \forall\, i \in S
+\]
+La fórmula de \textbf{recursión} usada será:
+\[
+\delta_j(t) = \max_{i \in S}\bigl(\delta_i(t-1)\cdot A_{ij}\bigr)\cdot B_{j,o_t},
+\qquad
+\phi_j(t) = \arg\max_{i \in S}\bigl(\delta_i(t-1)\cdot A_{ij}\bigr)
+\]
+
+El \textbf{retroceso} identifica la cadena óptima:
+\[
+q^* = \arg\max_{i \in S}\,\delta_i(T), \qquad
+\hat{y}^{(t)} = \phi_{\hat{y}^{(t+1)}}(t+1)
+\]
+
+\subsubsection*{1) Cadena de observación \texttt{00}:}
+
+Diagrama de Trellis correspondiente:
+\begin{center}
+  \begin{tikzpicture}
+    \def\xS{0} \def\xA{3.5} \def\xB{7}
+    \def\ya{1.4} \def\yb{-1.4}
+    
+    \node[inicio] (ini) at (\xS,0) {Start};
+    \node[font=\large] at (\xA, 3.0) {\texttt{o}$_1$ = 0};
+    \node[font=\large] at (\xB, 3.0) {\texttt{o}$_2$ = 0};
+    
+    \node[state] (a1) at (\xA,\ya) {$a$};
+    \node[state] (b1) at (\xA,\yb) {$b$};
+    \node[state] (a2) at (\xB,\ya) {$a$};
+    \node[state] (b2) at (\xB,\yb) {$b$};
+    
+    \draw[trans] (ini) -- (a1);
+    \draw[trans] (ini) -- (b1);
+    \draw[trans] (a1) -- (a2);
+    \draw[trans] (a1) -- (b2);
+    \draw[trans] (b1) -- (a2);
+    \draw[trans] (b1) -- (b2);
+  \end{tikzpicture}
+\end{center}
+
+\begin{enumerate}
+  
+\item \textbf{Inicialización} ($t=1$, observación: \texttt{0})
+  
+  No hay estado anterior; se usa la distribución inicial:
+  \[
+  \delta_a(1) = \Pi_a \cdot B_{a,0} = 0.5 \times 0.75 = \mathbf{0.375}
+  \]
+  \[
+  \delta_b(1) = \Pi_b \cdot B_{b,0} = 0.5 \times 0.25 = \mathbf{0.125}
+  \]
+  No se calcula $\phi$ en $t=1$.
+  
+  \begin{center}
+    \begin{tikzpicture}
+      \def\xS{0} \def\xA{4} \def\xB{7.5}
+      \def\ya{1.4} \def\yb{-1.4}
+      
+      \node[inicio] (ini) at (\xS,0) {Start};
+      \node[font=\large] at (\xA, 2.8) {\texttt{o}$_1$ = 0};
+      \node[font=\large] at (\xB, 2.8) {\texttt{o}$_2$ = 0};
+      
+      \node[state] (a1) at (\xA,\ya) {$a$};
+      \node[state] (b1) at (\xA,\yb) {$b$};
+      \node[state] (a2) at (\xB,\ya) {$a$};
+      \node[state] (b2) at (\xB,\yb) {$b$};
+      
+      \draw[winner] (ini) -- node[above, yshift=4pt]  {$0.375$} (a1);
+      \draw[winner] (ini) -- node[below, yshift=-4pt] {$0.125$} (b1);
+      \draw[trans] (a1)--(a2); \draw[trans] (a1)--(b2);
+      \draw[trans] (b1)--(a2); \draw[trans] (b1)--(b2);
+    \end{tikzpicture}
+  \end{center}
+  
+\item \textbf{Recursión} ($t=2$, observación: \texttt{0})
+  
+  $\delta_a(2)$, llegar a $a$:
+  \[
+  \delta_a(1)\cdot A_{aa} = 0.375 \times \tfrac{2}{3} = 0.250
+  \]
+  \[
+  \delta_b(1)\cdot A_{ba} = 0.125 \times \tfrac{1}{3} = 0.0417
+  \]
+  \[
+  \max(0.250,\ 0.0417) = 0.250 \quad\Rightarrow\quad \phi_a(2) = a
+  \]
+  \[
+  \delta_a(2) = 0.250 \times B_{a,0} = 0.250 \times 0.75 = \mathbf{0.1875}
+  \]
+  
+  $\delta_b(2)$, llegar a $b$:
+  \[
+  \delta_a(1)\cdot A_{ab} = 0.375 \times \tfrac{1}{3} = 0.125
+  \]
+  \[
+  \delta_b(1)\cdot A_{bb} = 0.125 \times \tfrac{2}{3} = 0.0833
+  \]
+  \[
+  \max(0.125,\ 0.0833) = 0.125 \quad\Rightarrow\quad \phi_b(2) = a
+  \]
+  \[
+  \delta_b(2) = 0.125 \times B_{b,0} = 0.125 \times 0.25 = \mathbf{0.03125}
+  \]
+  
+  \begin{center}
+    \begin{tikzpicture}
+      \def\xS{-1} \def\xA{3.5} \def\xB{8.5}
+      \def\ya{1.4} \def\yb{-1.4}
+      
+      \node[inicio] (ini) at (\xS,0) {Start};
+      \node[font=\large] at (\xA, 2.8) {\texttt{o}$_1$ = 0};
+      \node[font=\large] at (\xB, 2.8) {\texttt{o}$_2$ = 0};
+      
+      \node[ellipstate] (a1) at (\xA,\ya) {$\delta_a(1)=0.375$};
+      \node[ellipstate] (b1) at (\xA,\yb) {$\delta_b(1)=0.125$};
+      \node[state] (a2) at (\xB,\ya) {$a$};
+      \node[state] (b2) at (\xB,\yb) {$b$};
+      
+      \draw[trans] (ini)--(a1); \draw[trans] (ini)--(b1);
+      % ganadoras (azul): ambas desde a1
+      \draw[winner] (a1) -- node[above, yshift=4pt]  {$0.1875$} (a2);
+      \draw[winner] (a1) -- node[below, yshift=-4pt] {$0.03125$} (b2);
+      \draw[loser]  (b1) -- (a2);
+      \draw[loser]  (b1) -- (b2);
+    \end{tikzpicture}
+  \end{center}
+  
+\item \textbf{Retroceso (Backtracking)}
+  
+  \[
+  \max\bigl(\delta_a(2),\ \delta_b(2)\bigr)
+  = \max(0.1875,\ 0.03125) = 0.1875
+  \;\Rightarrow\; \hat{y}^{(2)} = a
+  \]
+  \[
+  t=2:\ a \xrightarrow{\phi_a(2)=a} t=1:\ a
+  \]
+  
+  La cadena de emisiones más probable para \texttt{00} es:
+  \[
+  \boxed{\hat{y}^{(1)}\hat{y}^{(2)} = a \to a}
+  \]
+  con probabilidad máxima $\mathbf{0.1875}$.
+  
+  \begin{center}
+    \begin{tikzpicture}
+      \def\xS{-1} \def\xA{3.5} \def\xB{8.5}
+      \def\ya{1.4} \def\yb{-1.4}
+      
+      \node[inicio, draw=red!70, fill=red!5] (ini) at (\xS,0) {Start};
+      \node[font=\large] at (\xA, 2.8) {\texttt{o}$_1$ = 0};
+      \node[font=\large] at (\xB, 2.8) {\texttt{o}$_2$ = 0};
+      
+      \node[ellipstate, draw=red!70, fill=red!5] (a1) at (\xA,\ya) {$\delta_a(1)=0.375$};
+      \node[ellipstate] (b1) at (\xA,\yb) {$\delta_b(1)=0.125$};
+      \node[ellipstate, draw=red!70, fill=red!5] (a2) at (\xB,\ya) {$\delta_a(2)=\mathbf{0.1875}$};
+      \node[ellipstate] (b2) at (\xB,\yb) {$\delta_b(2)=0.03125$};
+      
+      \draw[loser]   (ini)--(b1);
+      \draw[optimal] (ini)--(a1);
+      \draw[optimal] (a1) --(a2);
+      \draw[loser]   (a1) --(b2);
+      \draw[loser]   (b1) --(a2);
+      \draw[loser]   (b1) --(b2);
+    \end{tikzpicture}
+  \end{center}
+  
+\end{enumerate}
+
+\subsubsection*{2) Cadena de observación \texttt{01}:}
+Con esto, damos el siguiente diagrama de Trellis correspondiente:
+
+\begin{center}
+  \begin{tikzpicture}
+    \def\xS{0} \def\xA{3.5} \def\xB{7}
+    \def\ya{1.4} \def\yb{-1.4}
+    
+    \node[inicio] (ini) at (\xS,0) {Start};
+    \node[font=\large] at (\xA, 3.0) {\texttt{o}$_1$ = 0};
+    \node[font=\large] at (\xB, 3.0) {\texttt{o}$_2$ = 1};
+    
+    \node[state] (a1) at (\xA,\ya) {$a$};
+    \node[state] (b1) at (\xA,\yb) {$b$};
+    \node[state] (a2) at (\xB,\ya) {$a$};
+    \node[state] (b2) at (\xB,\yb) {$b$};
+    
+    \draw[trans] (ini)--(a1); \draw[trans] (ini)--(b1);
+    \draw[trans] (a1)--(a2); \draw[trans] (a1)--(b2);
+    \draw[trans] (b1)--(a2); \draw[trans] (b1)--(b2);
+  \end{tikzpicture}
+\end{center}
+
+\begin{enumerate}
+  
+\item \textbf{Inicialización} ($t=1$, observación: \texttt{0})
+  
+  Igual que en el caso anterior (misma primera observación):
+  \[
+  \delta_a(1) = 0.5 \times 0.75 = \mathbf{0.375}, \qquad
+  \delta_b(1) = 0.5 \times 0.25 = \mathbf{0.125}
+  \]
+  
+  \begin{center}
+    \begin{tikzpicture}
+      \def\xS{0} \def\xA{4} \def\xB{7.5}
+      \def\ya{1.4} \def\yb{-1.4}
+      
+      \node[inicio] (ini) at (\xS,0) {Start};
+      \node[font=\large] at (\xA, 2.8) {\texttt{o}$_1$ = 0};
+      \node[font=\large] at (\xB, 2.8) {\texttt{o}$_2$ = 1};
+      
+      \node[state] (a1) at (\xA,\ya) {$a$};
+      \node[state] (b1) at (\xA,\yb) {$b$};
+      \node[state] (a2) at (\xB,\ya) {$a$};
+      \node[state] (b2) at (\xB,\yb) {$b$};
+      
+      \draw[winner] (ini) -- node[above, yshift=4pt]  {$0.375$} (a1);
+      \draw[winner] (ini) -- node[below, yshift=-4pt] {$0.125$} (b1);
+      \draw[trans] (a1)--(a2); \draw[trans] (a1)--(b2);
+      \draw[trans] (b1)--(a2); \draw[trans] (b1)--(b2);
+    \end{tikzpicture}
+  \end{center}
+  
+\item \textbf{Recursión} ($t=2$, observación: \texttt{1})
+  
+  $\delta_a(2)$, llegar a $a$:
+  \[
+  \delta_a(1)\cdot A_{aa} = 0.375 \times \tfrac{2}{3} = 0.250
+  \]
+  \[
+  \delta_b(1)\cdot A_{ba} = 0.125 \times \tfrac{1}{3} = 0.0417
+  \]
+  \[
+  \max(0.250,\ 0.0417) = 0.250 \quad\Rightarrow\quad \phi_a(2) = a
+  \]
+  \[
+  \delta_a(2) = 0.250 \times B_{a,1} = 0.250 \times 0.25 = \mathbf{0.0625}
+  \]
+  
+  $\delta_b(2)$, llegar a $b$:
+  \[
+  \delta_a(1)\cdot A_{ab} = 0.375 \times \tfrac{1}{3} = 0.125
+  \]
+  \[
+  \delta_b(1)\cdot A_{bb} = 0.125 \times \tfrac{2}{3} = 0.0833
+  \]
+  \[
+  \max(0.125,\ 0.0833) = 0.125 \quad\Rightarrow\quad \phi_b(2) = a
+  \]
+  \[
+  \delta_b(2) = 0.125 \times B_{b,1} = 0.125 \times 0.75 = \mathbf{0.09375}
+  \]
+  
+  \begin{center}
+    \begin{tikzpicture}
+      \def\xS{-1} \def\xA{3.5} \def\xB{8.5}
+      \def\ya{1.4} \def\yb{-1.4}
+      
+      \node[inicio] (ini) at (\xS,0) {Start};
+      \node[font=\large] at (\xA, 2.8) {\texttt{o}$_1$ = 0};
+      \node[font=\large] at (\xB, 2.8) {\texttt{o}$_2$ = 1};
+      
+      \node[ellipstate] (a1) at (\xA,\ya) {$\delta_a(1)=0.375$};
+      \node[ellipstate] (b1) at (\xA,\yb) {$\delta_b(1)=0.125$};
+      \node[state] (a2) at (\xB,\ya) {$a$};
+      \node[state] (b2) at (\xB,\yb) {$b$};
+      
+      \draw[trans] (ini)--(a1); \draw[trans] (ini)--(b1);
+      \draw[winner] (a1) -- node[above, yshift=4pt]  {$0.0625$}  (a2);
+      \draw[winner] (a1) -- node[below, yshift=-4pt] {$0.09375$} (b2);
+      \draw[loser]  (b1) -- (a2);
+      \draw[loser]  (b1) -- (b2);
+    \end{tikzpicture}
+  \end{center}
+  
+\item \textbf{Retroceso (Backtracking)}
+  
+  \[
+  \max\bigl(\delta_a(2),\ \delta_b(2)\bigr)
+  = \max(0.0625,\ 0.09375) = 0.09375
+  \;\Rightarrow\; \hat{y}^{(2)} = b
+  \]
+  \[
+  t=2:\ b \xrightarrow{\phi_b(2)=a} t=1:\ a
+  \]
+  
+La cadena de emisiones más probable para \texttt{01} es:
+\[
+\boxed{\hat{y}^{(1)}\hat{y}^{(2)} = a \to b}
+\]
+con probabilidad máxima $\mathbf{0.09375}$.
+ 
+\begin{center}
+\begin{tikzpicture}
+  \def\xS{-1} \def\xA{3.5} \def\xB{8.5}
+  \def\ya{1.4} \def\yb{-1.4}
+ 
+  \node[inicio, draw=red!70, fill=red!5] (ini) at (\xS,0) {Start};
+  \node[font=\large] at (\xA, 2.8) {\texttt{o}$_1$ = 0};
+  \node[font=\large] at (\xB, 2.8) {\texttt{o}$_2$ = 1};
+ 
+  \node[ellipstate, draw=red!70, fill=red!5] (a1) at (\xA,\ya) {$\delta_a(1)=0.375$};
+  \node[ellipstate] (b1) at (\xA,\yb) {$\delta_b(1)=0.125$};
+  \node[ellipstate] (a2) at (\xB,\ya) {$\delta_a(2)=0.0625$};
+  \node[ellipstate, draw=red!70, fill=red!5] (b2) at (\xB,\yb) {$\delta_b(2)=\mathbf{0.09375}$};
+ 
+  \draw[loser]   (ini)--(b1);
+  \draw[optimal] (ini)--(a1);
+  \draw[loser]   (a1) --(a2);
+  \draw[optimal] (a1) --(b2);
+  \draw[loser]   (b1) --(a2);
+  \draw[loser]   (b1) --(b2);
+\end{tikzpicture}
+\end{center}
+ 
+\end{enumerate}
+ 
+\subsubsection*{3) Cadena de observación \texttt{010}:}
+Con esto, damos el siguiente diagrama de Trellis correspondiente:
+ 
+\begin{center}
+\begin{tikzpicture}
+  \def\xS{0} \def\xA{3} \def\xB{6} \def\xC{9}
+  \def\ya{1.4} \def\yb{-1.4}
+ 
+  \node[inicio] (ini) at (\xS,0) {Start};
+  \node[font=\normalsize] at (\xA, 2.8) {\texttt{o}$_1$=0};
+  \node[font=\normalsize] at (\xB, 2.8) {\texttt{o}$_2$=1};
+  \node[font=\normalsize] at (\xC, 2.8) {\texttt{o}$_3$=0};
+ 
+  \node[state] (a1) at (\xA,\ya) {$a$};
+  \node[state] (b1) at (\xA,\yb) {$b$};
+  \node[state] (a2) at (\xB,\ya) {$a$};
+  \node[state] (b2) at (\xB,\yb) {$b$};
+  \node[state] (a3) at (\xC,\ya) {$a$};
+  \node[state] (b3) at (\xC,\yb) {$b$};
+ 
+  \draw[trans] (ini)--(a1); \draw[trans] (ini)--(b1);
+  \draw[trans] (a1)--(a2); \draw[trans] (a1)--(b2);
+  \draw[trans] (b1)--(a2); \draw[trans] (b1)--(b2);
+  \draw[trans] (a2)--(a3); \draw[trans] (a2)--(b3);
+  \draw[trans] (b2)--(a3); \draw[trans] (b2)--(b3);
+\end{tikzpicture}
+\end{center}
+ 
+\begin{enumerate}
+ 
+\item \textbf{Inicialización} ($t=1$, observación: \texttt{0})
+ 
+\[
+  \delta_a(1) = 0.5 \times 0.75 = \mathbf{0.375}, \qquad
+  \delta_b(1) = 0.5 \times 0.25 = \mathbf{0.125}
+\]
+ 
+\begin{center}
+\begin{tikzpicture}
+  \def\xS{-1} \def\xA{3.5} \def\xB{7} \def\xC{10.5}
+  \def\ya{1.4} \def\yb{-1.4}
+ 
+  \node[inicio] (ini) at (\xS,0) {Start};
+  \node[font=\normalsize] at (\xA, 2.8) {\texttt{o}$_1$=0};
+  \node[font=\normalsize] at (\xB, 2.8) {\texttt{o}$_2$=1};
+  \node[font=\normalsize] at (\xC, 2.8) {\texttt{o}$_3$=0};
+ 
+  \node[state] (a1) at (\xA,\ya) {$a$};
+  \node[state] (b1) at (\xA,\yb) {$b$};
+  \node[state] (a2) at (\xB,\ya) {$a$};
+  \node[state] (b2) at (\xB,\yb) {$b$};
+  \node[state] (a3) at (\xC,\ya) {$a$};
+  \node[state] (b3) at (\xC,\yb) {$b$};
+ 
+  \draw[winner] (ini)--node[above,yshift=4pt]{$0.375$}(a1);
+  \draw[winner] (ini)--node[below,yshift=-4pt]{$0.125$}(b1);
+  \draw[trans](a1)--(a2);\draw[trans](a1)--(b2);
+  \draw[trans](b1)--(a2);\draw[trans](b1)--(b2);
+  \draw[trans](a2)--(a3);\draw[trans](a2)--(b3);
+  \draw[trans](b2)--(a3);\draw[trans](b2)--(b3);
+\end{tikzpicture}
+\end{center}
+ 
+\item \textbf{Recursión} ($t=2$, observación: \texttt{1})
+ 
+$\delta_a(2)$, llegar a $a$:
+\[
+  \delta_a(1)\cdot A_{aa} = 0.375\times\tfrac{2}{3} = 0.250
+  \qquad
+  \delta_b(1)\cdot A_{ba} = 0.125\times\tfrac{1}{3} = 0.0417
+\]
+\[
+  \max(0.250,\ 0.0417)=0.250 \;\Rightarrow\; \phi_a(2)=a
+  \qquad
+  \delta_a(2)=0.250\times0.25=\mathbf{0.0625}
+\]
+ 
+$\delta_b(2)$, llegar a $b$:
+\[
+  \delta_a(1)\cdot A_{ab} = 0.375\times\tfrac{1}{3} = 0.125
+  \qquad
+  \delta_b(1)\cdot A_{bb} = 0.125\times\tfrac{2}{3} = 0.0833
+\]
+\[
+  \max(0.125,\ 0.0833)=0.125 \;\Rightarrow\; \phi_b(2)=a
+  \qquad
+  \delta_b(2)=0.125\times0.75=\mathbf{0.09375}
+\]
+ 
+\begin{center}
+\begin{tikzpicture}
+  \def\xS{-2} \def\xA{2.5} \def\xB{7} \def\xC{11}
+  \def\ya{1.4} \def\yb{-1.4}
+ 
+  \node[inicio] (ini) at (\xS,0) {Start};
+  \node[font=\normalsize] at (\xA, 2.8) {\texttt{o}$_1$=0};
+  \node[font=\normalsize] at (\xB, 2.8) {\texttt{o}$_2$=1};
+  \node[font=\normalsize] at (\xC, 2.8) {\texttt{o}$_3$=0};
+ 
+  \node[ellipstate] (a1) at (\xA,\ya) {$\delta_a(1)=0.375$};
+  \node[ellipstate] (b1) at (\xA,\yb) {$\delta_b(1)=0.125$};
+  \node[state] (a2) at (\xB,\ya) {$a$};
+  \node[state] (b2) at (\xB,\yb) {$b$};
+  \node[state] (a3) at (\xC,\ya) {$a$};
+  \node[state] (b3) at (\xC,\yb) {$b$};
+ 
+  \draw[trans](ini)--(a1);\draw[trans](ini)--(b1);
+  \draw[winner](a1)--node[above,yshift=4pt]{$0.0625$}(a2);
+  \draw[winner](a1)--node[below,yshift=-4pt]{$0.09375$}(b2);
+  \draw[loser](b1)--(a2);\draw[loser](b1)--(b2);
+  \draw[trans](a2)--(a3);\draw[trans](a2)--(b3);
+  \draw[trans](b2)--(a3);\draw[trans](b2)--(b3);
+\end{tikzpicture}
+\end{center}
+ 
+\item \textbf{Recursión} ($t=3$, observación: \texttt{0})
+ 
+$\delta_a(3)$, llegar a $a$:
+\[
+  \delta_a(2)\cdot A_{aa} = 0.0625\times\tfrac{2}{3} = 0.04167
+\]
+\[
+  \delta_b(2)\cdot A_{ba} = 0.09375\times\tfrac{1}{3} = 0.03125
+\]
+\[
+  \max(0.04167,\ 0.03125)=0.04167 \;\Rightarrow\; \phi_a(3)=a
+\]
+\[
+  \delta_a(3)=0.04167\times B_{a,0}=0.04167\times0.75=\mathbf{0.03125}
+\]
+ 
+$\delta_b(3)$, llegar a $b$:
+\[
+  \delta_a(2)\cdot A_{ab} = 0.0625\times\tfrac{1}{3} = 0.02083
+\]
+\[
+  \delta_b(2)\cdot A_{bb} = 0.09375\times\tfrac{2}{3} = 0.06250
+\]
+\[
+  \max(0.02083,\ 0.06250)=0.06250 \;\Rightarrow\; \phi_b(3)=b
+\]
+\[
+  \delta_b(3)=0.06250\times B_{b,0}=0.06250\times0.25=\mathbf{0.015625}
+\]
+ 
+\begin{center}
+\begin{tikzpicture}
+  \def\xS{-2} \def\xA{2.5} \def\xB{7} \def\xC{11.5}
+  \def\ya{1.4} \def\yb{-1.4}
+ 
+  \node[inicio] (ini) at (\xS,0) {Start};
+  \node[font=\normalsize] at (\xA, 2.8) {\texttt{o}$_1$=0};
+  \node[font=\normalsize] at (\xB, 2.8) {\texttt{o}$_2$=1};
+  \node[font=\normalsize] at (\xC, 2.8) {\texttt{o}$_3$=0};
+ 
+  \node[ellipstate] (a1) at (\xA,\ya) {$\delta_a(1)=0.375$};
+  \node[ellipstate] (b1) at (\xA,\yb) {$\delta_b(1)=0.125$};
+  \node[ellipstate] (a2) at (\xB,\ya) {$\delta_a(2)=0.0625$};
+  \node[ellipstate] (b2) at (\xB,\yb) {$\delta_b(2)=0.09375$};
+  \node[state] (a3) at (\xC,\ya) {$a$};
+  \node[state] (b3) at (\xC,\yb) {$b$};
+ 
+  \draw[trans](ini)--(a1);\draw[trans](ini)--(b1);
+  \draw[trans](a1)--(a2);\draw[trans](a1)--(b2);
+  \draw[loser](b1)--(a2);\draw[loser](b1)--(b2);
+  % ganadoras t=3: a gana desde a2, b gana desde b2
+  \draw[loser] (a2)--(a3);
+  \draw[loser] (a2)--(b3);
+  \draw[winner] (b2)--node[above,yshift=8pt]{$0.03125$}(a3);
+  \draw[winner](b2)--node[below,yshift=-4pt]{$0.015625$}(b3);
+\end{tikzpicture}
+\end{center}
+ 
+\item \textbf{Retroceso (Backtracking)}
+ 
+\[
+  \max\bigl(\delta_a(3),\ \delta_b(3)\bigr)
+  = \max(0.03125,\ 0.015625) = 0.03125
+  \;\Rightarrow\; \hat{y}^{(3)} = a
+\]
+\[
+  t=3:\ a \xrightarrow{\phi_a(3)=a} t=2:\ a \xrightarrow{\phi_a(2)=a} t=1:\ a
+\]
+ 
+La cadena de emisiones más probable para \texttt{010} es:
+\[
+  \boxed{\hat{y}^{(1)}\hat{y}^{(2)}\hat{y}^{(3)} = a \to a \to a}
+\]
+con probabilidad máxima $\mathbf{0.03125}$.
+ 
+\begin{tikzpicture}
+  \def\xS{-6} \def\xA{-3} \def\xB{2} \def\xC{7.2}
+  \def\ya{1.4} \def\yb{-1.4}
+ 
+  \node[inicio, draw=red!70, fill=red!5] (ini) at (\xS,0) {Start};
+  \node[font=\normalsize] at (\xA, 2.8) {\texttt{o}$_1$=0};
+  \node[font=\normalsize] at (\xB, 2.8) {\texttt{o}$_2$=1};
+  \node[font=\normalsize] at (\xC, 2.8) {\texttt{o}$_3$=0};
+ 
+  \node[ellipstate, draw=red!70, fill=red!5] (a1) at (\xA,\ya) {$\delta_a(1)=0.375$};
+  \node[ellipstate] (b1) at (\xA,\yb) {$\delta_b(1)=0.125$};
+  \node[ellipstate] (a2) at (\xB,\ya) {$\delta_a(2)=0.0625$};
+  \node[ellipstate, draw=red!70, fill=red!5] (b2) at (\xB,\yb) {$\delta_b(2)=0.09375$};
+  \node[ellipstate, draw=red!70, fill=red!5] (a3) at (\xC,\ya) {$\delta_a(3)=\mathbf{0.03125}$};
+  \node[ellipstate] (b3) at (\xC,\yb) {$\delta_b(3)=0.015625$};
+ 
+  \draw[loser]   (ini)--(b1);
+  \draw[optimal] (ini)--(a1);
+  \draw[loser]   (a1) --(a2);
+  \draw[optimal] (a1) --(b2);
+  \draw[loser]   (b1) --(a2);
+  \draw[loser]   (b1) --(b2);
+  \draw[loser]   (a2) --(a3);
+  \draw[loser]   (a2) --(b3);
+  \draw[optimal] (b2) --(a3);
+  \draw[loser]   (b2) --(b3);
+\end{tikzpicture}x
+ 
+\end{enumerate}

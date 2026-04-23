@@ -1,0 +1,90 @@
+Recordemos que, un modelo oculto de Márkov es una 5-tupla $HMM = (Y, X, A, B, \Pi)$, donde:
+\begin{enumerate}
+\item $Y = \{\text{Healthy},\ \text{Fever}\}$ son las \textbf{emisiones} (o estados ocultos).
+\item $X = \{\text{Dizzy},\ \text{Cold},\ \text{Normal}\}$ son las \textbf{observaciones}.
+\item $A_{i,j} = P(y_j \mid y_i)$ es la \textbf{matriz de probabilidades de transición} entre las emisiones, la probabilidad de pasar del estado $y_i$ al estado $y_j$:
+  
+  \begin{center}
+    \begin{tabular}{|c|c|c|}
+      \hline
+      & Healthy & Fever \\
+      \hline
+      Healthy & 0.7   & 0.3  \\
+      \hline
+      Fever  & 0.4   & 0.6  \\
+      \hline
+    \end{tabular}
+    \qquad
+    $A = \begin{pmatrix} 0.7 & 0.3 \\ 0.4 & 0.6 \end{pmatrix}$
+  \end{center}
+  
+  Verificamos que cada fila sume $1$:
+  \[
+  0.7 + 0.3 = 1 \quad\checkmark \qquad 0.4 + 0.6 = 1 \quad\checkmark
+  \]
+
+\item $B_{i,j} = P(x_j \mid y_i)$ es la \textbf{matriz de probabilidades de emisión} entre los estados ocultos, representa la probablidad de observar $x_j$ cuando el estado oculto es $y_i$:
+
+    \begin{center}
+    \begin{tabular}{|c|c|c|c|}
+      \hline
+      & Dizzy & Cold & Normal \\
+      \hline
+      Healthy & 0.1 & 0.4 & 0.5 \\
+      \hline
+      Fever & 0.6 & 0.3 & 0.1\\
+      \hline
+    \end{tabular}
+    \qquad
+    $B = \begin{pmatrix} 0.1 & 0.4 & 0.5 \\ 0.6 & 0.3 & 0.1 \end{pmatrix}$
+    \end{center}
+  
+  Verificamos que cada fila sume $1$:
+  \[
+  0.1 + 0.4 + 0.5 = 1 \quad\checkmark \qquad 0.5 + 0.3 + 0.1 = 1 \quad\checkmark
+  \]
+  
+\item $\Pi_i = P(y_i)$ es el vector de propabilidades iniciales, proporciona las probabilidades de que el sistema comience en cada estado oculto:
+
+    \begin{center}
+    \begin{tabular}{|c|c|}
+      \hline
+      Healthy & 0.6\\
+      \hline
+      Fever  & 0.4\\
+      \hline
+    \end{tabular}
+    \qquad
+    $\Pi = \begin{pmatrix} 0.6 \\ 0.4 \end{pmatrix}$
+    \end{center}
+\end{enumerate}
+
+Por lo tanto, el \textbf{Modelo Ocutlo de Márkov} de la gráfica es:
+\[
+HMM = (Y,\, X,\, A,\, B,\, \Pi):
+\]
+
+\textbf{Emisiones:}
+\[
+Y = \{\text{Healthy},\ \text{Fever}\}
+\]
+
+\textbf{Observaciones:}
+\[
+X = \{\text{Dizzy},\ \text{Cold},\ \text{Normal}\},
+\]
+
+\textbf{Matriz de probabilidades de transición:}
+\[
+A = \begin{pmatrix} 0.7 & 0.3 \\ 0.4 & 0.6 \end{pmatrix},
+\]
+
+\textbf{Matriz de probabilidades de emisión:}
+\[
+B = \begin{pmatrix} 0.1 & 0.4 & 0.5 \\ 0.6 & 0.3 & 0.1 \end{pmatrix}
+\]
+
+\textbf{Matriz de probabilidades inciales:}
+\[
+\Pi = \begin{pmatrix} 0.6 \\ 0.4 \end{pmatrix},
+\]

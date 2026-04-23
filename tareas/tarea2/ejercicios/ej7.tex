@@ -1,0 +1,416 @@
+El algoritmo de Viterbi es un algoritmo busca el camino (dentro del diagrama de Trellis) que \textbf{maximiza} la probabilidad conjunta de emisiones dada una cadena de observaciones.\\
+
+Recordando del ejercicio anterior:\\
+\textbf{Cadena de observaciones:}
+\[
+\text{Normal } \to \text{Dizzy } \to \text{Cold}
+\]
+
+\textbf{Estados ocultos:}
+\[
+Y = \{\text{Healthy (H)},\ \text{Fever (F)}\}
+\]
+
+\textbf{Vector de probabilidades iniciales:}
+\[
+\Pi = \begin{pmatrix} 0.6 \\ 0.4 \end{pmatrix}
+\]
+
+\textbf{Matriz de probabilidades de transición:}
+\[
+A = \begin{pmatrix} 0.7 & 0.3 \\ 0.4 & 0.6 \end{pmatrix}
+\]
+
+\textbf{Matriz de probabilidades de emisión:}
+\[
+B = \begin{pmatrix} 0.1 & 0.4 & 0.5 \\ 0.6 & 0.3 & 0.1 \end{pmatrix}
+\]
+
+Con esto, damos el siguiente diagrama de Trellis correspondiente:
+\begin{center}
+  \begin{tikzpicture}
+    % Column x positions
+    \def\xS{0}     % Start
+    \def\xN{3}     % Normal
+    \def\xD{6}     % Dizzy
+    \def\xC{9}     % Cold
+    
+    % Row y positions
+    \def\yh{1.4}   % top row (a)
+    \def\yf{-1.4}  % bottom row (b)
+    
+    % --- Inicio node ---
+    \node[inicio] (inicio) at (\xS, 0) {Start};
+    
+    % --- Column labels ---
+    \node[font=\large] at (\xN,  3.2) {Normal};
+    \node[font=\large] at (\xD,  3.2) {Dizzy};
+    \node[font=\large] at (\xC,  3.2) {Cold};
+    
+    % --- State nodes: column 1 (s) ---
+    \node[state] (nh) at (\xN,  \yh) {H};
+    \node[state] (nf) at (\xN,  \yf) {F};
+    
+    % --- State nodes: column 2 (p) ---
+    \node[state] (dh) at (\xD,  \yh) {H};
+    \node[state] (df) at (\xD,  \yf) {F};
+    
+    % --- State nodes: column 3 (c) ---
+    \node[state] (ch) at (\xC,  \yh) {H};
+    \node[state] (cf) at (\xC,  \yf) {F};
+    
+    % --- Arrows from Inicio ---
+    \draw[trans] (inicio.east) -- (nh.west);
+    \draw[trans] (inicio.east) -- (nf.west);
+    
+    % --- Arrows from column s to column p ---
+    % straight
+    \draw[trans] (nh) -- (dh);
+    \draw[trans] (nf) -- (df);
+    % cross
+    \draw[trans] (nh) -- (df);
+    \draw[trans] (nf) -- (dh);
+    
+    % --- Arrows from column p to column c ---
+    % straight
+    \draw[trans] (dh) -- (ch);
+    \draw[trans] (df) -- (cf);
+    % cross
+    \draw[trans] (dh) -- (cf);
+    \draw[trans] (df) -- (ch);
+    
+  \end{tikzpicture}
+\end{center}
+ 
+\bigskip
+
+\subsubsection*{Inicialización ($t = 1$, Normal)}
+ 
+En $t = 1$ no hay estado anterior, por lo que se usa directamente la distribución inicial:
+\[
+\delta_i(1) = \pi_i \cdot B_{i,(o_1)}, \quad \forall\, i = 1,\ldots,N, \quad o \in X
+\]
+
+\[
+\delta_H(1) = \pi_H \cdot B_{H,N} = 0.6 \times 0.5 = \mathbf{0.30}
+\]
+
+\[
+\delta_F(1) = \pi_F \cdot B_{F,N} = 0.4 \times 0.1 = \mathbf{0.04}
+\]
+
+No se calcula $\phi$ en $t = 1$ porque no existe estado previo.
+
+\begin{center}
+  \begin{tikzpicture}
+    % Column x positions
+    \def\xS{-6}     % Start
+    \def\xN{-2}     % Normal
+    \def\xD{2}     % Dizzy
+    \def\xC{5}     % Cold
+    
+    % Row y positions
+    \def\yh{1.4}   % top row (a)
+    \def\yf{-1.4}  % bottom row (b)
+    
+    % --- Inicio node ---
+    \node[inicio] (inicio) at (\xS, 0) {Start};
+    
+    % --- Column labels ---
+    \node[font=\large] at (\xN,  3.2) {Normal};
+    \node[font=\large] at (\xD,  3.2) {Dizzy};
+    \node[font=\large] at (\xC,  3.2) {Cold};
+    
+    % --- State nodes: column 1 (s) ---
+    \node[state] (nh) at (\xN,  \yh) {H};
+    \node[state] (nf) at (\xN,  \yf) {F};
+    
+    % --- State nodes: column 2 (p) ---
+    \node[state] (dh) at (\xD,  \yh) {H};
+    \node[state] (df) at (\xD,  \yf) {F};
+    
+    % --- State nodes: column 3 (c) ---
+    \node[state] (ch) at (\xC,  \yh) {H};
+    \node[state] (cf) at (\xC,  \yf) {F};
+    
+    % --- Arrows from Inicio ---
+    \draw[trans, blue!80] (inicio.east) -- node[above, xshift=-3pt, yshift=6pt] {0.30} (nh.west);
+    \draw[trans, blue!80] (inicio.east) -- node[below, xshift=-3pt, yshift=-6pt] {0.04}  (nf.west);
+    
+    % --- Arrows from column s to column p ---
+    % straight
+    \draw[trans] (nh) -- (dh);
+    \draw[trans] (nf) -- (df);
+    % cross
+    \draw[trans] (nh) -- (df);
+    \draw[trans] (nf) -- (dh);
+    
+    % --- Arrows from column p to column c ---
+    % straight
+    \draw[trans] (dh) -- (ch);
+    \draw[trans] (df) -- (cf);
+    % cross
+    \draw[trans] (dh) -- (cf);
+    \draw[trans] (df) -- (ch);
+    
+  \end{tikzpicture}
+\end{center}
+
+\subsubsection*{Recursión ($t = 2$, Dizzy)}
+ 
+La fórmula de recursión es:
+\[
+\delta_j(t) = \max_{i \in Y}\bigl(\delta_i(t-1)\cdot A_{ij}\bigr)\cdot B_{j,o_t},
+\qquad
+\phi_j(t) = \arg\max_{i \in Y}\bigl(\delta_i(t-1)\cdot A_{ij}\bigr)
+\]
+ 
+$\delta_H(2)$, llegar a Healthy:
+\[
+  \delta_H(1)\cdot A_{H,H} = 0.30 \cdot 0.7 = 0.210
+\]
+\[
+  \delta_F(1)\cdot A_{F,H} = 0.04 \cdot 0.4 = 0.016
+\]
+\[
+  \max(0.210,\ 0.016) = 0.210 \quad \Rightarrow \quad \phi_H(2) = H
+\]
+\[
+  \delta_H(2) = 0.210 \cdot B_{H,D} = 0.210 \cdot 0.1 = \mathbf{0.021}
+\]
+ 
+$\delta_F(2)$, llegar a Fever:
+\[
+  \delta_H(1)\cdot A_{H,F} = 0.30 \cdot 0.3 = 0.090
+\]
+\[
+  \delta_F(1)\cdot A_{F,F} = 0.04 \cdot 0.6 = 0.024
+\]
+\[
+  \max(0.090,\ 0.024) = 0.090 \quad \Rightarrow \quad \phi_F(2) = H
+\]
+\[
+  \delta_F(2) = 0.090 \cdot B_{F,D} = 0.090 \cdot 0.5 = \mathbf{0.045}
+\]
+
+\begin{center}
+  \begin{tikzpicture}
+    % Column x positions
+    \def\xS{-10}     % Start
+    \def\xN{-6}     % Normal
+    \def\xD{-1}     % Dizzy
+    \def\xC{3}     % Cold
+    
+    % Row y positions
+    \def\yh{1.4}   % top row (a)
+    \def\yf{-1.4}  % bottom row (b)
+    
+    % --- Inicio node ---
+    \node[inicio] (inicio) at (\xS, 0) {Start};
+    
+    % --- Column labels ---
+    \node[font=\large] at (\xN,  3.2) {Normal};
+    \node[font=\large] at (\xD,  3.2) {Dizzy};
+    \node[font=\large] at (\xC,  3.2) {Cold};
+    
+    % --- State nodes: column 1 (s) ---
+    \node[draw, ellipse] (nh) at (\xN,  \yh) {\small$\delta_H(1)$ = 0.30};
+    \node[draw, ellipse] (nf) at (\xN,  \yf) {\small$\delta_F(1)$ = 0.04};
+    
+    % --- State nodes: column 2 (p) ---
+    \node[state] (dh) at (\xD,  \yh) {H};
+    \node[state] (df) at (\xD,  \yf) {F};
+    
+    % --- State nodes: column 3 (c) ---
+    \node[state] (ch) at (\xC,  \yh) {H};
+    \node[state] (cf) at (\xC,  \yf) {F};
+    
+    % --- Arrows from Inicio ---
+    \draw[trans] (inicio.east) -- (nh.west);
+    \draw[trans] (inicio.east) -- (nf.west);
+    
+    % --- Arrows from column s to column p ---
+    % straight
+    \draw[trans, blue!80] (nh) -- node[above, xshift=-3pt, yshift=6pt] {0.021} (dh);
+    \draw[trans, gray!60] (nf) -- (df);
+    % cross
+    \draw[trans, blue!80] (nh) -- node[below, xshift=-3pt, yshift=-6pt] {0.045} (df);
+    \draw[trans, gray!60] (nf) -- (dh);
+    
+    % --- Arrows from column p to column c ---
+    % straight
+    \draw[trans] (dh) -- (ch);
+    \draw[trans] (df) -- (cf);
+    % cross
+    \draw[trans] (dh) -- (cf);
+    \draw[trans] (df) -- (ch);
+    
+  \end{tikzpicture}
+\end{center}
+
+\subsubsection*{Recursión ($t = 3$, Cold)}
+$\delta_H(3)$, llegar a Healthy: 
+\[
+  \delta_H(2)\cdot A_{H,H} = 0.021 \cdot 0.7 = 0.0147
+\]
+\[
+  \delta_F(2)\cdot A_{F,H} = 0.045 \cdot 0.4 = 0.0180
+\]
+\[
+  \max(0.0147,\ 0.0180) = 0.0180 \quad \Rightarrow \quad \phi_H(3) = F
+\]
+\[
+  \delta_H(3) = 0.0180 \cdot B_{H,C} = 0.01800 \cdot 0.4 = \mathbf{0.0072}
+\]
+ 
+$\delta_F(3)$, llegar a Fever: 
+\[
+  \delta_H(2)\cdot A_{H,F} = 0.021 \cdot 0.3 = 0.0063
+\]
+\[
+  \delta_F(2)\cdot A_{F,F} = 0.045 \cdot 0.6 = 0.0270
+\]
+\[
+  \max(0.0063,\ 0.0270) = 0.02700 \quad \Rightarrow \quad \phi_F(3) = F
+\]
+\[
+  \delta_F(3) = 0.0270 \cdot b_F(\text{Cold}) = 0.0270 \cdot 0.3 = \mathbf{0.0081}
+\]
+
+\begin{tikzpicture}
+  % Column x positions
+  \def\xS{-12}     % Start
+  \def\xN{-8}     % Normal
+  \def\xD{-3}     % Dizzy
+  \def\xC{2}     % Cold
+  
+  % Row y positions
+  \def\yh{1.4}   % top row (a)
+  \def\yf{-1.4}  % bottom row (b)
+  
+  % --- Inicio node ---
+  \node[inicio] (inicio) at (\xS, 0) {Start};
+  
+  % --- Column labels ---
+  \node[font=\large] at (\xN, 3.2) {Normal};
+  \node[font=\large] at (\xD, 3.2) {Dizzy};
+  \node[font=\large] at (\xC, 3.2) {Cold};
+  
+  % --- State nodes: column 1 (s) ---
+  \node[draw, ellipse] (nh) at (\xN,  \yh) {\small$\delta_H(1)$ = 0.30};
+  \node[draw, ellipse] (nf) at (\xN,  \yf) {\small$\delta_F(1)$ = 0.04};
+  
+  % --- State nodes: column 2 (p) ---
+  \node[draw, ellipse] (dh) at (\xD,  \yh) {\small$\delta_H(2)$ = 0.021};
+  \node[draw, ellipse] (df) at (\xD,  \yf) {\small$\delta_H(2)$ = 0.045};
+  
+  % --- State nodes: column 3 (c) ---
+  \node[state] (ch) at (\xC,  \yh) {H};
+  \node[state] (cf) at (\xC,  \yf) {F};
+  
+  % --- Arrows from Inicio ---
+  \draw[trans] (inicio.east) -- (nh.west);
+  \draw[trans] (inicio.east) -- (nf.west);
+  
+  % --- Arrows from column s to column p ---
+  % straight
+  \draw[trans] (nh) -- (dh);
+  \draw[trans, gray!60] (nf) -- (df);
+  % cross
+  \draw[trans] (nh) -- (df);
+  \draw[trans, gray!60] (nf) -- (dh);
+  
+  % --- Arrows from column p to column c ---
+  % straight
+  \draw[trans, gray!60] (dh) -- (ch);
+  \draw[trans, blue!80] (df) -- node[below, xshift=-3pt, yshift=-6pt] {0.0072} (cf);
+  % cross
+  \draw[trans, gray!60] (dh) -- (cf);
+  \draw[trans, blue!80] (df) -- node[above, xshift=3pt, yshift=8pt] {0.0081} (ch);
+\end{tikzpicture}
+
+\subsubsection*{Retroceso (Backtracking)}
+Identificamos el estado final con mayor probabilidad:
+\[
+  q_i = \arg\max_{i \in Y}\,\delta_i(T)
+  \quad\Rightarrow\quad
+  \max(0.0072,\ 0.0081) = 0.0081
+  \quad\Rightarrow\quad
+  \hat{y}^{(3)} = \textbf{Fever}
+\]
+ 
+Seguimos los  $\phi$ hacia atrás:
+\[
+  t = 3:\ \text{Fever}
+  \xrightarrow{\;\phi_F(3) = F\;}
+  t = 2:\ \text{Fever}
+  \xrightarrow{\;\phi_F(2) = H\;}
+  t = 1:\ \text{Healthy}
+\]
+ 
+En resumen, la cadena de emisiones más probable para la cadena de observaciones dada queda como:
+
+\medskip
+
+\[
+\boxed{\hat{y}^{(1)}\,\hat{y}^{(2)}\,\hat{y}^{(3)}
+  = \textbf{Healthy} \to \textbf{Fever} \to \textbf{Fever}}
+\]
+
+\bigskip
+
+Con probabilidad máxima $\mathbf{0.0081}$ y su diagrama:
+
+\bigskip
+
+\begin{tikzpicture}
+  % Column x positions
+  \def\xS{-12}     % Start
+  \def\xN{-8}     % Normal
+  \def\xD{-3}     % Dizzy
+  \def\xC{2}     % Cold
+  
+  % Row y positions
+  \def\yh{1.4}   % top row (a)
+  \def\yf{-1.4}  % bottom row (b)
+  
+  % --- Inicio node ---
+  \node[inicio, draw=red!70, fill=red!5] (inicio) at (\xS, 0) {Start};
+  
+  % --- Column labels ---
+  \node[font=\large] at (\xN, 3.2) {Normal};
+  \node[font=\large] at (\xD, 3.2) {Dizzy};
+  \node[font=\large] at (\xC, 3.2) {Cold};
+  
+  % --- State nodes: column 1 (s) ---
+  \node[draw=red!70, ellipse, fill=red!5] (nh) at (\xN,  \yh) {\small$\delta_H(1)$ = 0.30};
+  \node[draw, ellipse] (nf) at (\xN,  \yf) {\small$\delta_F(1)$ = 0.04};
+  
+  % --- State nodes: column 2 (p) ---
+  \node[draw, ellipse] (dh) at (\xD,  \yh) {\small$\delta_H(2)$ = 0.021};
+  \node[draw=red!70, ellipse, fill=red!5] (df) at (\xD,  \yf) {\small$\delta_F(2)$ = 0.045};
+  
+  % --- State nodes: column 3 (c) ---
+  \node[draw, ellipse] (ch) at (\xC,  \yh) {\small$\delta_H(3)$ = 0.0072};
+  \node[draw=red!70, ellipse, fill=red!5] (cf) at (\xC,  \yf) {\small$\delta_F(3)$ = 0.0081};
+  
+  % --- Arrows from Inicio ---
+  \draw[trans, red!70] (inicio.east) -- (nh.west);
+  \draw[trans, gray!60] (inicio.east) -- (nf.west);
+  
+  % --- Arrows from column s to column p ---
+  % straight
+  \draw[trans, gray!60] (nh) -- (dh);
+  \draw[trans, gray!60] (nf) -- (df);
+  % cross
+  \draw[trans, red!70] (nh) -- (df);
+  \draw[trans, gray!60] (nf) -- (dh);
+  
+  % --- Arrows from column p to column c ---
+  % straight
+  \draw[trans, gray!60] (dh) -- (ch);
+  \draw[trans, red!70] (df) -- (cf);
+  % cross
+  \draw[trans, gray!60] (dh) -- (cf);
+  \draw[trans, gray!60] (df) -- (ch);
+\end{tikzpicture}
