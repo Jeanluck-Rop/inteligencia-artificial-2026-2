@@ -15,6 +15,17 @@
 
 \geometry{margin=2cm, top=2cm, bottom=2cm}
 
+\tikzset{
+  state/.style={circle, draw, minimum size=1.4cm, thick, font=\large},
+  ellipstate/.style={draw, ellipse, thick, font=\small, inner sep=4pt},
+  inicio/.style={rectangle, draw, minimum width=1.6cm, minimum height=0.9cm,
+                 thick, font=\normalsize},
+  trans/.style={->, >=Stealth, thick},
+  winner/.style={->, >=Stealth, thick, blue!80},
+  loser/.style={->, >=Stealth, thick, gray!50},
+  optimal/.style={->, >=Stealth, very thick, red!70},
+}
+
 \begin{document}
 
 \input{portada}
