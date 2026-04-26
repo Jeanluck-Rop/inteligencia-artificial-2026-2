@@ -1,0 +1,56 @@
+\textit{Demostración:}\\
+Partimos de la definición de probabilidad condicional:
+
+\[
+\text{(1)} \qquad
+p(Y = y \mid X = x)
+=
+\frac{p(X = x \cap Y = y)}{p(X = x)}
+\]
+
+\[
+\text{(2)} \qquad
+p(X = x \mid Y = y)
+=
+\frac{p(X = x \cap Y = y)}{p(Y = y)}
+\]
+
+Despejamos la probabilidad conjunta en (2):
+
+\[
+p(X = x \cap Y = y)
+=
+p(X = x \mid Y = y)\,p(Y = y)
+\]
+
+y sustituimos en (1):
+
+\[
+p(Y = y \mid X = x)
+=
+\frac{p(X = x \mid Y = y)\,p(Y = y)}{p(X = x)}
+\]
+
+Por teorema de probabilidad total tenemos que:
+
+\[
+p(X = x)
+=
+\sum_{y_i \in Y} p(X = x \cap Y = y_i)
+=
+\sum_{y_i \in Y} p(X = x \mid Y = y_i)\,p(Y = y_i)
+\]
+
+Sustituimos \(p(X = x)\):
+
+\[
+p(Y = y \mid X = x)
+=
+\frac{
+p(X = x \mid Y = y)\,p(Y = y)
+}{
+\displaystyle \sum_{y_i \in Y} p(X = x \mid Y = y_i)\,p(Y = y_i)
+}
+\hspace{2cm} \blacksquare
+\]
+

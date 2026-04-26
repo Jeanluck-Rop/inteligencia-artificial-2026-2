@@ -57,99 +57,20 @@ p(Y = y \mid X = x) = \frac{p(X = x \mid Y = y)\,p(Y = y)}{\displaystyle\sum_{y_
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Ejercicio 2.}
- partir de la siguiente red bayesiana:
+ A partir de la siguiente red bayesiana: 
+ \bigskip
  
-\bigskip
-% ── Tablas de probabilidades condicionales ──
 \begin{center}
- 
-% P(X1)
-\begin{minipage}{3cm}
-\centering
-\begin{tabular}{|c|c|c|}
-\hline
-$X_1$ & T & F \\
-\hline
-T & 0.4 & 0.6 \\
-F & 0.2 & 0.8 \\
-\hline
-\end{tabular}
-\end{minipage}
-\hspace{2cm}
-% P(X4)
-\begin{minipage}{3cm}
-\centering
-\begin{tabular}{|c|c|}
-\hline
-T & F \\
-\hline
-0.5 & 0.5 \\
-\hline
-\end{tabular}
-\end{minipage}
- 
-\bigskip
- 
-% P(X3 | X1, X2)  — nodo central izquierda
-\begin{minipage}{4.5cm}
-\centering
-\begin{tabular}{|c|c|c|c|}
-\hline
-$X_2$ & $X_4$ & T & F \\
-\hline
-T & T & 0   & 1   \\
-T & F & 1   & 0   \\
-F & T & 0.5 & 0.5 \\
-F & F & 0   & 1   \\
-\hline
-\end{tabular}
-\end{minipage}
-\hspace{1.5cm}
-% P(X4 | X1, X2)  — nodo derecho
-\begin{minipage}{5cm}
-\centering
-\begin{tabular}{|c|c|c|c|}
-\hline
-$X_1$ & $X_2$ & T & F \\
-\hline
-T & T & 0.5 & 0.5 \\
-T & F & 0.2 & 0.8 \\
-F & T & 1   & 0   \\
-F & F & 0.4 & 0.6 \\
-\hline
-\end{tabular}
-\end{minipage}
- 
+  \includegraphics[width=\textwidth,height=1\textheight,keepaspectratio]{ejercicios/assets/ej2_red_bayesiana.png}
 \end{center}
- 
-\bigskip
-% ── Diagrama de la red ──
-\begin{center}
-\begin{tikzpicture}[
-    node distance = 2.2cm,
-    every node/.style = {circle, draw, minimum size=1cm, font=\small},
-    ->, >=Stealth, thick
-  ]
-  \node (X1) {$X_1$};
-  \node (X2) [right=3cm of X1]        {$X_2$};
-  \node (X4) [right=3cm of X2]        {$X_4$};
-  \node (X3) [below=2.2cm of X2]      {$X_3$};
- 
-  \draw (X1) -- (X2);
-  \draw (X2) -- (X4);
-  \draw (X2) -- (X3);
-  \draw (X4) -- (X3);
-  \draw (X1) -- (X3);
-\end{tikzpicture}
-\end{center}
- 
-\bigskip
+
 Calcular la probabilidad de las siguientes consultas:
+
 \begin{itemize}
-  \item $X_1 = T,\; X_2 = T,\; X_3 = F,\; X_4 = T$
-  \item $X_1 = F,\; X_2 = T,\; X_3 = F,\; X_4 = T$
-  \item $X_2 = F,\; X_3 = T,\; X_4 = T$
-  \item $X_1 = T,\; X_2 = T,\; X_4 = F$
+    \item $X_1 = T, X_2 = T, X_3 = F, X_4 = T$
+    \item $X_1 = F, X_2 = T, X_3 = F, X_4 = T$
+    \item $X_2 = F, X_3 = T, X_4 = T$
+    \item $X_1 = T, X_2 = T, X_4 = F$
 \end{itemize}
 
 \bigskip
@@ -264,43 +185,9 @@ y weighted average.
 Considerar la siguiente gráfica de un modelo oculto de Markov:
  
 \bigskip
+
 \begin{center}
-\begin{tikzpicture}[
-    node distance = 3cm,
-    every state/.style = {circle, draw, minimum size=1.2cm, font=\small},
-    initial text = {},
-    ->, >=Stealth, thick
-  ]
- 
-  \node[state]           (Start)  {Start};
-  \node[state, below left=2cm and 1.5cm of Start]  (Healthy) {Healthy};
-  \node[state, below right=2cm and 1.5cm of Start] (Fever)   {Fever};
-  \node[state, below left=2.5cm and 0cm of Healthy]  (Dizzy)  {Dizzy};
-  \node[state, below=2.5cm of Fever]                 (Normal) {Normal};
-  \node[state, below right=2.5cm and 0cm of Healthy] (Cold)   {Cold};
- 
-  % From Start
-  \draw (Start) -- node[left]  {0.6} (Healthy);
-  \draw (Start) -- node[right] {0.4} (Fever);
- 
-  % Healthy self-loop and to Fever
-  \draw (Healthy) edge[loop left] node {0.7} (Healthy);
-  \draw (Healthy) -- node[above] {0.3} (Fever);
- 
-  % Fever to Healthy and self-loop
-  \draw (Fever) edge[loop right] node {0.6} (Fever);
-  \draw (Fever) -- node[above] {0.4} (Healthy);
- 
-  % Emissions from Healthy
-  \draw (Healthy) -- node[left]  {0.1} (Dizzy);
-  \draw (Healthy) -- node[right] {0.4} (Cold);
-  \draw (Healthy) -- node[below left] {0.6} (Normal);  % placeholder
- 
-  % Emissions from Fever
-  \draw (Fever) -- node[right] {0.5} (Dizzy);
-  \draw (Fever) -- node[left]  {0.3} (Cold);
-  \draw (Fever) -- node[below right] {0.1} (Normal);
-\end{tikzpicture}
+  \includegraphics[width=\textwidth,height=1\textheight,keepaspectratio]{ejercicios/assets/ej6_hmm.png}
 \end{center}
  
 \bigskip

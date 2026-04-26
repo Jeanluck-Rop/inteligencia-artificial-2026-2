@@ -1,0 +1,66 @@
+Procedemos la demostración por \textbf{inducción sobre el tiempo} $t$:
+
+\bigskip
+
+\textbf{1. Caso base} ($t = 1$):\\
+
+Por definición de la inicialización del algoritmo, se tiene:
+\[
+\delta_j(1) = \pi_j \cdot B_{j,\,x^{(1)}}
+\]
+
+Donde $\pi_j = p(y^{(1)} = s_j)$ es la probabilidad inicial y $B_{j,x^{(1)}} = p(x^{(1)} \mid y^{(1)} = s_j)$ es la
+probabilidad de emisión, al no existir estados previos, el máximo sobre una secuencia vacía es simplemente la
+probabilidad conjunta del primer estado y la primera observación:
+\[
+p\!\left(x^{(1)}, y^{(1)} = s_j\right) = p\!\left(y^{(1)} = s_j\right) p\!\left(x^{(1)} \mid y^{(1)} = s_j\right)
+\]
+  
+Por lo tanto, la igualdad se cumple trivialmente para $t=1$.
+
+\bigskip
+
+\textbf{2. Hipótesis inductiva}:\\
+
+Supongamos que para $t-1$, la variable $\delta_i(t-1)$ representa correctamente la probabilidad máxima para cualquier estado $s_i \in S$:
+\[
+\delta_i(t-1) = \max_{y^{(1)} \cdots y^{(t-2)}} p\!\left(x^{(1)} \cdots x^{(t-1)},\ y^{(1)} \cdots y^{(t-2)},\ y^{(t-1)} = s_i\right)
+\]
+
+\bigskip
+
+\textbf{3. Paso inductivo}:\\
+
+La relación de recurrencia de Viterbi mantiene esta propiedad para el tiempo $t$, partiendo de la definición de la probabilidad conjunta y aplicando la regla de la cadena, tenemos:
+\[
+p\!\left(x^{(1:t)}, y^{(1:t)}\right) = p\!\left(x^{(t)} \mid y^{(t)}\right) p\!\left(y^{(t)} \mid y^{(t-1)}\right) p\!\left(x^{(1:t-1)}, y^{(1:t-1)}\right)
+\]
+
+Al buscar el máximo sobre los estados previos $y^{(1)} \cdots y^{(t-1)}$, podemos descomponer el operador de maximización, dado que los términos de emisión y transición actuales no dependen de la trayectoria histórica, estos pueden extraerse del máximo interno:
+\[
+\delta_j(t) = B_{j,\,x^{(t)}} \cdot \max_{y^{(t-1)}} \left[ A_{y^{(t-1)}, j} \cdot \max_{y^{(1:t-2)}} p\!\left(x^{(1:t-1)}, y^{(1:t-1)}\right) \right]
+\]
+
+Sustituyendo por la \textbf{H.I.}:
+\[
+\delta_j(t) = B_{j,\,x^{(t)}} \cdot \max_{1 \leq i \leq N} \left[ A_{ij} \cdot \delta_i(t-1) \right]
+\]
+  
+Esta expresión coincide exactamente con la actualización recursiva del algoritmo, demostrando que $\delta_j(t)$ preserva el máximo en cada paso.
+
+\bigskip
+
+\textbf{4. Optimalidad de la cadena completa}:
+
+La validez global del algoritmo se fundamenta en el \textbf{Principio de Optimalidad de Bellman}, dado que cada $\delta_j(t)$ almacena la probabilidad del mejor camino que termina en $s_j$, la probabilidad de la secuencia más probable de longitud $T$ es simplemente:
+\[
+  P^* = \max_{1 \leq j \leq N} \delta_j(T)
+\]
+Puesto que en cada paso $t$ se almacena un apuntador $\phi_j(t)$ al estado anterior que maximizó la expresión, es posible reconstruir la cadena óptima mediante un proceso de \textit{backtracking}. Por la inducción anterior, podemos garantizar que esta cadena es la de probabilidad máxima global:
+\[
+  \hat{y}^{(1)} \cdots \hat{y}^{(T)} = \arg\max_{y^{(1)} \cdots y^{(T)}} p\!\left(x^{(1)} \cdots x^{(T)}, y^{(1)} \cdots y^{(T)}\right)
+\]
+
+\bigskip
+
+Es relevante destacar que, gracias a esta estructura recursiva, el algoritmo reduce la exploración de un espacio exponencial de trayectorias ($O(|S|^T)$) a un problema de programación dinámica con complejidad temporal de $O(T \cdot |S|^2)$. El uso de la estructura \textit{Trellis} permite descartar en cada paso los caminos subóptimos que no pueden formar parte de una solución global óptima.
