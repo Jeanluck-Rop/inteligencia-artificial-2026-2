@@ -1,0 +1,70 @@
+Por definición, dado que no es posible observar directamente los estados ocultos de un Modelo Oculto de Márkov, la
+probabilidad de obtener una secuencia específica de observaciones se calcula mediante la marginalización sobre el
+espacio de todas las posibles secuencias de estados.\\
+Utilizando la \textbf{ley de probabilidad total}, se establece que:
+
+\[
+p\!\left(w^{(1)} \cdots w^{(T)}\right) = \sum_{s^{(1)}} \cdots \sum_{s^{(T)}} p\!\left(w^{(1)} \cdots w^{(T)},\ s^{(1)} \cdots s^{(T)}\right)
+\]
+
+\medskip
+
+Factorizamos la distribución conjunta aplicando la \textbf{regla de la cadena} de probabilidad, lo que permite
+descomponer la secuencia en términos individuales:
+\[
+p\!\left(w^{(1)}\cdots w^{(T)},\ s^{(1)}\cdots s^{(T)}\right) = \prod_{i=1}^{T} p\!\left(w^{(i)},\, s^{(i)} \mid w^{(1:i-1)},\, s^{(1:i-1)}\right)
+\]
+
+\medskip
+
+Para simplificar cada factor del producto, se aplican las dos hipótesis fundamentales que definen el
+comportamiento de un HMM:
+
+\begin{enumerate}
+\item \textbf{Propiedad de Márkov:} Asumimos que el estado en el tiempo $i$ depende exclusivamente del estado
+  inmediatamente anterior ($i-1$). Esto implica que el historial completo de estados previos no aporta información
+  adicional para predecir el futuro inmediato:
+  \[
+  p\!\left(s^{(i)} \mid s^{(1)}, \ldots, s^{(i-1)}\right) = p\!\left(s^{(i)} \mid s^{(i-1)}\right) = A_{s^{(i-1)},\, s^{(i)}}
+  \]
+
+\item \textbf{Independencia de emisión:} Se supone que la observación actual depende únicamente del estado oculto
+  presente, bajo esta premisa, ni las observaciones pasadas ni los estados previos influyen en la emisión actual
+  si el estado actual es conocido:
+  \[
+  p\!\left(w^{(i)} \mid s^{(i)},\, w^{(1:i-1)},\, s^{(1:i-1)}\right) = p\!\left(w^{(i)} \mid s^{(i)}\right) = B_{s^{(i)},\, w^{(i)}}
+  \]
+\end{enumerate}
+
+Al integrar estas suposiciones, se observa que cada componente de la factoría se reduce a la siguiente expresión:
+\[
+p\!\left(w^{(i)},\, s^{(i)} \mid w^{(1:i-1)},\, s^{(1:i-1)}\right) = p\!\left(w^{(i)} \mid s^{(i)}\right) \cdot p\!\left(s^{(i)} \mid s^{(i-1)}\right)
+\]
+
+\medskip
+
+Finalmente, al sustituir este resultado en la sumatoria de la probabilidad total, se obtiene la fórmula general
+requerida:
+\[
+p\!\left(w^{(1)} \cdots w^{(T)}\right) = \sum_{s^{(1)}} \cdots \sum_{s^{(T)}} \prod_{i=1}^{T} p\!\left(w^{(i)} \mid s^{(i)}\right) p\!\left(s^{(i)} \mid s^{(i-1)}\right)
+\]
+
+\vspace{1em}
+
+Como mostró, debido a que los estados ocultos no son accesibles, es imperativo considerar
+\textbf{todos los caminos posibles} a través del espaco de estados y sumar sus respectivas contribuciones.
+Para cualquier camino específico $s^{(1)} \to s^{(2)} \to \cdots \to s^{(T)}$, la probabilidad de que dicho camino
+genere la secuencia observada es el producto término a término de las probabilidades de transición y emisión:
+
+\[
+\underbrace{p(w^{(1)}\mid s^{(1)})}_{\text{emisión } 1} \cdot \underbrace{p(s^{(2)}\mid s^{(1)})}_{\text{transición}} \cdot \underbrace{p(w^{(2)}\mid s^{(2)})}_{\text{emisión } 2} \cdots \underbrace{p(s^{(T)}\mid s^{(T-1)})}_{\text{transición}} \cdot \underbrace{p(w^{(T)}\mid s^{(T)})}_{\text{emisión } T}
+\]
+
+\medskip
+
+Es la estructura de producto derivada de las suposiciones de Márkov y de independencia lo que hace que este
+modelo sea computacionalmente tratable. Sin ellas, el costo de cálculo crecería de forma exponencial respecto a
+la longitud de la cadena. Esta misma arquitectura es la que aprovecha el \textbf{algoritmo de Viterbi}; la
+diferencia fundamental radica en que, en lugar de sumar sobre todos los caminos, se selecciona el camino que
+maximiza la probabilidad, permitiendo hallar la secuencia de estados más probable en un tiempo eficiente de
+$O(T \cdot |S|^2)$.
