@@ -1,0 +1,99 @@
+\medskip
+\textit{Nota:}\\
+Sabemos que la probabilidad conjunta en redes bayesianas es:
+\[
+  p(X_1, X_2, \ldots, X_n) = \prod_{i=1}^{n} p(X_i \mid \operatorname{parents}(X_i))
+\]
+
+\noindent Tenemos las siguientes dependencias:
+\[
+  X_1 \to X_2, X_4 \qquad X_2 \to X_3, X_4 \qquad X_4 \to X_3
+\]
+\[
+  \begin{aligned}
+    X_1 &: \text{no tiene padres}       &&\longrightarrow p(X_1) \\[2mm]
+    X_2 &: \text{depende de } X_1       &&\longrightarrow p(X_2 \mid X_1) \\[2mm]
+    X_3 &: \text{depende de } X_2, X_4  &&\longrightarrow p(X_3 \mid X_2, X_4) \\[2mm]
+    X_4 &: \text{depende de } X_1, X_2  &&\longrightarrow p(X_4 \mid X_1, X_2)
+  \end{aligned}
+\]
+\[
+  \Rightarrow\;
+  p(X_1, X_2, X_3, X_4) = p(X_1)\,p(X_2 \mid X_1)\,p(X_3 \mid X_2, X_4)\,p(X_4 \mid X_1, X_2)
+\]
+
+Usando esta probabilildad y guiandonos de las probabilidades en la red, vamos calcular las probabilidades conjuntas en cada caso.
+
+\bigskip
+\noindent\textbf{1.}\quad $X_1 = T,\; X_2 = T,\; X_3 = F,\; X_4 = T$\\
+
+\textit{Consulta:}
+\[
+  \begin{aligned}
+    p(X_1, X_2, X_3, X_4)
+&= p(X_1{=}T)\cdot p(X_2{=}T \mid X_1{=}T)\cdot p(X_3{=}F \mid X_2{=}T,\, X_4{=}T)\cdot p(X_4{=}T \mid X_1{=}T,\, X_2{=}T)\\
+&= 0.5 \cdot 0.4 \cdot 1 \cdot 0.5 = \boxed{0.1}
+  \end{aligned}
+\]
+
+\bigskip
+\noindent\textbf{2.}\quad $X_1 = F,\; X_2 = T,\; X_3 = F,\; X_4 = T$\\
+
+\textit{Consulta:}
+\[
+  \begin{aligned}
+    p(X_1, X_2, X_3, X_4)
+&= p(X_1{=}F)\cdot p(X_2{=}T \mid X_1{=}F)\cdot p(X_3{=}F \mid X_2{=}T,\, X_4{=}T)\cdot p(X_4{=}T \mid X_1{=}F,\, X_2{=}T)\\
+&= 0.5 \cdot 0.2 \cdot 1 \cdot 1 = \boxed{0.1}
+  \end{aligned}
+\]
+
+\bigskip
+\noindent\textbf{3.}\quad $X_2 = F,\; X_3 = T,\; X_4 = T$\\
+
+\textit{Consulta:}\\
+\textit{Nos falta $X_1$ $\to$ usamos probabilidad marginal:}\\
+\[
+  p(X_2, X_3, X_4) =
+  \sum_{x_1 \,\in\, \{T,F\}}
+  p(x_1)\cdot p(X_2{=}F \mid x_1)\cdot p(X_3{=}T \mid X_2{=}F,\, X_4{=}T)\cdot p(X_4{=}T \mid x_1,\, X_2{=}F)
+\]
+
+\begin{enumerate}
+  \item $x_1 = T$
+   
+    $p(X_1 = T)\cdot p(X_2{=}F \mid X_1 = T)\cdot p(X_3{=}T \mid X_2{=}F,\, X_4{=}T)\cdot p(X_4{=}T \mid X_1 = T,\, X_2{=}F)$\\
+    $\Rightarrow\; p_1 = 0.5 \cdot 0.6 \cdot 0.5 \cdot 0.2 = 0.03$
+
+  \item $x_1 = F \;$
+
+    $p(X_1 = F)\cdot p(X_2{=}F \mid X_1 = F)\cdot p(X_3{=}T \mid X_2{=}F,\, X_4{=}T)\cdot p(X_4{=}T \mid X_1 = F,\, X_2{=}F)$\\
+    $\Rightarrow\; p_2 = 0.5 \cdot 0.8 \cdot 0.5 \cdot 0.4 = 0.08$
+
+\end{enumerate}
+
+\[
+  \therefore\; p(X_2, X_3, X_4) = p_1 + p_2 = 0.03 + 0.08 = \boxed{0.11}
+\]
+
+\bigskip
+\noindent\textbf{4.}\quad $X_1 = T,\; X_2 = T,\; X_4 = F$\\
+
+\textit{Consulta:}\\
+\textit{Nos falta $X_3$ $\to$ usamos probabilidad marginal:}\\
+\[
+  p(X_1, X_2, X_4) =
+  \sum_{x_3 \,\in\, \{T,F\}}
+  p(X_1{=}T)\cdot p(X_2{=}T \mid X_1{=}T)\cdot p(x_3 \mid X_2{=}T,\, X_4{=}F)\cdot p(X_4{=}F \mid X_1{=}T,\, X_2{=}T)
+\]
+
+\begin{enumerate}
+  \item $x_3 = T$\\
+    $\Rightarrow\; p_1 = 0.5 \cdot 0.4 \cdot 1 \cdot 0.5 = 0.1$\\
+  \item $x_3 = F$\\
+    $\Rightarrow\; p_2 = 0.5 \cdot 0.4 \cdot 0 \cdot 0.5 = 0$\\
+    
+\end{enumerate}
+\[
+  \therefore\; p(X_1, X_2, X_4) = 0.1 + 0 = \boxed{0.1}
+\]

@@ -1,0 +1,58 @@
+\noindent Sabemos que el algoritmo de muestreo por rechazo es:
+
+\medskip
+\begin{ttfamily}
+  \noindent\textbf{fun} SAMPLING$(X, Y, bn, N)$\\
+  \textbf{INPUT:} $X$-obs, $Y$-pred, $bn$-red, $N$-num.\ de muestras\\[1mm]
+  \hspace*{4mm} $C \leftarrow \text{ZEROES}(\text{size} = |Y|)$\\
+  \hspace*{4mm} \textbf{for} $(j$ \textbf{from} $1$ \textbf{to} $N)$ \textbf{do:}\\
+  \hspace*{8mm} $x \leftarrow \text{PRIOR\_SAMPLING}(bn)$\\
+  \hspace*{8mm} \textbf{if} $(x$ es consistente con $X)$ \textbf{then:}\\
+  \hspace*{12mm} $C[x] \leftarrow C[x] + 1$\\
+  \hspace*{4mm} \textbf{return} $\text{NORM}(C)$
+\end{ttfamily}
+
+\bigskip
+\noindent\textit{Esto es básicamente::}
+\begin{enumerate}
+  \item Genera muestras $\;\to\;$ ya nos las dan
+  \item Rechaza las que no coinciden con la evidencia
+  \item Con las que sí coincide, cuenta cuántas veces aparece cada valor $x$ de la variable
+  \item Normaliza
+\end{enumerate}
+
+\noindent Entonces, si nuestra evidencia es $X_1 = T,\; X_3 = F,\; X_4 = T$ y queremos inferir $X_2$, vemos cada muestra y rechazamos si no coinciden con la evidencia:
+
+\medskip
+\begin{itemize}
+  \item[a)] $X_1{=}T,\; X_2{=}F,\; X_3{=}F,\; X_4{=}T$ \quad Coincide, no rechazamos.
+  \item[b)] $X_1{=}T,\; X_2{=}T,\; X_3{=}F,\; X_4{=}T$ \quad Coincide, no rechazamos.
+  \item[c)] $X_1{=}T,\; X_2{=}F,\; X_3{=}F,\; X_4{=}T$ \quad Coincide, no rechazamos.
+  \item[d)] $X_1{=}T,\; X_2{=}F,\; X_3{=}F,\; X_4{=}T$ \quad Coincide, no rechazamos.
+  \item[e)] $X_1{=}F,\; X_2{=}F,\; X_3{=}F,\; X_4{=}T$ \quad No coincide. $X_1 = T$ en evidencia, rechazamos.
+\end{itemize}
+
+\noindent Tenemos 4 aceptadas, contamos:
+\[
+  \begin{aligned}
+    \text{count}(X_2 = T) &= 1\\
+    \text{count}(X_2 = F) &= 3
+  \end{aligned}
+\]
+
+\noindent Normalizamos siguiendo:
+\[
+  P(Y = y_i) = \frac{C[y_i]}{\displaystyle\sum_j C[y_j]}
+  \quad
+  \text{donde } C[y_i] = \text{conteo de ese valor, } \textstyle\sum_j C[y_j] = \text{suma de todos los conteos}
+\]
+\[
+  \Rightarrow\quad
+  P(X_2 = T) = \frac{1}{1+3} = \frac{1}{4} = 0.25
+\]
+\[
+  \Rightarrow\quad
+  P(X_2 = F) = \frac{3}{1+3} = \frac{3}{4} = 0.75
+\]
+
+$\hfill \blacksquare$
