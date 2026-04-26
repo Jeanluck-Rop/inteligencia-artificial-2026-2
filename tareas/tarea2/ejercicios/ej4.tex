@@ -1,5 +1,5 @@
 Para determinar la clase a partir de las observaciones entonces usaremos
-\[argmax_y [ P(y_i) \prod_{d}^{x_i} P(x_i | y_i)]\]
+\[argmax_y [ P(y_i) \prod_{d}^{x_i} P(x_i | y)]\]
 Donde $Y=\{Llueve, Soleado\}$ y $X=(despejado, temperatura\text{ }alta)$ usando Bayes Naïve Frecuentista por lo que tendremos que  aplicar $P(y) = \frac{fr(y)}{N}$, asi que
 
 \begin{align*} % P(c)
@@ -33,8 +33,8 @@ Por lo que tenemos lo siguiente para cada clase
         \end{align*}
 \end{itemize}
 
-Ahora que la clase más probable es soleado, basta con sumar ls valores obtenidos de cada clase y dividir sobre el valor correspondiente a la clase ganadora
-\[P(Soleado|Observaciones) = \frac{\frac{1}{3} + 0}{\frac{1}{3}} = 1\]
+Ahora que la clase más con el valor más alto es soleado, basta dividir el valor correspondiente a la clase ganadora sobre  los valores obtenidos de cada clase
+\[P(Soleado|Observaciones) = \frac{\frac{1}{3}}{\frac{1}{3}+0} = 1\]
 
 Siendo así que la clase más probable es \textbf{Soleado} con $P=1$
 
