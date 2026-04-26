@@ -1,0 +1,34 @@
+\textbf{R:} Dado que los atributos dados son variables continuas, nos apoyaremos de Bayes Naïve Gaussiano para determinar la clase a partir de las observaciones, por lo que usaremos la siguiente fórmula
+
+Comenzaremos por obtener las probabilidades a priors de cada clase, entonces tenemos:
+
+\begin{align*}
+    P(Y=0)& = \frac{4}{9} = 0.444 \\
+    P(Y=1) & = \frac{5}{9} = 0.556 \\
+\end{align*}
+
+% \mu es la media
+Ahora procedemos a obtener las medias de cada clase para cada dato, partiendo de la fórmula $\frac{1}{N} \sum_{x} x$ entonces tenemos
+
+\begin{align*}
+    \mu_{y=0,x=1} & = \frac{0.5+0.3+0.2+0.4}{4} = 0.35 \\
+    \mu_{y=0,x=2} & = \frac{0.6+0.6+0.5+0.6}{4} = 0.575 \\
+    \mu_{y=0,x=3} & = \frac{0+0.01+0+0.1}{4} = 0.0275 \\\\
+    \mu_{y=1,x=1} & = \frac{0.6+0.9+0.8+0.95+0.5}{5} = 0.75 \\
+    \mu_{y=1,x=2} & = \frac{0.8+0.7+0.65+0.9+0.6}{5} = 0.73 \\
+    \mu_{y=1,x=3} & = \frac{0.7+1+0.9+1+0.5}{5} = 0.82 \\
+\end{align*}
+
+% \sigma^2 es varianza de los datos
+Ahora procedemos a obtener las varianzas de cada clase para cada dato, partiendo de la fórmula $\frac{1}{N-1} \sum_{x} (x-\mu_{y,x})^2$, entonces tenemos
+\begin{align*}
+    \sigma^2_{y=0,x=1} & = \frac{(0.5-0.35)^2 + (0.3-0.35)^2 + (0.2-0.35)^2 + (0.4-0.35)^2}{3} = 0.0166 \\
+    \sigma^2_{y=0,x=2} & = \frac{(0.6-0.575)^2 + (0.6-0.575)^2 + (0.5-0.575)^2 + (0.6-0.575)^2}{3} = 0.0025 \\
+    \sigma^2_{y=0,x=3} & = \frac{(0-0.0275)^2 + (0.01-0.0275)^2 + (0-0.0275)^2 + (0.1-0.0275)^2}{3} = 0.002358 
+\end{align*}
+\begin{align*}
+    \sigma^2_{y=1,x=1} & = \frac{(0.6-0.75)^2 + (0.9-0.75)^2 + (0.8-0.75)^2 + (0.95-0.75)^2 + (0.5-0.75)^2}{4} = 0.0375 \\
+    \sigma^2_{y=1,x=2} & = \frac{(0.8-0.73)^2 + (0.7-0.73)^2 + (0.65-0.73)^2 + (0.9-0.73)^2 + (0.6-0.73)^2}{4} = 0.0145 \\
+    \sigma^2_{y=1,x=3} & = \frac{(0.7-0.82)^2 + (1-0.82)^2 + (0.9-0.82)^2 + (1-0.82)^2 + (0.5-0.82)^2}{4} = 0.047 \\
+\end{align*}
+
