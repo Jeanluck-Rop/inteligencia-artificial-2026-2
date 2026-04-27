@@ -191,5 +191,44 @@ Después aplicaremos la fórmula para la probabilidad conjunta
     
     Veamos que la probabilidad conjunta de la clase $y=0$ es mayor que la de la clase $y=1$, por lo que se estima que este ejemplo de evaluación pertenece a la clase $y=0$ con una probabilidad de $\frac{3.36}{3.36 + 0.0006} = 0.999822$, lo cual coincide con lo indicado ya que se indica que es de la clase $y=0$.
 \end{itemize}
-\newpage
 
+
+Ahora evaluaremos las métricas, basandonos en la documentación de \href{https://scikit-learn.org/stable/api/sklearn.metrics.html}{\texttt{sklearn}} veamos que $tp$ es el número de verdaderos positivos (predijo $0$ y era $0$ o predijo $1$ y era $1$), $fp$ es el número de falsos positivos (predijo $0$ y era $1$) y $fn$ es el número de falsos negativos (predijo $1$ y era $0$). Por lo que tenemos
+\begin{itemize}
+    \item \textbf{Presicion:} Dada una clase, es el número de verdaderos positivos sobre la suma de verdaderos positivos y falsos positivos \\
+    Para $Y=0$ 
+    \[\frac{tp}{tp + fp} = \frac{3}{3 + 0} = 1\] 
+    Para $Y=1$
+    \[\frac{tp}{tp + fp} = \frac{2}{2 + 0} = 1\]
+
+    \item \textbf{Exhaustividad (Recall):} Dada una clase, es el número de verdaderos positivos sobre la suma de verdaderos positivos y falsos negativos \\
+    Para $Y=0$
+    \[\frac{tp}{tp+fn} = \frac{3}{3+0} = 1\]
+    Para $Y=1$
+    \[\frac{tp}{tp+fn} = \frac{2}{2+0} = 1\]
+
+    \item \textbf{F1-Score:} Dada una clase, es la \textit{harmonic mean} de la precisión y la exhaustividad \\
+    Para $Y=0$
+    \[2 \cdot \frac{\text{precisión} \cdot \text{recall}}{\text{precisión} + \text{recall}} = 2 \cdot \frac{1 \cdot 1}{1 + 1} = 1\]
+    Para $Y=1$
+    \[2 \cdot \frac{\text{precisión} \cdot \text{recall}}{\text{precisión} + \text{recall}} = 2 \cdot \frac{1 \cdot 1}{1 + 1} = 1\]
+
+    \item \textbf{Accuracy:} Dadas todas las clases, es el número de verdaderos positivos sobre el total de ejemplos
+    \[\frac{TP_{Y=0} + TP_{Y=1} }{N}= \frac{3 + 2}{5} = 1\]
+    
+    \item \textbf{Macro Average:} Es la media aritmética de cada uno de cada métrica para cada clase
+    \begin{itemize}
+        \item \textbf{Precision:} \[\frac{Precision_{Y=0} + Precision_{Y=1}}{2} = \frac{1 + 1}{2} = 1\]
+        \item \textbf{Recall:} \[\frac{Recall_{Y=0} + Recall_{Y=1}}{2} = \frac{1 + 1}{2} = 1\]
+        \item \textbf{F1-Score:} \[\frac{F1-Score_{Y=0} + F1-Score_{Y=1}}{2} = \frac{1 + 1}{2} = 1\]
+    \end{itemize}
+    
+    \item \textbf{Weighted Average:} Se multiplica la métrica de cada clase por su peso proporcional (Soporte, número de ejemplares de cada clase) en el conjunto total.
+        \begin{itemize}
+            \item \textbf{Precision:} \[\frac{\sum_{i=0}^{1} \text{precisión}_i \cdot w_i }{\sum_{i=0}^{1} w_i} = \frac{(1 \cdot 3) + (1 \cdot 2)}{3 + 2} = \frac{5}{5} = 1\]
+            
+            \item \textbf{Recall:} \[\frac{\sum_{i=0}^{1} \text{recall}_i \cdot w_i }{\sum_{i=0}^{1} w_i} = \frac{(1 \cdot 3) + (1 \cdot 2)}{3 + 2} = \frac{5}{5} = 1\]
+            
+            \item \textbf{F1-Score:} \[\frac{\sum_{i=0}^{1} \text{F1-Score}_i \cdot w_i }{\sum_{i=0}^{1} w_i} = \frac{(1 \cdot 3) + (1 \cdot 2)}{3 + 2} = \frac{5}{5} = 1\]
+        \end{itemize}
+\end{itemize}
