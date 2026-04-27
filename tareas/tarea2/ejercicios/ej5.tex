@@ -40,7 +40,7 @@ Después aplicaremos la fórmula para la probabilidad conjunta
 
 \newpage
 \begin{itemize}
-    \item Ejemplo de evaluación 0:
+    \item Ejemplo de evaluación 0:\\
     Comenzamos por obtener $P(x|y)$ de cada dato para la clase $y=0$
     \begin{align*}
         P(x_1=0.3|y=0) & = \frac{1}{\sqrt{2\pi(0.0167)}} e^{-\frac{(0.3-0.35)^2}{2(0.0167)}} = 2.87 \\
@@ -72,8 +72,8 @@ Después aplicaremos la fórmula para la probabilidad conjunta
 
     \newpage
 
-    \item Ejemplo de evaluación 1:
-    \item Comenzamos por obtener $P(x|y)$ de cada dato para la clase $y=0$
+    \item Ejemplo de evaluación 1:\\
+    Comenzamos por obtener $P(x|y)$ de cada dato para la clase $y=0$
     \begin{align*}
         P(x_1=0.8|y=0) & = \frac{1}{\sqrt{2\pi(0.0167)}} e^{-\frac{(0.8-0.35)^2}{2(0.0167)}} = 0.0071 \\
         P(x_2=0.5|y=0) & = \frac{1}{\sqrt{2\pi(0.0025)}} e^{-\frac{(0.5-0.575)^2}{2(0.0025)}} = 2.59 \\
@@ -102,11 +102,94 @@ Después aplicaremos la fórmula para la probabilidad conjunta
     Veamos que la probabilidad conjunta de la clase $y=0$ es mayor que la de la clase $y=1$, por lo que se estima que este ejemplo de evaluación pertenece a la clase $y=0$ con una probabilidad de $\frac{0.057}{0.057 + 0.00082} = 0.985$, lo cual coincide con lo indicado ya que se indica que es de la clase $y=0$.
     \newpage
 
-    \item Ejemplo de evaluación 2:
+    \item Ejemplo de evaluación 2:\\
+    Comenzamos por obtener $P(x|y)$ de cada dato para la clase $y=0$
+    \begin{align*}
+        P(x_1=0.8|y=0) & = \frac{1}{\sqrt{2\pi(0.0167)}} e^{-\frac{(0.8-0.35)^2}{2(0.0167)}} = 0.0071 \\
+        P(x_2=0.5|y=0) & = \frac{1}{\sqrt{2\pi(0.0025)}} e^{-\frac{(0.5-0.575)^2}{2(0.0025)}} = 2.59 \\
+        P(x_3=1|y=0) & = \frac{1}{\sqrt{2\pi(0.00235)}} e^{-\frac{(1-0.0275)^2}{2(0.00235)}} = 0
+    \end{align*}
+
+    Calculamos la probabilidad conjunta
+    \begin{align*}
+        P(y=0, x_1=0.8, x_2=0.5, x_3=1) & = 0.444 \cdot 0.0071 \cdot 2.59 \cdot 0 \\
+        & = 0
+    \end{align*}
+
+    Ahora veamos que sucede en la clase $y=1$
+    \begin{align*}
+        P(x_1=0.8|y=1) & = \frac{1}{\sqrt{2\pi(0.0375)}} e^{-\frac{(0.8-0.75)^2}{2(0.0375)}} = 1.992 \\
+        P(x_2=0.5|y=1) & = \frac{1}{\sqrt{2\pi(0.0145)}} e^{-\frac{(0.5-0.73)^2}{2(0.0145)}} = 0.534 \\
+        P(x_3=1|y=1) & = \frac{1}{\sqrt{2\pi(0.047)}} e^{-\frac{(1-0.82)^2}{2(0.047)}} = 1.303
+    \end{align*}
+
+    Calculamos la probabilidad conjunta
+    \begin{align*}
+        P(y=1, x_1=0.8, x_2=0.5, x_3=1) & = 0.556 \cdot 1.992 \cdot 0.534 \cdot 1.303 \\
+        & = 0.7706
+    \end{align*}
+    
+    Veamos que la probabilidad conjunta de la clase $y=1$ es mayor que la de la clase $y=0$, por lo que se estima que este ejemplo de evaluación pertenece a la clase $y=1$ con una probabilidad de $\frac{0.7706}{0 + 0.7706} = 1$, lo cual coincide con lo indicado ya que se indica que es de la clase $y=1$.
     \newpage
     
-    \item Ejemplo de evaluación 3:
+    \item Ejemplo de evaluación 3:\\
+    Comenzamos por obtener $P(x|y)$ de cada dato para la clase $y=0$
+    \begin{align*}
+        P(x_1=1|y=0) & = \frac{1}{\sqrt{2\pi(0.0167)}} e^{-\frac{(1-0.35)^2}{2(0.0167)}} = 0.00001  \\
+        P(x_2=0.9|y=0) & = \frac{1}{\sqrt{2\pi(0.0025)}} e^{-\frac{(0.9-0.575)^2}{2(0.0025)}} = 0 \\
+        P(x_3=0.1|y=0) & = \frac{1}{\sqrt{2\pi(0.00235)}} e^{-\frac{(0.1-0.0275)^2}{2(0.00235)}} = 2.689
+    \end{align*}
+
+    Calculamos la probabilidad conjunta
+    \begin{align*}
+        P(y=0, x_1=1, x_2=0.9, x_3=0.1) & = 0.444 \cdot 0.00001 \cdot 0 \cdot 2.689 \\
+        & = 0
+    \end{align*}
+
+    Ahora veamos que sucede en la clase $y=1$
+    \begin{align*}
+        P(x_1=1|y=1) & = \frac{1}{\sqrt{2\pi(0.0375)}} e^{-\frac{(1-0.75)^2}{2(0.0375)}} = 0.895 \\
+        P(x_2=0.9|y=1) & = \frac{1}{\sqrt{2\pi(0.0145)}} e^{-\frac{(0.9-0.73)^2}{2(0.0145)}} = 1.223 \\
+        P(x_3=0.1|y=1) & = \frac{1}{\sqrt{2\pi(0.047)}} e^{-\frac{(0.1-0.82)^2}{2(0.047)}} = 0.0074
+    \end{align*}
+
+    Calculamos la probabilidad conjunta
+    \begin{align*}
+        P(y=1, x_1=1, x_2=0.9, x_3=0.1) & = 0.556 \cdot 0.895 \cdot 1.223 \cdot 0.0074 \\
+        & = 0.0045
+    \end{align*}
+    
+    Veamos que la probabilidad conjunta de la clase $y=1$ es mayor que la de la clase $y=0$, por lo que se estima que este ejemplo de evaluación pertenece a la clase $y=1$ con una probabilidad de $\frac{0.0045}{0 + 0.0045} = 1$, lo cual coincide con lo indicado ya que se indica que es de la clase $y=1$.
     \newpage
     
-    \item Ejemplo de evaluación 4:
+    \item Ejemplo de evaluación 4:\\
+    Comenzamos por obtener $P(x|y)$ de cada dato para la clase $y=0$
+    \begin{align*}
+        P(x_1=0.35|y=0) & = \frac{1}{\sqrt{2\pi(0.0167)}} e^{-\frac{(0.35-0.35)^2}{2(0.0167)}} = 3.087  \\
+        P(x_2=0.7|y=0) & = \frac{1}{\sqrt{2\pi(0.0025)}} e^{-\frac{(0.7-0.575)^2}{2(0.0025)}} = 0.35 \\
+        P(x_3=0|y=0) & = \frac{1}{\sqrt{2\pi(0.00235)}} e^{-\frac{(0-0.0275)^2}{2(0.00235)}} = 7.006
+    \end{align*}
+
+    Calculamos la probabilidad conjunta
+    \begin{align*}
+        P(y=0, x_1=0.35, x_2=0.7, x_3=0) & = 0.444 \cdot 3.087 \cdot 0.35 \cdot 7.006 \\
+        & = 3.36
+    \end{align*}
+
+    Ahora veamos que sucede en la clase $y=1$
+    \begin{align*}
+        P(x_1=0.35|y=1) & = \frac{1}{\sqrt{2\pi(0.0375)}} e^{-\frac{(0.35-0.75)^2}{2(0.0375)}} = 0.244 \\
+        P(x_2=0.7|y=1) & = \frac{1}{\sqrt{2\pi(0.0145)}} e^{-\frac{(0.7-0.73)^2}{2(0.0145)}} = 3.211 \\
+        P(x_3=0|y=1) & = \frac{1}{\sqrt{2\pi(0.047)}} e^{-\frac{(0-0.82)^2}{2(0.047)}} = 0.0014
+    \end{align*}
+
+    Calculamos la probabilidad conjunta
+    \begin{align*}
+        P(y=1, x_1=0.35, x_2=0.7, x_3=0) & = 0.556 \cdot 0.244 \cdot 3.211 \cdot 0.0014 \\
+        & = 0.0006
+    \end{align*}
+    
+    Veamos que la probabilidad conjunta de la clase $y=0$ es mayor que la de la clase $y=1$, por lo que se estima que este ejemplo de evaluación pertenece a la clase $y=0$ con una probabilidad de $\frac{3.36}{3.36 + 0.0006} = 0.999822$, lo cual coincide con lo indicado ya que se indica que es de la clase $y=0$.
 \end{itemize}
+\newpage
+
