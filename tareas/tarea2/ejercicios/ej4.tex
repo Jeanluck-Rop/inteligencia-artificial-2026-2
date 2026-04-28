@@ -1,41 +1,52 @@
-Para determinar la clase a partir de las observaciones entonces usaremos
-\[argmax_y [ P(y_i) \prod_{d}^{x_i} P(x_i | y)]\]
-Donde $Y=\{Llueve, Soleado\}$ y $X=(despejado, temperatura\text{ }alta)$ usando Bayes Naïve Frecuentista por lo que tendremos que  aplicar $P(y) = \frac{fr(y)}{N}$, asi que
+Para determinar la clase a partir de las observaciones, usaremos Bayes Naïve Frecuentista, por lo que primero buscaremos la probabilidades a priori:
 
 \begin{align*} % P(c)
     P(Llueve) & = \frac{2}{3} = 0.667\\
-    P(Soleado) & = \frac{1}{3} = 0.333 \\\\
+    P(Soleado) & = \frac{1}{3} = 0.333
 \end{align*}
 
-Ahora aplicaremos $P(x|y)=\frac{fr(x,y)}{fr(y)}$ siendo así
+Ahora asignaremos un valor binario a cada uno de los datos mencionados agrupandolos por clases, para cualquier dato si este se encuentra en el vector asignaremos $1$ y si no lo está asignaremos un $0$.
+\begin{center}
+    \begin{tabular}{c|c|c|c|c|c}
+    Y / X & Nublado & Despejado & Temp. baja & Temp. alta & Humedad\\
+     \hline
+    Llueve  & 1 & 0 & 1 & 0 & 0 \\
+    \hline
+    Llueve  & 1 & 0 & 0 & 1 & 1 \\
+    \hline
+    Soleado & 0 & 1 & 0 & 1 & 0
+\end{tabular}
+\end{center}
 
-\begin{align*} % P(x|c)
-    P(despejado|Llueve) = 0\\
-    P(temperatura\text{ }alta|Llueve) = \frac{1}{2} = 0.5\\\\
-    P(despejado|Soleado) = 1 \\
-    P(temperatura\text{ }alta|Soleado) = 1
-\end{align*}
+Ahora aplicaremos $P(x|y)=\frac{fr(x,y)+1}{fr(y)+2}$ donde se suma $1$ en el numerador para suavizar y $+2$ en el denominador (por elproducto los valores posibles y la suma para el suavizado) siendo así
 
-Por lo que tenemos lo siguiente para cada clase
+\begin{center}
+    \begin{tabular}{c|c|c|c|c|c}
+    Y / X & Nublado & Despejado & Temp. baja & Temp. alta & Humedad\\
+     \hline
+    Llueve  & $\frac{3}{4}=0.75$ & $\frac{1}{4} = 0.25$ & $\frac{2}{4} = 0.5$ & $\frac{2}{4} =0.5$ & $\frac{2}{4} = 0.5$ \\
+    \hline
+    Soleado & $\frac{1}{3} = 0.333$ & $\frac{2}{3} = 0.666$ & $\frac{1}{3} 0 .333$ & $\frac{2}{3} = 0.666$ & $\frac{1}{3} = 0.333$
+\end{tabular}
+\end{center}
+
+Veamos que las observaciones dadas son $\{\text{despejado, temperatura alta}\}$, aplicaremos la formula de la probabilidad conjunta
+\[argmax_y [ P(y) \prod_{x_i}^{d} P(x_i | y)]\]
+
+Seleccionando el máximo para determinar la clase
 \begin{itemize}
-    \item Llueve: $P(Llueve, despejado, temperatura\text{ }alta )$
-          \begin{align*}
-            &= P(despejado|Llueve) \cdot P(temperatura \text{ } alta|Llueve) \cdot P(Llueve)\\
-            &= 0 \cdot 0.5 \cdot 0.667\\
-            &= 0 
-          \end{align*}
-
-    \item Soleado: $ P(Soleado, despejado, temperatura\text{ }alta ) $
+    \item $Y=Llueve$
         \begin{align*}
-           &= P(despejado|Soleado) \cdot P(temperatura \text{ } alta|Soleado) \cdot P(Soleado)\\
-            &= 1 \cdot 1 \cdot \frac{1}{3}\\
-            &= \frac{1}{3} 
+            P(Llueve) \cdot P(despejado|Llueve) \cdot P(temperatura\text{ }alta|Llueve) &= 0.667 \cdot 0.25 \cdot 0.5\\
+            &= 0.0833
+        \end{align*}
+    \item $Y=Soleado$
+        \begin{align*}
+            P(Soleado) \cdot P(despejado|Soleado) \cdot P(temperatura\text{ }alta|Soleado) &= 0.333 \cdot 0.666 \cdot 0.666\\
+            &= 0.1477
         \end{align*}
 \end{itemize}
 
-Ahora que la clase más con el valor más alto es soleado, basta dividir el valor correspondiente a la clase ganadora sobre  los valores obtenidos de cada clase
-\[P(Soleado|Observaciones) = \frac{\frac{1}{3}}{\frac{1}{3}+0} = 1\]
-
-Siendo así que la clase más probable es \textbf{Soleado} con $P=1$
-
- 
+Veamos entonces que el valor más alto es el de $Y=Soleado$, para determinar la probabilidad de que se pertenezca a esta clase basta con  dividir el valor correspondiente a la clase ganadora sobre  los valores obtenidos de cada clase
+\[P(Soleado|Observaciones) = \frac{0.1477}{0.1477+ 0.0833} = 0.64\]
+Con lo que se tiene una probabilidad del $64\%$.
