@@ -1,66 +1,108 @@
-Procedemos la demostración por \textbf{inducción sobre el tiempo} $t$:
+Procedemos la demostración por \textbf{inducción sobre} $t$.
 
 \bigskip
 
-\textbf{1. Caso base} ($t = 1$):\\
-
+\boxed{\textbf{Caso base}} ($t = 1$):\\
 Por definición de la inicialización del algoritmo, se tiene:
 \[
 \delta_j(1) = \pi_j \cdot B_{j,\,x^{(1)}}
 \]
 
-Donde $\pi_j = p(y^{(1)} = s_j)$ es la probabilidad inicial y $B_{j,x^{(1)}} = p(x^{(1)} \mid y^{(1)} = s_j)$ es la
-probabilidad de emisión, al no existir estados previos, el máximo sobre una secuencia vacía es simplemente la
-probabilidad conjunta del primer estado y la primera observación:
+Esto es exactamente la probabilidad de comenzar en el estado $s_j$ y emitir la primera observación $x^{(1)}$ pues,
+al no existir estados previos, el máximo sobre una secuencia vacía es simplemente la probabilidad conjunta del
+primer estado y la primera observación:
 \[
-p\!\left(x^{(1)}, y^{(1)} = s_j\right) = p\!\left(y^{(1)} = s_j\right) p\!\left(x^{(1)} \mid y^{(1)} = s_j\right)
+\delta_j(1) = p\!\left(x^{(1)},\; y^{(1)} = s_j\right)
 \]
   
-Por lo tanto, la igualdad se cumple trivialmente para $t=1$.
+No hay estados anteriores que maximizar, por lo que el caso base se cumple trivialmente para $t=1$. $\checkmark$
 
 \bigskip
 
-\textbf{2. Hipótesis inductiva}:\\
-
-Supongamos que para $t-1$, la variable $\delta_i(t-1)$ representa correctamente la probabilidad máxima para cualquier estado $s_i \in S$:
+\boxed{\textbf{Hipótesis de inducción}}:\\
+Supongamos que para $t-1$, la variable $\delta_i(t-1)$ representa correctamente la probabilidad máxima para
+cualquier estado $s_i \in S$:
 \[
 \delta_i(t-1) = \max_{y^{(1)} \cdots y^{(t-2)}} p\!\left(x^{(1)} \cdots x^{(t-1)},\ y^{(1)} \cdots y^{(t-2)},\ y^{(t-1)} = s_i\right)
 \]
 
 \bigskip
 
-\textbf{3. Paso inductivo}:\\
-
-La relación de recurrencia de Viterbi mantiene esta propiedad para el tiempo $t$, partiendo de la definición de la probabilidad conjunta y aplicando la regla de la cadena, tenemos:
+\boxed{\textbf{Paso inductivo}}:\\
+Queremos demostrar que la recurrencia del algoritmo:
 \[
-p\!\left(x^{(1:t)}, y^{(1:t)}\right) = p\!\left(x^{(t)} \mid y^{(t)}\right) p\!\left(y^{(t)} \mid y^{(t-1)}\right) p\!\left(x^{(1:t-1)}, y^{(1:t-1)}\right)
+\delta_j(t) = \max_{1 \leq i \leq N} \bigl[\delta_i(t-1)\cdot A_{ij}\bigr] \cdot B_{j,\,x^{(t)}}
+\]
+calcula correctamente el máximo hasta el tiempo $t$.\\
+
+Desarrollamos directamente el máximo que queremos calcular:
+\[
+\max_{y^{(1)} \cdots y^{(t-1)}} p\!\left(x^{(1)} \cdots x^{(t)},\; y^{(1)} \cdots y^{(t-1)},\; y^{(t)} = s_j\right)
 \]
 
-Al buscar el máximo sobre los estados previos $y^{(1)} \cdots y^{(t-1)}$, podemos descomponer el operador de maximización, dado que los términos de emisión y transición actuales no dependen de la trayectoria histórica, estos pueden extraerse del máximo interno:
+Por la \textbf{independencia de emisión} del HMM, el factor $p(x^{(t)} \mid y^{(t)} = s_j) = B_{j,\,x^{(t)}}$ no
+depende de los estados anteriores y puede extraerse del máximo:
 \[
-\delta_j(t) = B_{j,\,x^{(t)}} \cdot \max_{y^{(t-1)}} \left[ A_{y^{(t-1)}, j} \cdot \max_{y^{(1:t-2)}} p\!\left(x^{(1:t-1)}, y^{(1:t-1)}\right) \right]
+=\; B_{j,\,x^{(t)}} \cdot \max_{y^{(t-1)}}
+\left[ A_{y^{(t-1)},\,j} \cdot \max_{y^{(1)} \cdots y^{(t-2)}} p\!\left(x^{(1)}
+  \cdots x^{(t-1)},\; y^{(1)} \cdots y^{(t-2)},\; y^{(t-1)}\right) \right]
 \]
 
-Sustituyendo por la \textbf{H.I.}:
+Por la \textbf{propiedad de Márkov}, la transición $p(y^{(t)}=s_j \mid y^{(t-1)}) = A_{y^{(t-1)},\,j}$ también puede
+separarse del máximo interior. Aplicando la \textbf{hipótesis inductiva}, el término interior es exactamente
+$\delta_{y^{(t-1)}}(t-1)$:
 \[
-\delta_j(t) = B_{j,\,x^{(t)}} \cdot \max_{1 \leq i \leq N} \left[ A_{ij} \cdot \delta_i(t-1) \right]
+=\; B_{j,\,x^{(t)}} \cdot \max_{1 \leq i \leq N} \left[ \delta_i(t-1)\cdot A_{ij} \right]
 \]
-  
-Esta expresión coincide exactamente con la actualización recursiva del algoritmo, demostrando que $\delta_j(t)$ preserva el máximo en cada paso.
+Esto es exactamente la recurrencia de Viterbi, por lo que la igualdad se cumple para $t$. $\checkmark$
 
 \bigskip
 
-\textbf{4. Optimalidad de la cadena completa}:
+\boxed{\textbf{Optimalidad de la cadena completa y backtracking}}:\\
+Por el \textbf{Principio de Optimalidad de Bellman}:\\
+Si una secuencia $y^{(1)}, \ldots, y^{(T)}$ es globalmente óptima, entonces su prefijo $y^{(1)}, \ldots, y^{(t)}$ es
+óptimo para el subproblema hasta $t$, esto garantiza que $\delta_j(t)$ preserva el máximo correcto en cada paso
+$t$.\\
 
-La validez global del algoritmo se fundamenta en el \textbf{Principio de Optimalidad de Bellman}, dado que cada $\delta_j(t)$ almacena la probabilidad del mejor camino que termina en $s_j$, la probabilidad de la secuencia más probable de longitud $T$ es simplemente:
+Al finalizar la recursión, el estado óptimo final se identifica como:
 \[
-  P^* = \max_{1 \leq j \leq N} \delta_j(T)
+\hat{y}^{(T)} = \arg\max_{1 \leq j \leq N}\,\delta_j(T)
 \]
-Puesto que en cada paso $t$ se almacena un apuntador $\phi_j(t)$ al estado anterior que maximizó la expresión, es posible reconstruir la cadena óptima mediante un proceso de \textit{backtracking}. Por la inducción anterior, podemos garantizar que esta cadena es la de probabilidad máxima global:
+
+Los apuntadores $\phi_j(t) = \arg\max_{i}\bigl[\delta_i(t-1)\cdot A_{ij}\bigr)$, almacenados durante la recursión,
+reconstruyen la cadena completa hacia atrás. Por la inducción demostrada, esa cadena tiene probabilidad máxima
+global:
 \[
-  \hat{y}^{(1)} \cdots \hat{y}^{(T)} = \arg\max_{y^{(1)} \cdots y^{(T)}} p\!\left(x^{(1)} \cdots x^{(T)}, y^{(1)} \cdots y^{(T)}\right)
+\hat{y}^{(1)}, \hat{y}^{(2)}, \ldots, \hat{y}^{(T)}
+= \arg\max_{y^{(1)} \cdots y^{(T)}} p\!\left(x^{(1)} \cdots x^{(T)},\; y^{(1)} \cdots y^{(T)}\right)
 \]
 
 \bigskip
+\bigskip
 
-Es relevante destacar que, gracias a esta estructura recursiva, el algoritmo reduce la exploración de un espacio exponencial de trayectorias ($O(|S|^T)$) a un problema de programación dinámica con complejidad temporal de $O(T \cdot |S|^2)$. El uso de la estructura \textit{Trellis} permite descartar en cada paso los caminos subóptimos que no pueden formar parte de una solución global óptima.
+En la demostración es una aprovechamos dos ideas clave:
+\begin{enumerate}
+\item \textbf{La estructura del HMM permite separar el presente del pasado.}
+  Gracias a la propiedad de Márkov y a la independencia de emisión, la probabilidad en el tiempo $t$ se puede
+  escribir como:
+  \[
+  \underbrace{\delta_i(t-1)}_{\text{mejor camino hasta } t-1}
+  \times
+  \underbrace{A_{ij}}_{\text{transición}}
+  \times
+  \underbrace{B_{j,\,x^{(t)}}}_{\text{emisión}}
+  \]
+  El pasado queda completamente \textbf{resumido} en el escalar $\delta_i(t-1)$, no es necesario recordar cómo
+  se llegó a ese valor, solo su resultado.
+
+\item \textbf{El Principio de Optimalidad de Bellman.}
+  Para llegar de forma óptima a un estado $s_j$ en el tiempo $t$, necesariamente se debió llegar de forma óptima
+  al estado $s_i$ en $t-1$. En lugar de explorar todos los $|S|^T$ caminos posibles, basta con guardar el mejor
+  valor acumulado hasta cada estado en cada instante, reduciendo la complejidad de
+  $\mathcal{O}(|S|^T)$ a $\mathcal{O}(T \cdot |S|^2)$.
+\end{enumerate}
+
+El algoritmo de Viterbi puede verse como la búsqueda del camino más probable en un grafo de Trellis, donde en
+cada columna temporal solo se conserva el mejor camino hacia cada nodo y se descartan todos los demás.
+Los apuntadores $\phi$ son el mecanismo que permite recuperar ese camino óptimo al final, recorriéndolo
+hacia atrás desde el estado final con mayor $\delta$.
