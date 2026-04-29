@@ -1,4 +1,4 @@
-Para determinar la clase a partir de las observaciones, usaremos Bayes Naïve Frecuentista, por lo que primero buscaremos la probabilidades a priori:
+\textbf{R:} Para determinar la clase a partir de las observaciones, usaremos Bayes Naïve Frecuentista, por lo que primero buscaremos la probabilidades a priori:
 
 \begin{align*} % P(c)
     P(Llueve) & = \frac{2}{3} = 0.667\\
@@ -18,7 +18,7 @@ Ahora asignaremos un valor binario a cada uno de los datos mencionados agrupando
 \end{tabular}
 \end{center}
 
-Ahora aplicaremos $P(x|y)=\frac{fr(x,y)+1}{fr(y)+2}$ donde se suma $1$ en el numerador para suavizar y $+2$ en el denominador (por elproducto los valores posibles y la suma para el suavizado) siendo así
+Ahora aplicaremos $P(x|y)=\frac{fr(x,y)+1}{fr(y)+2}$ donde se suma $1$ en el numerador y $+2$ en el denominador   (esto dado la cantidad de valores posibles que puede tomar cada variable) para suavizar siendo así
 
 \begin{center}
     \begin{tabular}{c|c|c|c|c|c}
@@ -26,7 +26,7 @@ Ahora aplicaremos $P(x|y)=\frac{fr(x,y)+1}{fr(y)+2}$ donde se suma $1$ en el num
      \hline
     Llueve  & $\frac{3}{4}=0.75$ & $\frac{1}{4} = 0.25$ & $\frac{2}{4} = 0.5$ & $\frac{2}{4} =0.5$ & $\frac{2}{4} = 0.5$ \\
     \hline
-    Soleado & $\frac{1}{3} = 0.333$ & $\frac{2}{3} = 0.666$ & $\frac{1}{3} 0 .333$ & $\frac{2}{3} = 0.666$ & $\frac{1}{3} = 0.333$
+    Soleado & $\frac{1}{3} = 0.333$ & $\frac{2}{3} = 0.666$ & $\frac{1}{3} = 0 .333$ & $\frac{2}{3} = 0.666$ & $\frac{1}{3} = 0.333$
 \end{tabular}
 \end{center}
 

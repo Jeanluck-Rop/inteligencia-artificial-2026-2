@@ -63,8 +63,7 @@ Después aplicaremos la fórmula para la probabilidad conjunta
 
     Calculamos la probabilidad conjunta
     \begin{align*}
-        P(y=1, x_1=0.3, x_2=0.7, x_3=0.02) & = P(y=1) \cdot P(x_1=0.3|y=1) \cdot P(x_2=0.7|y=1) \cdot P(x_3=0.02|y=1) \\
-        & = 0.556 \cdot 0.138 \cdot 3.211 \cdot 0.002 \\
+        P(y=1, x_1=0.3, x_2=0.7, x_3=0.02) & = 0.556 \cdot 0.138 \cdot 3.211 \cdot 0.002 \\
         & = 0.00049 
     \end{align*}
     
@@ -214,7 +213,7 @@ Ahora evaluaremos las métricas, basandonos en la documentación de \href{https:
     \[2 \cdot \frac{\text{precisión} \cdot \text{recall}}{\text{precisión} + \text{recall}} = 2 \cdot \frac{1 \cdot 1}{1 + 1} = 1\]
 
     \item \textbf{Accuracy:} Dadas todas las clases, es el número de verdaderos positivos sobre el total de ejemplos
-    \[\frac{TP_{Y=0} + TP_{Y=1} }{N}= \frac{3 + 2}{5} = 1\]
+    \[\frac{tp_{Y=0} + tp_{Y=1} }{N}= \frac{3 + 2}{5} = 1\]
     
     \item \textbf{Macro Average:} Es la media aritmética de cada uno de cada métrica para cada clase
     \begin{itemize}
