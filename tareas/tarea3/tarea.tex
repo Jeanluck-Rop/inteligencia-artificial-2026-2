@@ -1,0 +1,208 @@
+\documentclass[12pt,letterpaper]{article}
+
+\setlength{\parindent}{0pt}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{array, xcolor}
+\usepackage{graphicx, geometry, tikz}
+\usepackage{forest, tocloft}
+\usepackage{booktabs, listings, float, enumitem}
+\usepackage{blindtext}
+\usepackage[colorlinks=true, linkcolor=black, urlcolor=blue]{hyperref}
+\usetikzlibrary{arrows.meta, positioning, automata}
+\usepackage[normalem]{ulem}
+
+\geometry{margin=2cm, top=2cm, bottom=2cm}
+
+\tikzset{
+  state/.style={circle, draw, minimum size=1.4cm, thick, font=\large},
+  ellipstate/.style={draw, ellipse, thick, font=\small, inner sep=4pt},
+  inicio/.style={rectangle, draw, minimum width=1.6cm, minimum height=0.9cm,
+                 thick, font=\normalsize},
+  trans/.style={->, >=Stealth, thick},
+  winner/.style={->, >=Stealth, thick, blue!80},
+  loser/.style={->, >=Stealth, thick, gray!50},
+  optimal/.style={->, >=Stealth, very thick, red!70},
+}
+
+\begin{document}
+
+\input{portada}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\tableofcontents
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Ejercicio 1.}
+
+Con los siguientes datos:
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{ccc}
+    \toprule
+    $x_1$ & $x_2$ & $y$ \\
+    \midrule
+    0 & 0 & 0 \\
+    0 & 1 & 0 \\
+    1 & 0 & 0 \\
+    1 & 1 & 1 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Aplicar el algoritmo de regresión lineal para obtener los $w$ y $b$ que clasifiquen adecuadamente. Inicializar con $\mathbf{w} = (1\ 1)$ y $b = 1$, usando un rango de aprendizaje $\eta = 0.5$ (usar máximo 3 iteraciones).
+
+     
+\bigskip
+
+\input{ejercicios/ej1.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Ejercicio 2.}
+Muestra que bajo un mismo conjunto de parámetros $\mathbf{w}$ y $b$, la regresión lineal y el perceptrón realizan la misma clasificación.
+
+\bigskip
+
+\input{ejercicios/ej2.tex}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Ejercicio 3.}
+A partir de los datos que se presentan a continuación, aplica el algoritmo de árboles de decisión para obtener el árbol usando impureza de Gini como función de información:\\
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{ccc|c}
+    \toprule
+    Animal & Doméstico & Pequeño & \textbf{Y} \\
+    \midrule
+    1 & 1 & 0 & 1 \\
+    1 & 1 & 1 & 0 \\
+    1 & 1 & 1 & 1 \\
+    1 & 0 & 0 & 0 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+\\
+¿El algoritmo termina con hojas en cada clase con los datos dados?
+
+\bigskip
+
+\input{ejercicios/ej3.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Ejercicio 4.}
+A partir de los datos que se muestran a continuación, utilizar el algoritmo de $k$ vecinos más cercanos para determinar la clase del punto $\mathbf{x} = (0,2 \quad 0,2)$ con $k = 3$:
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{cc}
+    \toprule
+    $x_1$ & $x_2$ \\
+    \midrule
+    0 & 0 \\
+    1 & 0 \\
+    0 & 1 \\
+    1 & 1 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+\\
+\emph{Nota: Siguiendo el comentario en classroom, las clases son $0,1,0,1$ para cada dato en el orden dado.}
+
+\bigskip
+
+\input{ejercicios/ej4.tex}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Ejercicio 5.}
+Obsérvese los siguientes clústers donde el gold-standard está representado por las figuras geométricas:
+\begin{center}
+  \includegraphics[height=5cm]{ejercicios/assets/clusters_ej5.png}
+\end{center}
+Calcular el valor de \textit{pureza} de estos clústers.
+
+\bigskip
+
+\input{ejercicios/ej5.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Ejercicio 6.}
+Demuestra que la función objetivo de $k$-medias minimiza la varianza sobre la distribución de los datos, dadas las $k$ medias.
+
+\bigskip
+
+\input{ejercicios/ej6.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Ejercicio 7.}
+Con los siguientes datos no supervisados:\\
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{cc}
+    \toprule
+    $x_1$ & $x_2$ \\
+    \midrule
+    0   & 0   \\
+    0.2 & 0.2 \\
+    0.7 & 0.7 \\
+    0.5 & 0.5 \\
+    1   & 1   \\
+    \bottomrule
+  \end{tabular}
+\end{table}\\
+Aplicar el algoritmo de $k$ medias con $k = 2$ tomando los centroides iniciales $\mu_1 = (0,1 \quad 0,1)$ y $\mu_2 = (0,6 \quad 0,6)$.
+
+\bigskip
+
+\input{ejercicios/ej7.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Ejercicio 8.}
+Considerando un agente de aprendizaje por refuerzo que navega en una cuadrícula iniciando en el estado $0$ y cuya meta es el estado $5$:
+\begin{center}
+  \begin{tabular}{|c|c|c|}
+    \hline
+    0 & 1 & 2 \\
+    \hline
+    3 & 4 & 5\\
+    \hline 
+  \end{tabular}
+\end{center}
+Calcula los valores de acción y los valores $Q$ en 1 iteración para cada estado. Asume que sólo el estado final tiene recompensa $1$, mientras los otros estados tienen recompensa $0$.
+
+\bigskip
+
+\input{ejercicios/ej8.tex}
+
+
+\end{document}
