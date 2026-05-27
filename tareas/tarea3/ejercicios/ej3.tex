@@ -1,1 +1,26 @@
-\textbf{R:} 
+\textbf{R:} Se tiene el algoritmo para la construccion del arbol de decision, 
+\begin{algorithm}
+\caption{BUILD\_TREE($X$, $Y$, $I$)}
+\begin{algorithmic}[1]  % [1] activa numeración de líneas
+\Require $X$ datos, $Y$ clases, $I$ medida de información.
+\Ensure El árbol de decisión construido.
+\State $\Phi \gets FEATURES(X)$
+\State $I \gets I(Y)$
+\State $\phi \gets \varnothing$ 
+\State $Best \gets 0$
+\For{$\phi \in \Phi$}
+    \State $GI \gets I-p(\phi)I(y|\phi)-p(\neg\phi)I(y|\neg\phi)$
+    \If{$GI > Best$}
+        \State $Best \gets GI$
+        \State $\phi^* \gets argmax_\phi GI$ 
+    \EndIf
+\EndFor
+\If{$Best > 0$}
+\State $Node.Parent \gets \phi^*$
+\State $Node.Positive \gets BUILD\_TREE(X|\phi^*, Y_{\neg\phi}, I)$
+\EndIf
+\end{algorithmic}
+\end{algorithm}
+
+% Entropía \[ H(X) = \sum_{y \in X_k} p(y) \log p(y) \]
+% Inpureza de Gini \[ G(X_k) = \sum_{y \in X_k} p(y)(1-p(y)) \]
