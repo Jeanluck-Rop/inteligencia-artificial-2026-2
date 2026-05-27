@@ -1,1 +1,51 @@
-\textbf{R:} 
+\textbf{R:} Para calcular los valores de acción, partiremos de lo que ya sabemos y simplificaremos un poco la fórmula, podemos asumir que como todos los valores $Q$ iniciales son $0$, eso significa que la máxima recompensa futura será $0$ para cualquier $s'$.
+
+Tenemos entonces:
+\begin{align*}
+    Q(s, a) &= Q(s, a) + \alpha [r(s,a) + \gamma \max_{a'} Q(s', a') - Q(s, a)] \\
+    &= 0 + \alpha [r(s,a) + \gamma(0) - 0] \\
+    &= \alpha \cdot r(s,a)
+\end{align*}
+
+Ahora veamos las transiciones posibles:
+\begin{itemize}
+    \item Estado $0$
+          \begin{itemize}
+              \item $Q(0, Derecha) = \alpha \cdot r = \alpha \cdot 0 = 0$
+              \item $Q(0, Abajo) = \alpha \cdot r = \alpha \cdot 0 = 0$
+          \end{itemize}
+
+    \item Estado $1$
+          \begin{itemize}
+                \item $Q(1, Izquierda) = \alpha \cdot r = \alpha \cdot 0 = 0$
+                \item $Q(1, Derecha) = \alpha \cdot r = \alpha \cdot 0 = 0$
+                \item $Q(1, Abajo) = \alpha \cdot r = \alpha \cdot 0 = 0$  
+          \end{itemize}
+    \item Estado $2$
+            \begin{itemize}
+                \item $Q(2, Izquierda) = \alpha \cdot r = \alpha \cdot 0 = 0$
+                \item $Q(2, Abajo) = \alpha \cdot r = \alpha \cdot 1 = \alpha$
+            \end{itemize}
+    \item Estado $3$
+            \begin{itemize}
+                \item $Q(3, Arriba) = \alpha \cdot r = \alpha \cdot 0 = 0$
+                \item $Q(3, Derecha) = \alpha \cdot r = \alpha \cdot 0 = 0$
+            \end{itemize}
+    \item Estado $4$
+            \begin{itemize}
+                \item $Q(4, Izquierda) = \alpha \cdot r = \alpha \cdot 0 = 0$
+                \item $Q(4, Derecha) = \alpha \cdot r = \alpha \cdot 1 = \alpha$
+                \item $Q(4, Arriba) = \alpha \cdot r = \alpha \cdot 0 = 0$
+            \end{itemize}
+\end{itemize}
+
+Como podemos apreciar en las trancisiones, para cualquier acción en los estados $0,1,3$ el valor de $Q$ es $0$, mientras que para las acciones $Abajo$ en el estado $2$ y $Derecha$ en el estado $4$, el valor de $Q$ es $\alpha$ (las demas acciones en estos estados tendran un valor para $Q$ de $0$).
+
+\begin{comment}
+    $Q(s, a) = Q(s, a) + \alpha [r(s,a) + \gamma \max_{a'} Q(s', a') - Q(s, a)]$
+    r(s,a) = recompensa obtenida en ese estado dad auna solución.
+    $\gamma$ = factor de descuento para un estado futuro, entre 0 y 1.
+    $\alpha$ = tasa de aprendizaje, entre 1 e irá descendieondo hasta 0.
+    $Q(s,a)$ = valor Q para el estado $s$ y la acción $a$.
+    $max_{a'} Q(s', a')$ = máxima futura recompensa esperada para el estado $s'$.
+\end{comment}
