@@ -1,1 +1,80 @@
-\textbf{R:} 
+Antes de demostrar, recordemos qué hace cada modelo. Ambos reciben un vector
+$\mathbf{x} \in \mathbb{R}^d$ y producen una etiqueta $\hat{y} \in \{0, 1\}$.
+El perceptrón lo hace comparando la combinación lineal $z = \mathbf{w}^\top \mathbf{x} + b$
+directamente contra cero mediante una función escalón. La regresión logística, en cambio,
+primero transforma $z$ en una probabilidad a través de la función sigmoide
+\[
+\sigma(z) = \frac{1}{1+e^{-z}},
+\]
+que es estrictamente creciente y toma valores en $(0,1)$, y luego compara esa
+probabilidad contra el umbral $0.5$. La clave de la demostración es que $\sigma$,
+al ser estrictamente creciente, preserva el orden: $\sigma(z) \ge 0.5$ ocurre
+exactamente cuando $z \ge 0$, de modo que ambas comparaciones son equivalentes.\\
+
+\textbf{Demostración.} Sea un vector de entrada $\mathbf{x}$ y supongamos que tanto
+el perceptrón como la regresión logística utilizan los mismos parámetros $\mathbf{w}$
+y $b$. En ambos modelos se calcula primero la combinación lineal
+\[
+z = \mathbf{w}^T \mathbf{x} + b.
+\]
+
+\textbf{Perceptrón.} El perceptrón clasifica mediante la función escalón:
+\[
+\hat{y} =
+\begin{cases}
+1, & z \ge 0, \\
+0, & z < 0.
+\end{cases}
+\]
+Por tanto, su regla de decisión es
+\[
+\hat{y} =
+\begin{cases}
+1, & \mathbf{w}^T\mathbf{x} + b \ge 0, \\
+0, & \mathbf{w}^T\mathbf{x} + b < 0.
+\end{cases}
+\]
+
+\textbf{Regresión logística.} La regresión logística calcula la probabilidad
+\[
+P(y=1 \mid \mathbf{x}) = \sigma(z) = \frac{1}{1+e^{-z}}.
+\]
+La clasificación se obtiene utilizando el umbral $0.5$:
+\[
+\hat{y} =
+\begin{cases}
+1, & \sigma(z) \ge 0.5, \\
+0, & \sigma(z) < 0.5.
+\end{cases}
+\]
+
+Ahora demostramos que $\sigma(z) \ge 0.5 \iff z \ge 0$. En efecto,
+\[
+\frac{1}{1+e^{-z}} \ge \frac{1}{2}
+\iff
+2 \ge 1 + e^{-z}
+\iff
+1 \ge e^{-z}
+\iff
+0 \ge -z
+\iff
+z \ge 0.
+\]
+Por consiguiente, $\sigma(z) \ge 0.5 \iff z \ge 0$. Sustituyendo
+$z = \mathbf{w}^T\mathbf{x} + b$, la regla de clasificación de la regresión
+logística queda
+\[
+\hat{y} =
+\begin{cases}
+1, & \mathbf{w}^T\mathbf{x} + b \ge 0, \\
+0, & \mathbf{w}^T\mathbf{x} + b < 0.
+\end{cases}
+\]
+Esta regla coincide exactamente con la del perceptrón. Por tanto,
+\[
+\hat{y}_{\text{Perceptrón}} = \hat{y}_{\text{Logística}}.
+\]
+En conclusión, bajo un mismo conjunto de parámetros $\mathbf{w}$ y $b$, el perceptrón
+y la regresión logística inducen la misma frontera de decisión $\{\mathbf{x} :
+\mathbf{w}^T\mathbf{x} + b = 0\}$ y realizan exactamente la misma clasificación
+para todo punto $\mathbf{x} \in \mathbb{R}^d$. \hfill$\blacksquare$

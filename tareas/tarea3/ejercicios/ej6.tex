@@ -1,1 +1,66 @@
-\textbf{R:} 
+\textbf{R:} Sea $\{\mathbf{x}_1, \dots, \mathbf{x}_N\} \subset \mathbb{R}^d$ y una partición en $k$ clústers $C_1, \dots, C_k$ con centroides $\boldsymbol{\mu}_1, \dots, \boldsymbol{\mu}_k$. La función objetivo de $k$-medias (suma de cuadrados intra-clúster, SSE) es
+\[
+    J(\{C_i\}, \{\boldsymbol{\mu}_i\}) = \sum_{i=1}^{k} \sum_{\mathbf{x} \in C_i} \| \mathbf{x} - \boldsymbol{\mu}_i \|^2.
+\]
+Queremos mostrar que minimizar $J$ (dadas las medias) equivale a minimizar la varianza intra-clúster de los datos.\\
+
+\textbf{Paso 1: el centroide óptimo es la media}\\
+
+Fijada la asignación de puntos, buscamos el centroide $\mathbf{c}$ que minimiza la contribución de un clúster $C$ con $n = |C|$ puntos:
+\[
+    \varphi(\mathbf{c}) = \sum_{\mathbf{x} \in C} \| \mathbf{x} - \mathbf{c} \|^2.
+\]
+Como $\|\mathbf{x} - \mathbf{c}\|^2 = (\mathbf{x} - \mathbf{c})^\top (\mathbf{x} - \mathbf{c})$, el gradiente respecto a $\mathbf{c}$ es
+\[
+    \nabla_{\mathbf{c}} \, \varphi(\mathbf{c}) = \sum_{\mathbf{x} \in C} 2 (\mathbf{c} - \mathbf{x}) = 2 \Big( n \mathbf{c} - \sum_{\mathbf{x} \in C} \mathbf{x} \Big).
+\]
+Igualando a cero:
+\[
+    n \mathbf{c} - \sum_{\mathbf{x} \in C} \mathbf{x} = \mathbf{0}
+    \quad \Longrightarrow \quad
+    \mathbf{c}^\star = \frac{1}{n} \sum_{\mathbf{x} \in C} \mathbf{x} =: \boldsymbol{\mu}.
+\]
+Como la hessiana es $\nabla^2 \varphi = 2n \mathbf{I}$ (definida positiva), $\mathbf{c}^\star = \boldsymbol{\mu}$ es un mínimo global (la función es cuadrática convexa). Por eso $k$-medias usa la media como centroide.\\
+
+\textbf{Paso 2: descomposición tipo sesgo--varianza}\\
+
+Para cualquier centroide $\mathbf{c}$ se cumple la siguiente identidad:
+\[
+    \sum_{\mathbf{x} \in C} \| \mathbf{x} - \mathbf{c} \|^2 = \sum_{\mathbf{x} \in C} \| \mathbf{x} - \boldsymbol{\mu} \|^2 + n \| \boldsymbol{\mu} - \mathbf{c} \|^2.
+\]
+\textbf{Prueba.} Sumando y restando $\boldsymbol{\mu}$:
+\begin{align*}
+    \sum_{\mathbf{x} \in C} \| \mathbf{x} - \mathbf{c} \|^2
+    &= \sum_{\mathbf{x} \in C} \| (\mathbf{x} - \boldsymbol{\mu}) + (\boldsymbol{\mu} - \mathbf{c}) \|^2 \\
+    &= \sum_{\mathbf{x} \in C} \Big[ \| \mathbf{x} - \boldsymbol{\mu} \|^2 + 2 (\boldsymbol{\mu} - \mathbf{c})^\top (\mathbf{x} - \boldsymbol{\mu}) + \| \boldsymbol{\mu} - \mathbf{c} \|^2 \Big] \\
+    &= \sum_{\mathbf{x} \in C} \| \mathbf{x} - \boldsymbol{\mu} \|^2 + 2 (\boldsymbol{\mu} - \mathbf{c})^\top \sum_{\mathbf{x} \in C} (\mathbf{x} - \boldsymbol{\mu}) + n \| \boldsymbol{\mu} - \mathbf{c} \|^2.
+\end{align*}
+El término cruzado se anula porque $\sum_{\mathbf{x} \in C} (\mathbf{x} - \boldsymbol{\mu}) = \sum_{\mathbf{x} \in C} \mathbf{x} - n \boldsymbol{\mu} = n \boldsymbol{\mu} - n \boldsymbol{\mu} = \mathbf{0}$.
+
+El término $n \| \boldsymbol{\mu} - \mathbf{c} \|^2 \geq 0$ confirma otra vez que el mínimo se alcanza en $\mathbf{c} = \boldsymbol{\mu}$, y ahí vale $\sum_{\mathbf{x} \in C} \| \mathbf{x} - \boldsymbol{\mu} \|^2$.\\
+
+\textbf{Paso 3: el objetivo es la varianza intra-clúster}\\
+
+Por definición, la varianza de un clúster $C_i$ respecto de su media $\boldsymbol{\mu}_i$ es
+\[
+    \sigma_i^2 = \frac{1}{|C_i|} \sum_{\mathbf{x} \in C_i} \| \mathbf{x} - \boldsymbol{\mu}_i \|^2
+    \quad \Longrightarrow \quad
+    \sum_{\mathbf{x} \in C_i} \| \mathbf{x} - \boldsymbol{\mu}_i \|^2 = |C_i| \, \sigma_i^2.
+\]
+Sustituyendo en el objetivo evaluado en las medias:
+\[
+    J = \sum_{i=1}^{k} \sum_{\mathbf{x} \in C_i} \| \mathbf{x} - \boldsymbol{\mu}_i \|^2 = \sum_{i=1}^{k} |C_i| \, \sigma_i^2 = N \sum_{i=1}^{k} \frac{|C_i|}{N} \sigma_i^2 = N \sigma_W^2.
+\]
+Es decir, $\dfrac{1}{N} J = \sigma_W^2$ es la varianza intra-clúster total (el promedio, ponderado por tamaño, de las varianzas de los clústers). Si $c(\mathbf{x})$ denota el clúster asignado a $\mathbf{x}$, también se puede escribir como
+\[
+    \frac{1}{N} J = \frac{1}{N} \sum_{\mathbf{x}} \| \mathbf{x} - \boldsymbol{\mu}_{c(\mathbf{x})} \|^2 = \mathbb{E} \big[ \| X - \boldsymbol{\mu}_{c(X)} \|^2 \big] = \operatorname{Var}_W(X),
+\]
+la varianza esperada de los datos respecto a la media de su clúster.\\
+
+\textbf{Conclusión}
+
+Dadas las $k$ medias, minimizar $J$ equivale (salvo el factor $N$) a minimizar la varianza intra-clúster $\sigma_W^2$:
+\[
+    J = \sum_{i=1}^{k} \sum_{\mathbf{x} \in C_i} \| \mathbf{x} - \boldsymbol{\mu}_i \|^2 = N \sigma_W^2.
+\]
+Además, el Paso 1 muestra que tomar la media como centroide es justamente la elección que minimiza esa varianza. Por lo tanto, $k$-medias minimiza la varianza de los datos dada la partición en $k$ medias.

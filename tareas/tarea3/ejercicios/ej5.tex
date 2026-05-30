@@ -1,1 +1,45 @@
-\textbf{R:} 
+\textbf{R:} Recordemos que dada una partición en $K$ clústers $\Omega = \{C_1, \dots, C_K\}$ y un conjunto de $J$ clases verdaderas $\mathbb{C} = \{L_1, \dots, L_J\}$, la pureza se calcula asignando a cada clúster su clase mayoritaria y tomando la fracción de puntos correctamente asignados:
+\[
+    \operatorname{pureza}(\Omega, \mathbb{C}) = \frac{1}{N} \sum_{k=1}^{K} \max_{1 \leq j \leq J} |C_k \cap L_j|,
+\]
+donde $N$ es el total de puntos y $|C_k \cap L_j|$ es la cantidad de puntos del clúster $C_k$ que pertenecen a la clase $L_j$.
+
+Las clases (figuras geométricas) son: triángulo ($\blacktriangle$), círculo ($\bullet$), cuadrado ($\blacksquare$) y rombo ($\blacklozenge$). Contando cada clúster:
+\begin{center}
+    \begin{tabular}{lccccc}
+        \toprule
+        \textbf{Clúster} & $\blacktriangle$ & $\bullet$ & $\blacksquare$ & $\blacklozenge$ & \textbf{Total} \\
+        \midrule
+        $C_1$ (sup.\ izq.) & \textbf{6} & 1 & 2 & 1 & 10 \\
+        $C_2$ (sup.\ der.) & 0 & 0 & \textbf{9} & 0 & 9 \\
+        $C_3$ (inf.\ izq.) & 2 & \textbf{8} & 1 & 0 & 11 \\
+        $C_4$ (inf.\ der.) & 1 & 2 & 0 & \textbf{8} & 11 \\
+        \midrule
+        \textbf{Total} & 9 & 11 & 12 & 9 & $N=41$ \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+En negrita se marca la clase mayoritaria de cada clúster.
+
+El término $\max_j |C_k \cap L_j|$ de cada clúster es su valor mayoritario:
+\begin{align*}
+    \max_j |C_1 \cap L_j| &= 6 \quad (\blacktriangle) \\
+    \max_j |C_2 \cap L_j| &= 9 \quad (\blacksquare) \\
+    \max_j |C_3 \cap L_j| &= 8 \quad (\bullet) \\
+    \max_j |C_4 \cap L_j| &= 8 \quad (\blacklozenge)
+\end{align*}
+Sumando y dividiendo entre $N = 10 + 9 + 11 + 11 = 41$:
+\[
+    \operatorname{pureza} = \frac{6 + 9 + 8 + 8}{41} = \frac{31}{41} \approx 0.7561.
+\]
+
+Por lo tanto, la pureza es de aproximadamente $0.756$ ($75.6\%$).
+
+A modo de complemento, podemos reportar también la pureza individual de cada clúster, $\dfrac{\max_j |C_k \cap L_j|}{|C_k|}$:
+\[
+    C_1: \tfrac{6}{10} = 0.60, \quad
+    C_2: \tfrac{9}{9} = 1.00, \quad
+    C_3: \tfrac{8}{11} \approx 0.727, \quad
+    C_4: \tfrac{8}{11} \approx 0.727.
+\]
+El clúster $C_2$ es perfectamente puro (sólo cuadrados); $C_1$ es el menos puro porque mezcla las cuatro clases. La pureza global $0.756$ es el promedio de estos valores ponderado por el tamaño de cada clúster.
